@@ -1,9 +1,13 @@
 .test{
-    
+    background-color: grey;
 }
 .first{
     margin-top: 40px;
 }
 .hide{
     display: none;
+}
+.stop-scrolling {
+    height: 100%;
+    overflow: hidden;
 }

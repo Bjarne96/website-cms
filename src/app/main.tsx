@@ -9,13 +9,13 @@ import Header from './components/header/header';
 import Bar from './components/sidebar/sidebar';
 import View from './components/router/router';
 import Navbar from "./components/navbar/navbar";
-import Link from "react-scroll";
 import { Loader } from 'semantic-ui-react';
 import autobind from 'autobind-decorator';
+import { createBrowserHistory } from 'history';
 
 interface IMainState {
     loading: boolean;
-    documentHeight: number;
+    activeView: number;
 }
 
 let divstyle = {
@@ -24,62 +24,136 @@ let divstyle = {
     border: "1px solid red"
 }
 
-let dummyElemes = [
-
+let dummyViews:any = [
+    {
+        id: "div1",
+        name: "View 1"
+    },
+    {
+        id: "div2",
+        name: "View 2"
+    },
+    {
+        id: "div3",
+        name: "View 3"
+    },
+    {
+        id: "div4",
+        name: "View 4"
+    },
+    {
+        id: "div5",
+        name: "View 5"
+    }
 ]
 
-export class Main extends React.Component<{}, IMainState> {
+var handler = document.body;
+
+var position:any = handler.scrollTop;
+
+var delay = false;
+
+const history = createBrowserHistory();
+
+export class Main extends React.Component<any, IMainState> {
 
 	constructor(props) {
 		super(props);
 		this.state = {
             loading: true,
-            documentHeight: 0
+            activeView: 1
 		}
-	}
+    }
 
-	componentDidMount() {
-        this.setState({loading: false})
-        console.log("setlistener")
-        window.addEventListener('scroll', this.handleScroll);
+	async componentDidMount() {
+        this.setListeners(true);
+        let body = document.querySelector('body');
+        body.classList.add("stop-scrolling");
+        console.log("loca", history.location);
+        if(history.location.pathname !== "/") {
+            console.log("test")
+            let string = history.location.pathname;
+            let newView = Number(string.slice(1,2));
+            console.log("newView", 'div'+ newView +'click')
+            await this.setState({activeView: newView}) 
+        }
+        await this.setState({loading: false})
+        let actualElem = document.getElementById('div'+ this.state.activeView +'click')
+            actualElem.click();
+        console.log("state", this.state)
     }
 
     @autobind
-    handleScroll(event) {
-        event.preventDefault();
-        console.log("handleScroll")
-        let docelem = document.documentElement.scrollTop;
-        console.log("docelem", docelem)
+    setView(view: number) {
+        this.setState({activeView: view})
+        history.push('/'+view)
     }
 
     @autobind
-    handleNewView() {
-        console.log("handleNewView")
-        window.removeEventListener('scroll', this.handleScroll);
+    setListeners(add: boolean) {
+        if(add) {
+            handler.addEventListener('wheel', (e:any) => {this.handleScroll(e)}, false); 
+            handler.addEventListener("", (e:any) => {this.handleScroll(e)}); // modern desktop
+            handler.addEventListener('touchmove', (e:any) => {this.handleScroll(e)}); // mobile
+            handler.addEventListener('keydown', (e:any) => {this.handleScroll(e)}, false);
+        } else {
+            handler.removeEventListener('scroll', (e:any) => {this.handleScroll(e)});
+            handler.removeEventListener('wheel', (e:any) => {this.handleScroll(e)}, false); 
+            handler.removeEventListener("", (e:any) => {this.handleScroll(e)}); // modern desktop
+            handler.removeEventListener('touchmove', (e:any) => {this.handleScroll(e)}); // mobile
+            handler.removeEventListener('keydown', (e:any) => {this.handleScroll(e)}, false);
+        }
+    }
 
-        //simulate click
-        //fileElement.click();
-
+    @autobind
+    handleScroll(event?) {
+        // scroll interactin cant befaster than 1.5 seconds
+        if(delay) return
+        delay = true;
+        setTimeout(()=> {delay = false;}, 1500)
+        //scrolling by wheel event
+        let scroll = document.scrollingElement.scrollTop;
+        let newView: number;
+        if(event != undefined && event.deltaY != undefined) {
+            if(event.deltaY > 0) {
+                //down
+                if(this.state.activeView === 5) return(newView = 1);
+                newView = this.state.activeView+1;
+            } else {
+                //up
+                if(this.state.activeView === 1) return(newView = 5);
+                newView = this.state.activeView-1;
+            }
+        } else {
+            //other events
+            if (scroll >= position) {
+                //down
+                if(this.state.activeView === 5) return(newView = 1);
+                newView = this.state.activeView+1;
+            } else {
+                //up
+                if(this.state.activeView === 1) return(newView = 5);
+                newView = this.state.activeView-1;
+            }
+        }
+        //clicks and updates actual view
+        let actualElem = document.getElementById('div'+newView+'click')
+        actualElem.click();
+        this.setState({activeView: newView})
+        history.push('/'+newView)
+        position = document.scrollingElement.scrollTop;
     }
     
 	render() {
         if(this.state.loading) return <Loader active/>
 		return (
 		<div className="App">
-			<Header />
+			<Header setView={this.setView} views={dummyViews}/>
 			<div className="test first" style={divstyle} id="div1">Div1</div>
 			<div className="test" style={divstyle} id="div2">Div2</div>
 			<div className="test" style={divstyle} id="div3">Div3</div>
 			<div className="test" style={divstyle} id="div4">Div4</div>
 			<div className="test" style={divstyle} id="div5">Div5</div>
-            {/*<Link
-                activeClass="active"
-                to="div3"
-                spy={true}
-                smooth={true}
-                offset={-40}
-                duration={500}
-            >Test</Link>*/}
 		</div>
 		);
 	}
