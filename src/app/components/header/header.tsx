@@ -1,9 +1,8 @@
 import * as React from 'react';
-import  { Image, Menu } from 'semantic-ui-react';
+import  { Image, Menu, Icon } from 'semantic-ui-react';
 import { Loader } from 'semantic-ui-react'
 import './header.css';
 import { Link, animateScroll as scroll } from "react-scroll";
-import Views from '../router/router';
 
 interface MyView {
     id: string;
@@ -52,6 +51,6 @@ export class Header extends React.Component <IProps, Istate>{
                 </Menu.Item>
             })}
         </Menu>
-   }
+    }
 }
 export default Header;

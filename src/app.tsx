@@ -8,7 +8,6 @@ ReactDOM.render(
     <Router>
         <Switch>
             <Route path=""  component={() => <Main />}/>
-            <Main />
         </Switch>
     </Router>,
     document.getElementById('root')
