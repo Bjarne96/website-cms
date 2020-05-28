@@ -20,14 +20,6 @@ interface IProps {
     toggleSidebar(newHandler);
 }
 
-let divstyle = {
-    width: window.innerWidth,
-    height: window.innerHeight,
-    border: "1px solid red"
-}
-
-let delay = false;
-
 export class MobileSidebar extends React.Component<IProps, IState> {
 
     constructor(props) {
@@ -44,9 +36,7 @@ export class MobileSidebar extends React.Component<IProps, IState> {
     render() {
         if(this.state.loading) return <Loader active />
         return  <div className="infrontandfixed">
-            <Menu.Item className="mobileSidebarToggle margin10" color="black" as='a'onClick={this.props.toggleSidebar}>
-                <Icon name='bars' />
-            </Menu.Item>
+            <Icon className="mobileSidebarToggle margin10" name='bars' onClick={this.props.toggleSidebar}/>
             <Sidebar
                 animation='overlay'
                 icon='labeled'
@@ -55,34 +45,26 @@ export class MobileSidebar extends React.Component<IProps, IState> {
                 vertical={"true"}
                 visible={this.props.showSidebar}
                 width='thin'
+                as={Menu}
                 className="mobileSidebarContainer"
             >
-                <Menu.Item className="mobileSidebarToggle margin10" color="black" as='a'onClick={this.props.toggleSidebar}>
-                    <Icon name='close' />
-                </Menu.Item>
-                <Menu vertical className="mobileSidebarMenu">
-                    <Menu.Item className="mobileSidebarHeadline">
-                        Home
+                <Icon className="mobileSidebarToggle mobileSidebarClose margin10" name='window close outline' onClick={this.props.toggleSidebar}/>
+                {this.props.views.map((obj, key) => {
+                    return <Menu.Item className="mobileSidebarItem" as='a' key={obj.id}>
+                        <Link
+                            onClick={() => {this.props.setView(key+1)}}
+                            activeClass="active"
+                            to={obj.id}
+                            id={obj.id+"click"}
+                            spy={true}
+                            smooth={true}
+                            offset={0}
+                            duration={1000}>
+                            
+                            {obj.name}
+                        </Link>
                     </Menu.Item>
-                    <Menu vertical className="mobileSidebarMenu">
-                    {this.props.views.map((obj, key) => {
-                        return <Menu.Item key={obj.id}>
-                            <Link
-                                onClick={() => {this.props.setView(key+1)}}
-                                activeClass="active"
-                                to={obj.id}
-                                id={obj.id+"click"}
-                                spy={true}
-                                smooth={true}
-                                offset={0}
-                                duration={1000}>
-                                
-                                {obj.name}
-                            </Link>
-                        </Menu.Item>
-                    })}
-                    </Menu>
-                </Menu>
+                })}
             </Sidebar>
         </div>
     }

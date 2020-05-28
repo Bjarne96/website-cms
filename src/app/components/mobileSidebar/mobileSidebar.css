@@ -4,6 +4,7 @@
     left: 0px !important;
     font-size: 20px !important;
     z-index: 1;
+    color: #8fcb9e;
 }
 .infrontandfixed{
     position: fixed !important;
@@ -12,16 +13,17 @@
     font-size: 20px !important;
     z-index: 1;
 }
-.mobileContentContainer{
-    min-width: 100%;
-}
-.mobileSidebarMenu{
-    margin: 0px !important;
-    text-align: right;
-    width: 100% !important;
+.mobileSidebarItem{
+    text-align: right !important;
+    font-size: 17px;
 }
 .mobileSidebarContainer{
-    background-color: white;
+    background-color: #8fcb9e !important;
+    color: white;
+    text-align: right !important;
+}
+.mobileSidebarClose{
+    color: white;
 }
 .nomargin {
     margin: 0px !important;

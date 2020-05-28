@@ -36,9 +36,9 @@ export default class Base extends React.Component<ISidebarProps, ISidebarState> 
             animation="overlay" 
             visible={this.props.showSidebar} 
             icon="labeled" 
-            vertical 
+            vertical
             width='thin'
-            className='themeSecondBackgroundcolor noBorderTop'
+            className='noBorderTop sidebarCustomStyle'
         >
             {menuItems}
         </Sidebar>

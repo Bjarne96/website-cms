@@ -10,26 +10,8 @@ let Request = async (path: string, fetchType: "GET" | "POST" | "PUT" | "DELETE",
     //Sets url
     let  url = "https://api-cms-schurwolldecke.herokuapp.com/" + path; //temporary url fix
 
-    let fetchObject: any = {
-        credentials: "same-origin",
-        method: fetchType,
-        headers: header
-    };
-
-    //Only Fileupload, no body needed and puts files in header
-    if(fileupload) { 
-        delete header["Content-Type"];
-        header["Authorization"] = JWT;
-        header["Accept"] = "*/*";
-        fetchObject["body"] = data;
-    }
-
-    //Sets body by not GET request and only if its json
-    if(fetchType !== "GET" && header["Content-Type"] === "application/json") {
-        fetchObject['body'] = JSON.stringify(data);
-    }
     //Sends Request
-    let response = await fetch(url, fetchObject);
+    let response = await fetch(url);
 
     const json: any = await response.json();
 
