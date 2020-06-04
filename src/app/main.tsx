@@ -43,9 +43,7 @@ let dummyViews:any = [
 ]
 
 var handler = document.body;
-
 var delay = false;
-
 let mobile = false;
 
 export class Main extends React.Component<any, IMainState> {
