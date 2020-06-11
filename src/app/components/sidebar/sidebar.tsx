@@ -5,6 +5,7 @@ import autobind from 'autobind-decorator';
 import { Link } from 'react-router-dom';
 
 import { IRouteArray } from './../../interfaces/componentInterfaces'
+import { Spinner } from 'react-bootstrap';
 
 interface ISidebarState {
     loading: boolean;
@@ -29,7 +30,7 @@ export default class Base extends React.Component<ISidebarProps, ISidebarState> 
     }
       
     render() {
-        if(this.state.loading) return <Loader active />
+        if(this.state.loading) return <Spinner animation="grow" />
         let menuItems = this.renderMenuItems();
         return  <Sidebar 
             as={Menu} 

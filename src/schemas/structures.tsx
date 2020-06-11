@@ -1,5 +1,5 @@
 import { IDefaultSchema } from "../app/interfaces/viewInterfaces"
-import { IArticle, IProduct } from "."
+import { IArticle } from "."
 
 export interface IStructure {
     _id: string;
@@ -37,7 +37,14 @@ export enum contentTypex {
 }
 
 export interface IContent {
-    content: IArticle | IProduct,
+    content: IArticle,
+    componentType : componentType,
+    contentType : contentType,
+    properties? : string //optional for styling or sets
+}
+
+export interface IContentArray {
+    content: Array<IArticle>,
     componentType : componentType,
     contentType : contentType,
     properties? : string //optional for styling or sets

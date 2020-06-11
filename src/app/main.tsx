@@ -1,7 +1,6 @@
 import * as React from 'react';
 import './main.css';
 import Header from './components/header/header';
-import { Loader } from 'semantic-ui-react';
 import autobind from 'autobind-decorator';
 import MobileSidebar from './components/mobileSidebar/mobileSidebar';
 import { pushHistory } from "./handler/historyHandler"
@@ -9,6 +8,7 @@ import { handleSetListeners, handleScrollEvent, handleInitalScroll } from "./han
 import { getStructure } from './handler/structureRequests';
 import { IStructure } from '../schemas';
 import * as DisplayArticles from './components/displayArticle';
+import { Spinner } from 'react-bootstrap';
 
 interface IMainState {
     loading: boolean;
@@ -18,8 +18,7 @@ interface IMainState {
 
 let divstyle = {
     width: window.innerWidth,
-    height: window.innerHeight,
-    border: "1px solid red"
+    height: window.innerHeight
 }
 
 let structureId = "5ecf937004cc1b001752148d";
@@ -58,6 +57,7 @@ export class Main extends React.Component<any, IMainState> {
     }
 
 	async componentDidMount() {
+        console.log("did mount")
         //load structure
         let structureResponse = await getStructure(structureId);
         //todo exception
@@ -72,6 +72,10 @@ export class Main extends React.Component<any, IMainState> {
         await this.setState({activeView: newActiveView, loading: false})
         //scrolls intially
         document.getElementById('div'+ this.state.activeView +'click').click();
+    }
+
+    componentWillUpdate() {
+        console.log("test")
     }
 
     @autobind
@@ -141,32 +145,31 @@ export class Main extends React.Component<any, IMainState> {
         }
     }
 
-    @autobind
-    renderStructure(){
-        //checks for undefined componentstructure
-        if(componentStructure == undefined) return("not defined yet")
-        //maps componentstrcuture into components
-        return(componentStructure.map((data, index) => {
-            let displayComponent = <></>
-            if(data.componentType == "widescreen"){
-                displayComponent = <DisplayArticles.DisplayWidePicture component={data.content} />
-            }else if(data.componentType == "productdetail") {
-                displayComponent = <DisplayArticles.DisplayDetails component={data.content} />
-            }else if(data.componentType == "set") {
-                displayComponent = <DisplayArticles.DisplaySet component={data.content}/>
-            }
-            //basic frame for each scrollable component
-            return(
-                <div key={"div"+index} className={"test" + (index == 0 ? " xfirst" : "")} style={divstyle} id={"div"+(index+1)}>
-                    {displayComponent}
-                </div>
-            )
-        }))
-    }
-
 	render() {
-        if(this.state.loading) return <Loader active/>
-        let structure = this.renderStructure();
+        console.log("rendermain")
+        if(this.state.loading) return <Spinner animation="grow" />
+        //checks for undefined componentstructure  - todo exception
+        let structureComps;
+        structureComps = <></>
+        if(componentStructure != undefined) {
+            //maps componentstrcuture into components
+            structureComps = componentStructure.map((data, index) => {
+                let displayComponent = <></>
+                if(data.componentType == "widescreen"){
+                    displayComponent = <DisplayArticles.DisplayWidePicture component={data.content} />
+                }else if(data.componentType == "productdetail") {
+                    displayComponent = <DisplayArticles.DisplayDetails component={data.content} />
+                }else if(data.componentType == "set") {
+                    displayComponent = <DisplayArticles.DisplaySet component={data.content}/>
+                }
+                //basic frame for each scrollable component
+                return(
+                    <div key={"div"+index} className={"test" + (index == 0 ? " xfirst" : "")} style={divstyle} id={"div"+(index+1)}>
+                        {displayComponent}
+                    </div>
+                )
+            })
+        }
 		return (
 		<div className="App" id="App">
             {mobile ? 
@@ -179,7 +182,7 @@ export class Main extends React.Component<any, IMainState> {
             : 
                 <Header setView={this.setView} views={dummyViews}/>
             } 
-            {structure}
+            {structureComps}
 		</div>
 		);
 	}

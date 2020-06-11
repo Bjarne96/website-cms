@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link, animateScroll as scroll } from "react-scroll";
 import { Loader } from "semantic-ui-react";
+import { Spinner } from "react-bootstrap";
 
 interface IState {
 	loading: boolean;
@@ -25,7 +26,7 @@ export class NavBar extends Component<{}, IState> {
 
   render() {
 	  return <></>
-		if(this.state.loading) return <Loader active />
+		if(this.state.loading) return <Spinner animation="grow" />
 		return (
 		<nav className="nav" id="navbar">
 			<div className="nav-content">

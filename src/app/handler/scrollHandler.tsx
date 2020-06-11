@@ -11,6 +11,7 @@ export const handleInitalScroll = (activeView: number, event?) => {
 }
 
 export const handleScrollEvent = (activeView: number, event?) => {
+    console.log("hahandleSetListenersd")
     //scrolling by wheel event
     let newView: number;
     if(event != undefined && event.deltaY != undefined) {
@@ -24,10 +25,13 @@ export const handleScrollEvent = (activeView: number, event?) => {
             newView = activeView-1;
         }
     }
-     //clicks and updates actual view
-     let actualElem = document.getElementById('div'+newView+'click')
-     actualElem.click();
-     pushHistory(newView)
+    //clicks and updates actual view
+    let actualElem = document.getElementById('div'+newView+'click')
+    console.log("tell me")
+    actualElem.click();
+    console.log("tell me")
+    pushHistory(newView)
+    console.log("tell me")
     //returns actual new view
     return newView;
 }

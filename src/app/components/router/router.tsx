@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import autobind from 'autobind-decorator';
-import { Loader } from 'semantic-ui-react';
 
 import { IRouteArray } from './../../interfaces/componentInterfaces'
+import { Spinner } from 'react-bootstrap';
 
 interface IRouterProps {
     checkSession(): Promise<void>;
@@ -30,7 +30,7 @@ export class Views extends React.Component<IRouterProps, IRouterState> {
 
 
     render() {
-        if(this.state.loading) return <Loader active />
+        if(this.state.loading) return <Spinner animation="grow" />
         let Routes  = this.renderRoutes();
         return <Switch>
             {Routes}

@@ -3,6 +3,7 @@ import { Header, Icon, Image, Menu, Segment, Sidebar, Loader } from 'semantic-ui
 import autobind from 'autobind-decorator';
 import './mobileSidebar.css';
 import { Link } from 'react-scroll';
+import { Spinner } from 'react-bootstrap';
 
 interface MyView {
     id: string;
@@ -34,7 +35,7 @@ export class MobileSidebar extends React.Component<IProps, IState> {
     }
 
     render() {
-        if(this.state.loading) return <Loader active />
+        if(this.state.loading) return <Spinner animation="grow" />
         return  <div className="infrontandfixed">
             <Icon className="mobileSidebarToggle margin10" name='bars' onClick={this.props.toggleSidebar}/>
             <Sidebar

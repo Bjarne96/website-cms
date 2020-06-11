@@ -1,6 +1,6 @@
 import * as React from 'react';
 import './displayImage.css';
-import { Loader } from 'semantic-ui-react';
+import { Spinner } from 'react-bootstrap';
 interface IProps {
     data: Array<Array<String>>;
 }
@@ -22,7 +22,7 @@ export class DisplayImage extends React.Component <{}, IState>{
     }
 
     render() {
-        return <Loader active/>
+        return <Spinner animation="grow" />
     }
 }
 export default DisplayImage;

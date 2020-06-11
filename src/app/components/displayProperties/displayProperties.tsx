@@ -1,6 +1,6 @@
 import * as React from 'react';
 import './displayProperties.css';
-import { Loader } from 'semantic-ui-react';
+import { Spinner } from 'react-bootstrap';
 interface IProps {
     data: Array<Array<String>>;
 }
@@ -22,7 +22,7 @@ export class DisplayProperties extends React.Component <IProps, IState>{
     }
 
     render() {
-        if(this.state.loading) return<Loader active/>
+        if(this.state.loading) return <Spinner animation="grow" />
         if(!this.props.data.length) return "";
         return <div key="properties" >{this.props.data.map((category, index) => {
             return <ul key={category+index.toString()} className="noMargin">
