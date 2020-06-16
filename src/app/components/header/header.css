@@ -4,3 +4,6 @@
 .active {
     color: red;
 }
+.nav-link{
+    cursor: pointer;
+}

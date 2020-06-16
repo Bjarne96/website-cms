@@ -6,9 +6,10 @@ import MobileSidebar from './components/mobileSidebar/mobileSidebar';
 import { pushHistory } from "./handler/historyHandler"
 import { handleSetListeners, handleScrollEvent, handleInitalScroll } from "./handler/scrollHandler"
 import { getStructure } from './handler/structureRequests';
-import { IStructure } from '../schemas';
+import { IStructure, IContent, IContentArray, IArticle } from '../schemas';
 import * as DisplayArticles from './components/displayArticle';
 import { Spinner } from 'react-bootstrap';
+import { BrowserRouter as Router, Switch, Route, withRouter  } from 'react-router-dom';
 
 interface IMainState {
     loading: boolean;
@@ -23,23 +24,11 @@ let divstyle = {
 
 let structureId = "5ecf937004cc1b001752148d";
 
-let componentStructure = [];
+let componentStructure: Array<any> = [];
+let routerStructure = [];
 
-//todo dummy views from db
-let dummyViews:any = [
-    {
-        id: "div1",
-        name: "Frontpage"
-    },
-    {
-        id: "div2",
-        name: "Product"
-    },
-    {
-        id: "div3",
-        name: "Sets"
-    }
-]
+let views:any = [];
+let routes:any = [];
 
 var handler = document.body;
 var delay = false;
@@ -63,7 +52,9 @@ export class Main extends React.Component<any, IMainState> {
         //todo exception
         //build componentstructure for components
         let structure: IStructure = structureResponse.result;
-        this.loadComponentStructure(structure);
+        this.loadComponentAndRouterStructure(structure);
+        this.loadViews();
+        this.loadRoutes();
         //sets listeners for scrolling
         handleSetListeners(handler, this.handleScroll);
         //gets active view from router
@@ -76,6 +67,39 @@ export class Main extends React.Component<any, IMainState> {
 
     componentWillUpdate() {
         console.log("test")
+    }
+
+    @autobind 
+    loadViews () {
+        componentStructure.forEach( (data) => {
+            let compType = data.componentType;
+            console.log("compType", compType);
+            if(compType == "widescreen" || compType == "productdetail") {
+                views.push({
+                    id : "div"+data.content._id,
+                    name : data.content.title
+                })
+            }
+            if(compType == "set") {
+                console.log("data", data)
+                views.push ({
+                    id : "div"+data.content[0].content._id,
+                    name : data.content[0].content.title
+                })
+            }
+        })
+        
+    }
+
+    @autobind 
+    loadRoutes () {
+        routerStructure.forEach( (data: IContent) => {
+            routes.push({
+                url : data.content.url,
+                title : data.content.title
+            })
+        })
+        
     }
 
     @autobind
@@ -108,10 +132,11 @@ export class Main extends React.Component<any, IMainState> {
     }
 
     @autobind
-    loadComponentStructure(structure: IStructure) {
+    loadComponentAndRouterStructure(structure: IStructure) {
         //sets object dummy for filling in set data
         let setObject = {
             componentType : "set",
+            contentType: "article",
             content : []
         };
         //temp variable for last active set
@@ -140,9 +165,12 @@ export class Main extends React.Component<any, IMainState> {
                         componentStructure.push(setObject)
                     }
                     break;
+                }case ("route"): {
+                    routerStructure.push(_obj)
                 }
             }
         }
+        return(componentStructure);
     }
 
 	render() {
@@ -155,35 +183,56 @@ export class Main extends React.Component<any, IMainState> {
             //maps componentstrcuture into components
             structureComps = componentStructure.map((data, index) => {
                 let displayComponent = <></>
-                if(data.componentType == "widescreen"){
-                    displayComponent = <DisplayArticles.DisplayWidePicture component={data.content} />
-                }else if(data.componentType == "productdetail") {
-                    displayComponent = <DisplayArticles.DisplayDetails component={data.content} />
-                }else if(data.componentType == "set") {
-                    displayComponent = <DisplayArticles.DisplaySet component={data.content}/>
+                let compType = data.componentType;           
+                if(compType == "widescreen"){
+                    displayComponent = <DisplayArticles.DisplayWidePicture key={index} component={data.content} />
+                }else if(compType == "productdetail") {
+                    displayComponent = <DisplayArticles.DisplayDetails key={index} component={data.content} />
+                }else if(compType == "set") {
+                    displayComponent = <DisplayArticles.DisplaySet key={index} component={data.content}/>
                 }
                 //basic frame for each scrollable component
                 return(
-                    <div key={"div"+index} className={"test" + (index == 0 ? " xfirst" : "")} style={divstyle} id={"div"+(index+1)}>
+                    <div key={"div"+data.content._id} className={"test" + (index == 0 ? " xfirst" : "")} style={divstyle} id={"div"+data.content._id}>
                         {displayComponent}
                     </div>
                 )
             })
         }
-		return (
-		<div className="App" id="App">
+        console.log("views", views)
+        let main = (<div className="App" id="App">
             {mobile ? 
                 <MobileSidebar 
                     toggleSidebar={this.toggleSidebar} 
                     showSidebar={this.state.showSidebar} 
                     setView={this.setView} 
-                    views={dummyViews}
+                    views={views}
+                    routes={routes}
                 />
             : 
-                <Header setView={this.setView} views={dummyViews}/>
+                <Header setView={this.setView} views={views} routes={routes}/>
             } 
             {structureComps}
-		</div>
+        </div>);
+        let routeComps;
+        routeComps = <></>
+        if(routerStructure != undefined) {
+            //maps componentstrcuture into routes
+            routeComps = routerStructure.map((data, index) => {
+                let article: IArticle = data.content;
+                if(data.componentType == "route"){
+                    return <Route key={article._id} path={article.url} explicit component={() => <div>{article.title}</div> }/>
+                }
+                return
+            })
+        }
+		return (
+            <Router>
+                <Switch>
+                    {routeComps}
+                    <Route path="" explicit component={() => main}/>
+                </Switch>
+            </Router>
 		);
 	}
 }

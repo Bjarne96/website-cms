@@ -24,7 +24,7 @@ export interface IDependendStructure {
     content: Array<dependendContent>,
 }
 
-export type componentType = "set" |  "widescreen"| "productdetail";
+export type componentType = "set" |  "widescreen"| "productdetail" | "route";
 
 export enum componentTypex {
     set, widescreen, productdetail

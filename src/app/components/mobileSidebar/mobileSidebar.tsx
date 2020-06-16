@@ -10,12 +10,18 @@ interface MyView {
     name: string;
 }
 
+interface MyRoute {
+    url: string;
+    title: string;
+}
+
 interface IState {
     loading: boolean;
 }
 
 interface IProps {
     views: [MyView];
+    routes: [MyRoute];
     showSidebar: boolean;
     setView(view);
     toggleSidebar(newHandler);
@@ -35,7 +41,9 @@ export class MobileSidebar extends React.Component<IProps, IState> {
     }
 
     render() {
+        
         if(this.state.loading) return <Spinner animation="grow" />
+        console.log("")
         return  <div className="infrontandfixed">
             <Icon className="mobileSidebarToggle margin10" name='bars' onClick={this.props.toggleSidebar}/>
             <Sidebar

@@ -9,7 +9,7 @@ let Request = async (path: string, fetchType: "GET" | "POST" | "PUT" | "DELETE",
 
     //Sets url
     let  url = "https://api-cms-schurwolldecke.herokuapp.com/" + path; //temporary url fix
-    url = "https://localhost:4000/"+path
+    //url = "https://localhost:4000/"+path
 
     //Sends Request
     let response = await fetch(url);
