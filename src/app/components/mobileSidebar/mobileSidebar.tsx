@@ -4,24 +4,15 @@ import autobind from 'autobind-decorator';
 import './mobileSidebar.css';
 import { Link } from 'react-scroll';
 import { Spinner } from 'react-bootstrap';
-
-interface MyView {
-    id: string;
-    name: string;
-}
-
-interface MyRoute {
-    url: string;
-    title: string;
-}
+import { IViewArray, IRouteArray } from '../../interfaces/componentInterfaces';
 
 interface IState {
     loading: boolean;
 }
 
 interface IProps {
-    views: [MyView];
-    routes: [MyRoute];
+    views: IViewArray;
+    routes: IRouteArray;
     showSidebar: boolean;
     setView(view);
     toggleSidebar(newHandler);

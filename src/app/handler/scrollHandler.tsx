@@ -1,4 +1,5 @@
 import { pushHistory, getHistory } from "./historyHandler"
+import { IViewArray } from "../interfaces/componentInterfaces";
 
 export const handleInitalScroll = (activeView: number, event?) => {
     let body = document.querySelector('body');
@@ -10,23 +11,24 @@ export const handleInitalScroll = (activeView: number, event?) => {
     return activeView;
 }
 
-export const handleScrollEvent = (activeView: number, event?) => {
-    console.log("hahandleSetListenersd")
+export const handleScrollEvent = (activeView: number, views: IViewArray, event?) => {
     //scrolling by wheel event
     let newView: number;
     if(event != undefined && event.deltaY != undefined) {
         if(event.deltaY > 0) {
             //down
-            if(activeView === 5) return(newView = 1);
+            if(activeView === views.length) return(newView = 1);
             newView = activeView+1;
         } else {
             //up
-            if(activeView === 1) return(newView = 5);
+            if(activeView === 1) return(newView = views.length);
             newView = activeView-1;
         }
     }
+    //sets nav elements id
+    let nav = views[newView-1].nav;
     //clicks and updates actual view
-    let actualElem = document.getElementById('div'+newView+'click')
+    let actualElem = document.getElementById(nav);
     console.log("tell me")
     actualElem.click();
     console.log("tell me")

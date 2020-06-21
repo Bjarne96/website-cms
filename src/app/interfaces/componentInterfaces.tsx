@@ -1,12 +1,16 @@
 import { ReactElement } from "react";
 
-//Interface for route object
-export interface IRouteObject {
-    path: string,
-    component: (props?) => ReactElement<any,any>,
-    title: string,
-    exact: boolean,
-    showInSidebar: boolean
+export interface IViewArray extends Array<IViewComponent>{}
+
+export interface IViewComponent {
+    id: string,
+    nav: string,
+    name: string
 }
-//Interface for routes array
-export interface IRouteArray extends Array<IRouteObject>{}
+
+export interface IRouteArray extends Array<IRouteComponent>{}
+
+export interface IRouteComponent {
+    url: string;
+    title: string;
+}

@@ -3,22 +3,14 @@ import './header.css';
 import { Link, animateScroll as scroll } from "react-scroll";
 import { Link as RouterLink } from 'react-router-dom';
 import { Navbar, Nav, Spinner, Image } from 'react-bootstrap';
-
-interface MyView {
-    id: string;
-    name: string;
-}
+import { IViewArray, IRouteArray } from '../../interfaces/componentInterfaces';
 
 interface IProps {
-    views: [MyView];
-    routes: [MyRoute];
+    views: IViewArray;
+    routes: IRouteArray,
     setView(view);
 }
 
-interface MyRoute {
-    url: string;
-    title: string;
-}
 
 interface Istate {
     loading: Boolean;
@@ -34,7 +26,6 @@ export class Header extends React.Component <IProps, Istate>{
     }
 
     render() {
-        console.log("routes",this.props.routes)
         if(this.state.loading) return <Spinner animation="grow" />
         return<Navbar bg="dark" variant="dark" fixed="top" expand="lg">
         <Navbar.Collapse id="basic-navbar-nav">
@@ -45,12 +36,12 @@ export class Header extends React.Component <IProps, Istate>{
                 <Navbar.Brand>&nbsp;&nbsp;&nbsp;&nbsp;Tiefschlaf&nbsp;&nbsp;&nbsp;&nbsp;</Navbar.Brand>
                 {this.props.views.map((obj, key) => {
                     return <Link
-                        key={obj.id}
+                        key={obj.nav}
                         className="nav-link"
                         onClick={() => {this.props.setView(key+1)}}
                         activeClass="active"
                         to={obj.id}
-                        id={obj.id+"click"}
+                        id={obj.nav}
                         spy={true}
                         smooth={true}
                         offset={-56}
@@ -70,28 +61,6 @@ export class Header extends React.Component <IProps, Istate>{
             </Nav>
         </Navbar.Collapse>
       </Navbar>
-        /*return <Menu secondary fixed="top" attached="top" className="navbar">
-            <Menu.Item className="logoMenu">
-                <Image size="mini" src='./../../../public/logo.png'/>
-                <strong className="whiteColor">&nbsp;&nbsp;Tiefschlaf</strong>
-            </Menu.Item>
-            {this.props.views.map((obj, key) => {
-                return <Menu.Item key={obj.id}>
-                    <Link
-                        onClick={() => {this.props.setView(key+1)}}
-                        activeClass="active"
-                        to={obj.id}
-                        id={obj.id+"click"}
-                        spy={true}
-                        smooth={true}
-                        offset={-40}
-                        duration={1000}>
-                        
-                        {obj.name}
-                    </Link>
-                </Menu.Item>
-            })}
-        </Menu>*/
     }
 }
 export default Header;

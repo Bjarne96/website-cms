@@ -6,10 +6,11 @@ import MobileSidebar from './components/mobileSidebar/mobileSidebar';
 import { pushHistory } from "./handler/historyHandler"
 import { handleSetListeners, handleScrollEvent, handleInitalScroll } from "./handler/scrollHandler"
 import { getStructure } from './handler/structureRequests';
-import { IStructure, IContent, IContentArray, IArticle } from '../schemas';
+import { IStructure, IContent, IArticle } from '../schemas';
 import * as DisplayArticles from './components/displayArticle';
 import { Spinner } from 'react-bootstrap';
 import { BrowserRouter as Router, Switch, Route, withRouter  } from 'react-router-dom';
+import { IViewArray, IRouteArray } from './interfaces/componentInterfaces';
 
 interface IMainState {
     loading: boolean;
@@ -27,8 +28,8 @@ let structureId = "5ecf937004cc1b001752148d";
 let componentStructure: Array<any> = [];
 let routerStructure = [];
 
-let views:any = [];
-let routes:any = [];
+let views: IViewArray = [];
+let routes: IRouteArray = [];
 
 var handler = document.body;
 var delay = false;
@@ -62,7 +63,7 @@ export class Main extends React.Component<any, IMainState> {
         //sets state
         await this.setState({activeView: newActiveView, loading: false})
         //scrolls intially
-        document.getElementById('div'+ this.state.activeView +'click').click();
+        document.getElementById(views[newActiveView].nav).click();
     }
 
     componentWillUpdate() {
@@ -73,17 +74,18 @@ export class Main extends React.Component<any, IMainState> {
     loadViews () {
         componentStructure.forEach( (data) => {
             let compType = data.componentType;
-            console.log("compType", compType);
             if(compType == "widescreen" || compType == "productdetail") {
+                console.log("widescreen", "productdetail")
                 views.push({
                     id : "div"+data.content._id,
+                    nav : data.content._id + "click",
                     name : data.content.title
                 })
             }
             if(compType == "set") {
-                console.log("data", data)
                 views.push ({
                     id : "div"+data.content[0].content._id,
+                    nav :data.content[0].content._id + "click",
                     name : data.content[0].content.title
                 })
             }
@@ -103,8 +105,9 @@ export class Main extends React.Component<any, IMainState> {
     }
 
     @autobind
-    setView(view: number) {
+    setView(view: any) {
         //updates state
+        console.log("view", view)
         this.setState({activeView: view})
         //updates history
         pushHistory(view)
@@ -127,7 +130,7 @@ export class Main extends React.Component<any, IMainState> {
         delay = true;
         setTimeout(()=> {delay = false;}, 1000)
         //scrolling by wheel event
-        let newView = await handleScrollEvent(this.state.activeView, event);
+        let newView = await handleScrollEvent(this.state.activeView ,views , event );
         this.setState({activeView: newView})
     }
 
@@ -193,7 +196,7 @@ export class Main extends React.Component<any, IMainState> {
                 }
                 //basic frame for each scrollable component
                 return(
-                    <div key={"div"+data.content._id} className={"test" + (index == 0 ? " xfirst" : "")} style={divstyle} id={"div"+data.content._id}>
+                    <div key={views[index].id} className={"test" + (index == 0 ? " xfirst" : "")} style={divstyle} id={views[index].id}>
                         {displayComponent}
                     </div>
                 )
