@@ -1,39 +1,50 @@
 import { pushHistory, getHistory } from "./historyHandler"
-import { IViewArray } from "../interfaces/componentInterfaces";
+import { INavArray } from "../interfaces/componentInterfaces";
 
-export const handleInitalScroll = (activeView: number, event?) => {
+export const handleInitalScroll = () => {
     let body = document.querySelector('body');
     body.classList.add("stop-scrolling");
     if(getHistory() !== "/") {
         let string = getHistory();
-        activeView = Number(string.slice(1,2));
+        return(Number(string.slice(1,2)));
     }
-    return activeView;
+    return 1;
 }
 
-export const handleScrollEvent = (activeView: number, views: IViewArray, event?) => {
+export const handleScrollEvent = (activeView: number, navs: INavArray, event?) => {
     //scrolling by wheel event
-    let newView: number;
+    let newView = activeView;
+    console.log("scrollhandler", newView)
     if(event != undefined && event.deltaY != undefined) {
         if(event.deltaY > 0) {
             //down
-            if(activeView === views.length) return(newView = 1);
-            newView = activeView+1;
+            if(activeView === navs.length) {
+                //from bottom to top by scrolling down
+                console.log("case1")
+                return(newView = 1);
+            }
+            console.log("case2")
+            newView++;
         } else {
             //up
-            if(activeView === 1) return(newView = views.length);
-            newView = activeView-1;
+           
+            if(activeView === 1) {
+                console.log("case3")
+                 //case for scrolling with the top component even higher is not allowed
+                return(newView);
+            }
+            console.log("case4")
+            newView--;
         }
     }
-    //sets nav elements id
-    let nav = views[newView-1].nav;
+    //sets nav elements id^
+    console.log('newView', newView);
+    //console.log("newView-1",newView-1)
+    let nav = navs[newView-1].nav;
     //clicks and updates actual view
     let actualElem = document.getElementById(nav);
-    console.log("tell me")
     actualElem.click();
-    console.log("tell me")
-    pushHistory(newView)
-    console.log("tell me")
+    pushHistory(newView);
     //returns actual new view
     return newView;
 }

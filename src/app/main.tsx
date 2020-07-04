@@ -2,15 +2,15 @@ import * as React from 'react';
 import './main.css';
 import Header from './components/header/header';
 import autobind from 'autobind-decorator';
-import MobileSidebar from './components/mobileSidebar/mobileSidebar';
-import { pushHistory } from "./handler/historyHandler"
+import { pushHistory } from "./handler/historyHandler";
 import { handleSetListeners, handleScrollEvent, handleInitalScroll } from "./handler/scrollHandler"
 import { getStructure } from './handler/structureRequests';
 import { IStructure, IContent, IArticle } from '../schemas';
 import * as DisplayArticles from './components/displayArticle';
 import { Spinner } from 'react-bootstrap';
 import { BrowserRouter as Router, Switch, Route, withRouter  } from 'react-router-dom';
-import { IViewArray, IRouteArray } from './interfaces/componentInterfaces';
+import { INavArray, IRouteArray } from './interfaces/componentInterfaces';
+import { FullscreenScroller } from './components/fullscreenScroller/fullscreenScroller';
 
 interface IMainState {
     loading: boolean;
@@ -28,12 +28,11 @@ let structureId = "5ecf937004cc1b001752148d";
 let componentStructure: Array<any> = [];
 let routerStructure = [];
 
-let views: IViewArray = [];
+let navs: INavArray = [];
 let routes: IRouteArray = [];
 
 var handler = document.body;
 var delay = false;
-let mobile = false;
 
 export class Main extends React.Component<any, IMainState> {
 
@@ -47,43 +46,36 @@ export class Main extends React.Component<any, IMainState> {
     }
 
 	async componentDidMount() {
-        console.log("did mount")
         //load structure
         let structureResponse = await getStructure(structureId);
         //todo exception
         //build componentstructure for components
         let structure: IStructure = structureResponse.result;
         this.loadComponentAndRouterStructure(structure);
-        this.loadViews();
+        this.loadNav();
         this.loadRoutes();
         //sets listeners for scrolling
-        handleSetListeners(handler, this.handleScroll);
+        //handleSetListeners(handler, this.handleScroll);
         //gets active view from router
-        let newActiveView = handleInitalScroll(this.state.activeView)
+        let newActiveView = handleInitalScroll();
+        console.log('newActiveView', newActiveView);
         //sets state
         await this.setState({activeView: newActiveView, loading: false})
-        //scrolls intially
-        document.getElementById(views[newActiveView].nav).click();
-    }
-
-    componentWillUpdate() {
-        console.log("test")
     }
 
     @autobind 
-    loadViews () {
+    loadNav () {
         componentStructure.forEach( (data) => {
             let compType = data.componentType;
             if(compType == "widescreen" || compType == "productdetail") {
-                console.log("widescreen", "productdetail")
-                views.push({
+                navs.push({
                     id : "div"+data.content._id,
                     nav : data.content._id + "click",
                     name : data.content.title
                 })
             }
             if(compType == "set") {
-                views.push ({
+                navs.push ({
                     id : "div"+data.content[0].content._id,
                     nav :data.content[0].content._id + "click",
                     name : data.content[0].content.title
@@ -105,12 +97,15 @@ export class Main extends React.Component<any, IMainState> {
     }
 
     @autobind
-    setView(view: any) {
-        //updates state
-        console.log("view", view)
-        this.setState({activeView: view})
-        //updates history
-        pushHistory(view)
+    setRoute(route) {
+        this.setState({activeView: route})
+        pushHistory(route)
+    }
+
+    @autobind
+    setActiveView(value) {
+        console.log("***********************setActiveView", value)
+        this.setState({activeView: value})
     }
 
     @autobind
@@ -121,17 +116,6 @@ export class Main extends React.Component<any, IMainState> {
         setTimeout(()=> {delay = false;}, 500)
         //sets sidebar state
         this.setState({showSidebar: !this.state.showSidebar})
-    }
-
-    @autobind
-    async handleScroll(event?) {
-        //debounce with 1 sec
-        if(delay) return;
-        delay = true;
-        setTimeout(()=> {delay = false;}, 1000)
-        //scrolling by wheel event
-        let newView = await handleScrollEvent(this.state.activeView ,views , event );
-        this.setState({activeView: newView})
     }
 
     @autobind
@@ -177,54 +161,31 @@ export class Main extends React.Component<any, IMainState> {
     }
 
 	render() {
-        console.log("rendermain")
         if(this.state.loading) return <Spinner animation="grow" />
-        //checks for undefined componentstructure  - todo exception
-        let structureComps;
-        structureComps = <></>
-        if(componentStructure != undefined) {
-            //maps componentstrcuture into components
-            structureComps = componentStructure.map((data, index) => {
-                let displayComponent = <></>
-                let compType = data.componentType;           
-                if(compType == "widescreen"){
-                    displayComponent = <DisplayArticles.DisplayWidePicture key={index} component={data.content} />
-                }else if(compType == "productdetail") {
-                    displayComponent = <DisplayArticles.DisplayDetails key={index} component={data.content} />
-                }else if(compType == "set") {
-                    displayComponent = <DisplayArticles.DisplaySet key={index} component={data.content}/>
-                }
-                //basic frame for each scrollable component
-                return(
-                    <div key={views[index].id} className={"test" + (index == 0 ? " xfirst" : "")} style={divstyle} id={views[index].id}>
-                        {displayComponent}
-                    </div>
-                )
-            })
-        }
-        console.log("views", views)
-        let main = (<div className="App" id="App">
-            {mobile ? 
-                <MobileSidebar 
-                    toggleSidebar={this.toggleSidebar} 
-                    showSidebar={this.state.showSidebar} 
-                    setView={this.setView} 
-                    views={views}
-                    routes={routes}
-                />
-            : 
-                <Header setView={this.setView} views={views} routes={routes}/>
-            } 
-            {structureComps}
-        </div>);
         let routeComps;
         routeComps = <></>
         if(routerStructure != undefined) {
             //maps componentstrcuture into routes
-            routeComps = routerStructure.map((data, index) => {
+            routeComps = routerStructure.map((data) => {
                 let article: IArticle = data.content;
                 if(data.componentType == "route"){
-                    return <Route key={article._id} path={article.url} explicit component={() => <div>{article.title}</div> }/>
+                    return <Route 
+                        key={article._id} 
+                        path={article.url} 
+                        explicit  
+                        component={() => 
+                            <div>
+                                <Header 
+                                    setView={this.setRoute} 
+                                    navs={navs} 
+                                    routes={routes}
+                                    activeView={this.state.activeView} 
+                                    toggleSidebar={this.toggleSidebar} 
+                                    showSidebar={this.state.showSidebar} 
+                                /><h1>{article.title}</h1>
+                            </div> 
+                        }
+                    />
                 }
                 return
             })
@@ -232,8 +193,25 @@ export class Main extends React.Component<any, IMainState> {
 		return (
             <Router>
                 <Switch>
+                    <Route path="/1" explicit component={() => 
+                        <div className="App" id="App">
+                            <Header 
+                                setView={this.setRoute} 
+                                navs={navs} 
+                                routes={routes}
+                                activeView={this.state.activeView} 
+                                toggleSidebar={this.toggleSidebar} 
+                                showSidebar={this.state.showSidebar} 
+                            />
+                            <FullscreenScroller 
+                                setActiveView={this.setRoute} 
+                                activeView={this.state.activeView} 
+                                navs={navs} 
+                                componentStructure={componentStructure}
+                            />
+                        </div>
+                    }/>
                     {routeComps}
-                    <Route path="" explicit component={() => main}/>
                 </Switch>
             </Router>
 		);

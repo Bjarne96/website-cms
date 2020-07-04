@@ -26,7 +26,6 @@ export class DisplaySet extends React.Component<IProps, any> {
     }
     render() {
         if(this.props.component == undefined) return <p>error</p>
-        console.log('this.props.component', this.props.component);
         let sets = this.props.component.map((set, index)=> {
             if(index == 0 || set.content.pictures.length == 0) return <div key={index+"nocard"}></div>;
             return <Card
