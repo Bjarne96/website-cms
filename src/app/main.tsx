@@ -8,7 +8,7 @@ import { getStructure } from './handler/structureRequests';
 import { IStructure, IContent, IArticle } from '../schemas';
 import * as DisplayArticles from './components/displayArticle';
 import { Spinner } from 'react-bootstrap';
-import { BrowserRouter as Router, Switch, Route, withRouter  } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, withRouter, Redirect  } from 'react-router-dom';
 import { INavArray, IRouteArray } from './interfaces/componentInterfaces';
 import { FullscreenScroller } from './components/fullscreenScroller/fullscreenScroller';
 
@@ -55,10 +55,9 @@ export class Main extends React.Component<any, IMainState> {
         this.loadNav();
         this.loadRoutes();
         //sets listeners for scrolling
-        //handleSetListeners(handler, this.handleScroll);
+        handleSetListeners(handler, this.handleScroll);
         //gets active view from router
         let newActiveView = handleInitalScroll();
-        console.log('newActiveView', newActiveView);
         //sets state
         await this.setState({activeView: newActiveView, loading: false})
     }
@@ -98,14 +97,20 @@ export class Main extends React.Component<any, IMainState> {
 
     @autobind
     setRoute(route) {
+        if(route == this.state.activeView) return;
         this.setState({activeView: route})
         pushHistory(route)
     }
 
     @autobind
-    setActiveView(value) {
-        console.log("***********************setActiveView", value)
-        this.setState({activeView: value})
+    async handleScroll(event?) {
+        //debounce with 1 sec
+        if(delay) return;
+        delay = true;
+        setTimeout(()=> {delay = false;}, 1000)
+        //scrolling by wheel event
+        let newView = await handleScrollEvent(this.state.activeView , navs , event);
+        this.setRoute(newView)
     }
 
     @autobind
@@ -190,10 +195,12 @@ export class Main extends React.Component<any, IMainState> {
                 return
             })
         }
+        //<Route path="" explicit component={() => <Redirect to="/1" />} />
 		return (
             <Router>
-                <Switch>
-                    <Route path="/1" explicit component={() => 
+                <Switch>  
+                    {routeComps}     
+                    <Route path="" explicit component={() => 
                         <div className="App" id="App">
                             <Header 
                                 setView={this.setRoute} 
@@ -211,7 +218,6 @@ export class Main extends React.Component<any, IMainState> {
                             />
                         </div>
                     }/>
-                    {routeComps}
                 </Switch>
             </Router>
 		);

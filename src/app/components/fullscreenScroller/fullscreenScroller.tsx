@@ -1,10 +1,6 @@
 import * as React from 'react';
 import './fullscreenScroller.css';
-import autobind from 'autobind-decorator';
-import { pushHistory } from "../../handler/historyHandler"
-import { handleSetListeners, handleScrollEvent, handleInitalScroll } from "../../handler/scrollHandler"
 import * as DisplayArticles from '../displayArticle';
-import { Spinner } from 'react-bootstrap';
 import { INavArray } from '../../interfaces/componentInterfaces';
 
 interface IFullcreenScrollerProps {
@@ -15,7 +11,6 @@ interface IFullcreenScrollerProps {
 }
 
 interface IFullcreenScrollerState {
-    loading: boolean;
 }
 
 let divstyle = {
@@ -30,34 +25,17 @@ export class FullscreenScroller extends React.Component<IFullcreenScrollerProps,
 
 	constructor(props) {
 		super(props);
-		this.state = {
-            loading: true
-		}
     }
 
 	async componentDidMount() {
-        //sets listeners for scrolling
-        handleSetListeners(handler, this.handleScroll);
-        //sets state
-        await this.setState({loading: false})
+        //clicks and updates actual view
+        if(this.props.activeView != 1) {
+            await document.getElementById(this.props.navs[this.props.activeView-1].nav).click();
+        }
     }
 
-    @autobind
-    async handleScroll(event?) {
-        console.log("handlescroll")
-        console.log('this.props.activeView', this.props.activeView);
-        //debounce with 1 sec
-        if(delay) return;
-        delay = true;
-        setTimeout(()=> {delay = false;}, 1000)
-        //scrolling by wheel event
-        let newView = await handleScrollEvent(this.props.activeView ,this.props.navs , event);
-        //console.log("newactivevierw", newView)
-        this.props.setActiveView(newView)
-    }
 
 	render() {
-        if(this.state.loading) return <Spinner animation="grow" />
         //checks for undefined componentstructure  - todo exception
         if(this.props.componentStructure != undefined) {
             //maps componentstrcuture into components

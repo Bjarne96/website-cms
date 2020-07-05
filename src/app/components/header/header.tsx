@@ -18,7 +18,6 @@ interface IProps {
 
 
 interface Istate {
-    loading: Boolean;
 }
 
 let mobile = false;
@@ -27,13 +26,6 @@ export class Header extends React.Component <IProps, Istate>{
 
     constructor(props) {
         super(props);
-        this.state = {
-            loading: false
-        }
-    }
-
-    componentDidMount() {
-        //document.getElementById(this.props.navs[(this.props.activeView-1)].nav).click()
     }
 
     @autobind
@@ -111,7 +103,6 @@ export class Header extends React.Component <IProps, Istate>{
     }
 
     render() {
-        if(this.state.loading) return <Spinner animation="grow" />
         if(mobile)return this.renderSidebar();
         return this.renderNavbar();
     }
