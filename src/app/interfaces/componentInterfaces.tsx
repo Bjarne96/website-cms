@@ -3,7 +3,9 @@ export interface INavArray extends Array<INavComponent>{}
 export interface INavComponent {
     id: string,
     nav: string,
-    name: string
+    name: string,
+    url: string
+
 }
 
 export interface IRouteArray extends Array<IRouteComponent>{}

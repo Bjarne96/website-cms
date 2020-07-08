@@ -2,19 +2,15 @@ import * as React from 'react';
 import './main.css';
 import Header from './components/header/header';
 import autobind from 'autobind-decorator';
-import { pushHistory } from "./handler/historyHandler";
-import { handleSetListeners, handleScrollEvent, handleInitalScroll } from "./handler/scrollHandler"
 import { getStructure } from './handler/structureRequests';
 import { IStructure, IContent, IArticle } from '../schemas';
-import * as DisplayArticles from './components/displayArticle';
 import { Spinner } from 'react-bootstrap';
-import { BrowserRouter as Router, Switch, Route, withRouter, Redirect  } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Redirect  } from 'react-router-dom';
 import { INavArray, IRouteArray } from './interfaces/componentInterfaces';
-import { FullscreenScroller } from './components/fullscreenScroller/fullscreenScroller';
+import { Home } from './views/home/home';
 
 interface IMainState {
     loading: boolean;
-    activeView: number;
     showSidebar: boolean;
 }
 
@@ -31,7 +27,7 @@ let routerStructure = [];
 let navs: INavArray = [];
 let routes: IRouteArray = [];
 
-var handler = document.body;
+
 var delay = false;
 
 export class Main extends React.Component<any, IMainState> {
@@ -40,7 +36,6 @@ export class Main extends React.Component<any, IMainState> {
 		super(props);
 		this.state = {
             loading: true,
-            activeView: 1,
             showSidebar: false
 		}
     }
@@ -54,12 +49,7 @@ export class Main extends React.Component<any, IMainState> {
         this.loadComponentAndRouterStructure(structure);
         this.loadNav();
         this.loadRoutes();
-        //sets listeners for scrolling
-        handleSetListeners(handler, this.handleScroll);
-        //gets active view from router
-        let newActiveView = handleInitalScroll();
-        //sets state
-        await this.setState({activeView: newActiveView, loading: false})
+        this.setState({loading: false})
     }
 
     @autobind 
@@ -70,14 +60,17 @@ export class Main extends React.Component<any, IMainState> {
                 navs.push({
                     id : "div"+data.content._id,
                     nav : data.content._id + "click",
-                    name : data.content.title
+                    name : data.content.title,
+                    url : data.content.url,
+
                 })
             }
             if(compType == "set") {
                 navs.push ({
                     id : "div"+data.content[0].content._id,
                     nav :data.content[0].content._id + "click",
-                    name : data.content[0].content.title
+                    name : data.content[0].content.title,
+                    url : data.content[0].content.url
                 })
             }
         })
@@ -86,6 +79,11 @@ export class Main extends React.Component<any, IMainState> {
 
     @autobind 
     loadRoutes () {
+        //home element
+        routes.push({
+            url : "/home",
+            title : "Home"
+        })
         routerStructure.forEach( (data: IContent) => {
             routes.push({
                 url : data.content.url,
@@ -93,25 +91,7 @@ export class Main extends React.Component<any, IMainState> {
             })
         })
         
-    }
-
-    @autobind
-    setRoute(route) {
-        if(route == this.state.activeView) return;
-        this.setState({activeView: route})
-        pushHistory(route)
-    }
-
-    @autobind
-    async handleScroll(event?) {
-        //debounce with 1 sec
-        if(delay) return;
-        delay = true;
-        setTimeout(()=> {delay = false;}, 1000)
-        //scrolling by wheel event
-        let newView = await handleScrollEvent(this.state.activeView , navs , event);
-        this.setRoute(newView)
-    }
+    }    
 
     @autobind
     toggleSidebar() {
@@ -177,17 +157,11 @@ export class Main extends React.Component<any, IMainState> {
                     return <Route 
                         key={article._id} 
                         path={article.url} 
-                        explicit  
+                        exact
+                        strict  
                         component={() => 
                             <div>
-                                <Header 
-                                    setView={this.setRoute} 
-                                    navs={navs} 
-                                    routes={routes}
-                                    activeView={this.state.activeView} 
-                                    toggleSidebar={this.toggleSidebar} 
-                                    showSidebar={this.state.showSidebar} 
-                                /><h1>{article.title}</h1>
+                                <h1>{article.title}</h1>
                             </div> 
                         }
                     />
@@ -195,30 +169,16 @@ export class Main extends React.Component<any, IMainState> {
                 return
             })
         }
-        //<Route path="" explicit component={() => <Redirect to="/1" />} />
 		return (
             <Router>
-                <Switch>  
-                    {routeComps}     
-                    <Route path="" explicit component={() => 
-                        <div className="App" id="App">
-                            <Header 
-                                setView={this.setRoute} 
-                                navs={navs} 
-                                routes={routes}
-                                activeView={this.state.activeView} 
-                                toggleSidebar={this.toggleSidebar} 
-                                showSidebar={this.state.showSidebar} 
-                            />
-                            <FullscreenScroller 
-                                setActiveView={this.setRoute} 
-                                activeView={this.state.activeView} 
-                                navs={navs} 
-                                componentStructure={componentStructure}
-                            />
-                        </div>
-                    }/>
-                </Switch>
+                <Header  
+                    routes={routes}
+                    toggleSidebar={this.toggleSidebar} 
+                    showSidebar={this.state.showSidebar} 
+                />
+                {routeComps}
+                <Route path="/home" exact component={() => <Home navs={navs} componentStructure={componentStructure} /> } />
+                <Route path="" component={() => <Redirect to="/home" /> } />
             </Router>
 		);
 	}

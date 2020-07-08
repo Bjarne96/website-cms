@@ -1,21 +1,19 @@
 import * as React from 'react';
 import './fullscreenScroller.css';
+import * as styles from './fullscreenScrollerStyles';
 import * as DisplayArticles from '../displayArticle';
 import { INavArray } from '../../interfaces/componentInterfaces';
-
+import { handleScrollEvent, handleSetListeners, handleInitalScroll } from '../../handler/scrollHandler';
+import autobind from 'autobind-decorator';
+import { Link, animateScroll} from "react-scroll";
 interface IFullcreenScrollerProps {
     componentStructure: any;
     navs:INavArray;
-    activeView: number;
-    setActiveView(route: string | number);
 }
 
 interface IFullcreenScrollerState {
-}
-
-let divstyle = {
-    width: window.innerWidth,
-    height: window.innerHeight
+    activeView: number;
+    loading: boolean;
 }
 
 var handler = document.body;
@@ -23,39 +21,96 @@ var delay = false;
 
 export class FullscreenScroller extends React.Component<IFullcreenScrollerProps, IFullcreenScrollerState> {
 
-	constructor(props) {
+    constructor(props) {
 		super(props);
+		this.state = {
+            loading: true,
+            activeView: 1
+        }
     }
 
+    
+
 	async componentDidMount() {
-        //clicks and updates actual view
-        if(this.props.activeView != 1) {
-            await document.getElementById(this.props.navs[this.props.activeView-1].nav).click();
-        }
+        //sets listeners for scrolling
+        handleSetListeners(handler, this.handleScroll);
+        //gets active view from router
+        let newActiveView = handleInitalScroll();
+        //sets state
+        await this.setState({activeView: newActiveView, loading: false})
+    }
+
+    @autobind
+    async handleScroll(event, touch:boolean) {
+        //debounce with 1 sec
+        if(delay) return;
+        delay = true;
+        setTimeout(()=> {delay = false;}, 500)
+        //scrolling by wheel event
+        let newView = await handleScrollEvent(this.state.activeView , this.props.navs , event, touch);
+        this.scrollComponent(newView);
+    }
+
+    @autobind
+    scrollComponent(activeView) {
+        this.setState({activeView: activeView})
+        //let route: string = "/1"+activeView
+        //pushHistory(route)
     }
 
 
 	render() {
         //checks for undefined componentstructure  - todo exception
+        //if(this.state.loading) return<Spinner animation="grow" />
         if(this.props.componentStructure != undefined) {
+            let scrollNav;
+            scrollNav = <></>
+            scrollNav = <div className="scrollNav" style={styles.sidebarNavStyle}>{this.props.navs.map((obj, key) => {
+                let className="scrollNavItem"
+                //handles active class
+                if(this.state.activeView == key+1) className = className + " scrollNavItemActive"
+                //link for clicking the scrolling / indexing
+                return <Link
+                    key={obj.nav}
+                    className={className}
+                    style={styles.sidebarNavItemStyle}
+                    onClick={() => {this.scrollComponent(key+1)}}
+                    to={obj.id}
+                    id={obj.nav}
+                    spy={true}
+                    smooth={true}
+                    offset={-56}
+                    duration={1000}>
+                </Link>
+            })}</div>
             //maps componentstrcuture into components
-            return (this.props.componentStructure.map((data, index) => {
-                let displayComponent = <></>
-                let compType = data.componentType;           
-                if(compType == "widescreen"){
-                    displayComponent = <DisplayArticles.DisplayWidePicture key={index} component={data.content} />
-                }else if(compType == "productdetail") {
-                    displayComponent = <DisplayArticles.DisplayDetails key={index} component={data.content} />
-                }else if(compType == "set") {
-                    displayComponent = <DisplayArticles.DisplaySet key={index} component={data.content}/>
-                }
-                //basic frame for each scrollable component
-                return(
-                    <div key={this.props.navs[index].id} className={"test" + (index == 0 ? " xfirst" : "")} style={divstyle} id={this.props.navs[index].id}>
-                        {displayComponent}
-                    </div>
-                )
-            }));
+            return (
+                <div>
+                    {scrollNav}
+                    {this.props.componentStructure.map((data, index) => {
+                        let displayComponent = <></>
+                        let compType = data.componentType;           
+                        if(compType == "widescreen"){
+                            displayComponent = <DisplayArticles.DisplayWidePicture key={index} component={data.content} />
+                        }else if(compType == "productdetail") {
+                            displayComponent = <DisplayArticles.DisplayDetails key={index} component={data.content} />
+                        }else if(compType == "set") {
+                            displayComponent = <DisplayArticles.DisplaySet key={index} component={data.content}/>
+                        }
+                        //basic frame for each scrollable component
+                        return(
+                            <div
+                                key={this.props.navs[index].id}
+                                className={"test" + (index == 0 ? " xfirst" : "")} 
+                                style={styles.divstyle} 
+                                id={this.props.navs[index].id}
+                            >
+                                {displayComponent}
+                            </div>
+                        )
+                    })}
+                </div>
+            );
         }
     }
 }
