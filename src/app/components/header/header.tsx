@@ -9,6 +9,7 @@ import autobind from 'autobind-decorator';
 interface IProps {
     routes: IRouteArray;
     showSidebar: boolean;
+    isMobile: boolean;
     toggleSidebar(newHandler);
 }
 
@@ -16,9 +17,7 @@ interface IProps {
 interface Istate {
 }
 
-let mobile = false;
-
-export class Header extends React.Component <IProps, Istate>{
+export class Header extends React.Component<IProps, Istate>{
 
     constructor(props) {
         super(props);
@@ -27,30 +26,30 @@ export class Header extends React.Component <IProps, Istate>{
     @autobind
     renderSidebar() {
         return <div className="infrontandfixed">
-            <Icon className="mobileSidebarToggle margin10" name='bars' onClick={this.props.toggleSidebar}/>
+            <Icon className="mobileSidebarToggle margin10" name='bars' onClick={this.props.toggleSidebar} />
             <Sidebar
                 animation='overlay'
                 icon='labeled'
-                inverted={"true"}
+                inverted={true}
                 onHide={() => this.props.toggleSidebar}
-                vertical={"true"}
+                vertical={true}
                 visible={this.props.showSidebar}
                 width='thin'
                 as={Menu}
                 className="mobileSidebarContainer"
             >
-                <Icon className="mobileSidebarToggle mobileSidebarClose margin10" name='window close outline' onClick={this.props.toggleSidebar}/>
+                {/* <Icon className="mobileSidebarToggle mobileSidebarClose margin10" name='window close outline' onClick={this.props.toggleSidebar} />
                 {this.props.routes.map((obj, key) => {
-                    return <Menu.Item className="mobileSidebarItem" as='a' key={key+"route"}>
-                        <RouterLink 
-                            className="nav-link" 
-                            key={obj.url} 
-                            to={obj.url} 
+                    return <Menu.Item className="mobileSidebarItem" as='a' key={key + "route"}>
+                        <RouterLink
+                            className="nav-link"
+                            key={obj.url}
+                            to={obj.url}
                         >
                             {obj.title}
                         </RouterLink>
                     </Menu.Item>
-                })}
+                })} */}
             </Sidebar>
         </div>
     }
@@ -58,28 +57,28 @@ export class Header extends React.Component <IProps, Istate>{
     @autobind
     renderNavbar() {
         return <Navbar bg="dark" variant="dark" fixed="top" expand="lg">
-        <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="mr-auto">
-                <Nav.Item>
-                    <Image src="./../../../public/logo.png" alt="logo.png" width="40" height="40" />
-                </Nav.Item>
-                <Navbar.Brand>&nbsp;&nbsp;&nbsp;&nbsp;Tiefschlaf&nbsp;&nbsp;&nbsp;&nbsp;</Navbar.Brand>
-                {this.props.routes.map((route) => {
-                    return <RouterLink 
-                        className="nav-link" 
-                        key={route.url} 
-                        to={route.url} 
-                    >
-                        {route.title}
-                    </RouterLink>
-                })}
-            </Nav>
-        </Navbar.Collapse>
-      </Navbar>
+            <Navbar.Collapse id="basic-navbar-nav">
+                <Nav className="mr-auto">
+                    <Nav.Item>
+                        <Image src="./../../../public/logo.png" alt="logo.png" width="40" height="40" />
+                    </Nav.Item>
+                    <Navbar.Brand>&nbsp;&nbsp;&nbsp;&nbsp;Tiefschlaf&nbsp;&nbsp;&nbsp;&nbsp;</Navbar.Brand>
+                    {this.props.routes.map((route) => {
+                        return <RouterLink
+                            className="nav-link"
+                            key={route.url}
+                            to={route.url}
+                        >
+                            {route.title}
+                        </RouterLink>
+                    })}
+                </Nav>
+            </Navbar.Collapse>
+        </Navbar>
     }
 
     render() {
-        if(mobile)return this.renderSidebar();
+        if (this.props.isMobile) return this.renderSidebar();
         return this.renderNavbar();
     }
 }

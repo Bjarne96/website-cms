@@ -10,11 +10,11 @@ interface IProps {
 interface IState {
 }
 
-export class Home extends React.Component <IProps, IState>{
-    
+export class Home extends React.Component<IProps, IState>{
+
     render() {
-        return <FullscreenScroller 
-            navs={this.props.navs} 
+        return <FullscreenScroller
+            navs={this.props.navs}
             componentStructure={this.props.componentStructure}
         />
     }
