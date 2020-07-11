@@ -8,6 +8,7 @@ import { Spinner } from 'react-bootstrap';
 import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
 import { INavArray, IRouteArray } from './interfaces/componentInterfaces';
 import { Home } from './views/home/home';
+import Default from './views/default/default';
 
 interface IMainState {
     loading: boolean;
@@ -161,11 +162,7 @@ export class Main extends React.Component<any, IMainState> {
                         path={article.url}
                         exact
                         strict
-                        component={() =>
-                            <div>
-                                <h1>{article.title}</h1>
-                            </div>
-                        }
+                        component={() => <Default content={article.content} />}
                     />
                 }
                 return

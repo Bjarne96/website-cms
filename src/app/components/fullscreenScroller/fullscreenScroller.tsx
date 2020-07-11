@@ -3,9 +3,11 @@ import './fullscreenScroller.css';
 import * as styles from './fullscreenScrollerStyles';
 import * as DisplayArticles from '../displayArticle';
 import { INavArray } from '../../interfaces/componentInterfaces';
-import { handleScrollEvent, handleSetListeners, handleInitalScroll } from '../../handler/scrollHandler';
+import { handleScrollEvent, handleInitalScroll, scrollToElem } from '../../handler/scrollHandler';
 import autobind from 'autobind-decorator';
-import { Link, animateScroll } from "react-scroll";
+import { Link } from "react-scroll";
+import { Spinner } from 'react-bootstrap';
+
 interface IFullcreenScrollerProps {
     componentStructure: any;
     navs: INavArray;
@@ -13,11 +15,19 @@ interface IFullcreenScrollerProps {
 
 interface IFullcreenScrollerState {
     activeView: number;
-    loading: boolean;
 }
+//globalset
 
-var handler = document.body;
+//delay for debounce
 var delay = false;
+//Handler declaration
+var scrollHandler;
+var touchmoveHandler;
+var touchstartHandler;
+//Coordinat for touch reference
+var touchX = 999;
+var touchY = 999;
+
 
 export class FullscreenScroller extends React.Component<IFullcreenScrollerProps, IFullcreenScrollerState> {
 
@@ -26,52 +36,90 @@ export class FullscreenScroller extends React.Component<IFullcreenScrollerProps,
     constructor(props) {
         super(props);
         this.state = {
-            loading: true,
             activeView: 1
         }
     }
 
+    // this.useEffect(() => console.log(weather), [weather]);
+
     async componentDidMount() {
-        //mounting control
-        this._isMounted = true;
-        //sets listeners for scrolling
-        handleSetListeners(handler, this.handleScroll);
+        //sets function referneces for listeners
+        scrollHandler = this.handleScroll.bind(this);
+        touchmoveHandler = this.touchmoveHandler.bind(this);
+        touchstartHandler = this.touchstartHandler.bind(this);
+        //sets listeners
+        this.handleSetListeners();
         //gets active view from router
         let newActiveView = handleInitalScroll();
-        console.log("execute scroll");
+        scrollToElem(this.props.navs[(newActiveView - 1)].id)
         //sets state
-        await this.setState({ activeView: newActiveView, loading: false })
+        await this.setState({ activeView: newActiveView })
     }
 
     componentWillUnmount() {
-        handleSetListeners(handler, this.handleScroll, false);
-        this._isMounted = false;
+        //remove listeners
+        this.handleSetListeners(true);
     }
 
     @autobind
-    async handleScroll(event, touch: boolean) {
+    touchstartHandler(event) {
+        console.log("touchstartHandler")
+        touchY = event.touches[0].clientY;
+        touchX = event.touches[0].clientX;
+    }
+
+    @autobind
+    touchmoveHandler(event) {
+        console.log("touchmoveHandler")
+        let activeY = event.touches[0].clientY;
+        // let acitveX = e.touches[0].clientX;
+        if (touchX === 999 && touchY === 999) return;
+        if (activeY > touchY + 20) {
+            this.handleScroll("up", true)
+        }
+        if (activeY < touchY - 20) {
+            this.handleScroll("down", true)
+        }
+    }
+
+    @autobind
+    handleSetListeners(remove?: boolean) {
+        if (remove) {
+            window.removeEventListener('wheel', scrollHandler, false)
+            window.removeEventListener('touchstart', touchstartHandler, false)
+            window.removeEventListener('touchmove', touchmoveHandler, false);
+        } else {
+            window.addEventListener('wheel', scrollHandler, false)
+            window.addEventListener('touchstart', touchstartHandler, false)
+            window.addEventListener('touchmove', touchmoveHandler, false);
+        }
+    }
+
+    @autobind
+    async handleScroll(event, touch?: boolean) {
         //debounce with 1 sec
         if (delay) return;
         delay = true;
-        setTimeout(() => { delay = false; }, 500)
+        setTimeout(() => { delay = false; }, 200)
+
         //scrolling by wheel event
-        if (!this._isMounted) return;
         let newView = await handleScrollEvent(this.state.activeView, this.props.navs, event, touch);
         this.scrollComponent(newView);
     }
 
+    //Todo: Route scrolling
     @autobind
     scrollComponent(activeView) {
         this.setState({ activeView: activeView })
-        //let route: string = "/1"+activeView
-        //pushHistory(route)
+        //pushHistory(newRoute)
     }
 
 
     render() {
         //checks for undefined componentstructure  - todo exception
-        //if(this.state.loading) return<Spinner animation="grow" />
-        if (this.props.componentStructure != undefined) {
+        // if (this.state.loading) return <Spinner animation="grow" />
+        //builds navs
+        if (this.props.navs != undefined) {
             let scrollNav;
             scrollNav = <></>
             scrollNav = <div className="scrollNav" style={styles.sidebarNavStyle}>{this.props.navs.map((obj, key) => {
@@ -89,12 +137,12 @@ export class FullscreenScroller extends React.Component<IFullcreenScrollerProps,
                     spy={true}
                     smooth={true}
                     offset={-56}
-                    duration={1000}>
+                    duration={500}>
                 </Link>
             })}</div>
-            //maps componentstrcuture into components
+            //maps componentstructure
             return (
-                <div className="containerx">
+                <div id="scrollComponent">
                     {scrollNav}
                     {this.props.componentStructure.map((data, index) => {
                         let displayComponent = <></>
@@ -110,7 +158,7 @@ export class FullscreenScroller extends React.Component<IFullcreenScrollerProps,
                         return (
                             <div
                                 key={this.props.navs[index].id}
-                                className={"test" + (index == 0 ? " xfirst" : "")}
+                                className={"allScrollingContainer" + (index == 0 ? " firstScrollingContainer" : "")}
                                 style={styles.divstyle}
                                 id={this.props.navs[index].id}
 
