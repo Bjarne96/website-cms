@@ -3,7 +3,7 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import autobind from 'autobind-decorator';
 
 import { IRouteArray } from './../../interfaces/componentInterfaces'
-import { Spinner } from 'react-bootstrap';
+import { Loader } from 'semantic-ui-react';
 
 interface IRouterProps {
     checkSession(): Promise<void>;
@@ -24,14 +24,14 @@ export class Views extends React.Component<IRouterProps, IRouterState> {
     }
 
     componentDidMount() {
-        this.setState({loading: false});
+        this.setState({ loading: false });
     }
 
 
 
     render() {
-        if(this.state.loading) return <Spinner animation="grow" />
-        let Routes  = this.renderRoutes();
+        if (this.state.loading) return <Loader active />
+        let Routes = this.renderRoutes();
         return <Switch>
             {Routes}
         </Switch>
@@ -39,7 +39,7 @@ export class Views extends React.Component<IRouterProps, IRouterState> {
 
     @autobind
     renderRoutes() {
-        return(this.props.routes.map((route) => {
+        return (this.props.routes.map((route) => {
             return <Route
                 key={route.path}
                 path={route.path}
@@ -47,7 +47,7 @@ export class Views extends React.Component<IRouterProps, IRouterState> {
                 component={route.component}
             />
         }))
-    }   
+    }
 }
 
 export default Views;

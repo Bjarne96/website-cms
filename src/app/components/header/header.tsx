@@ -38,7 +38,7 @@ export class Header extends React.Component<IProps, Istate>{
                 as={Menu}
                 className="mobileSidebarContainer"
             >
-                {/* <Icon className="mobileSidebarToggle mobileSidebarClose margin10" name='window close outline' onClick={this.props.toggleSidebar} />
+                <Icon className="mobileSidebarToggle mobileSidebarClose margin10" name='window close outline' onClick={this.props.toggleSidebar} />
                 {this.props.routes.map((obj, key) => {
                     return <Menu.Item className="mobileSidebarItem" as='a' key={key + "route"}>
                         <RouterLink
@@ -49,7 +49,7 @@ export class Header extends React.Component<IProps, Istate>{
                             {obj.title}
                         </RouterLink>
                     </Menu.Item>
-                })} */}
+                })}
             </Sidebar>
         </div>
     }
