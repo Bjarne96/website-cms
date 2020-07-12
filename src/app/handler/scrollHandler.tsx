@@ -1,16 +1,23 @@
 import { INavArray } from "../interfaces/componentInterfaces";
-var $ = require("jquery");
+import * as $ from "jquery";
 
 export const scrollToElem = (id: string) => {
     $("html, body").animate({
         scrollTop: $("#" + id).offset().top - 56
     }, 500);
 }
+let body = document.body;
 
-export const handleInitalScroll = () => {
-    let body = document.querySelector('body');
+export const addStopScrolling = () => {
     body.classList.add("stop-scrolling");
-    //window offset / window height = how many components are scrolled down
+}
+
+export const removeStopScrolling = () => {
+    console.log("removeStopScrolling")
+    body.classList.remove("stop-scrolling");
+}
+//window offset / window height = how many components are scrolled down
+export const analyseWindowPosition = () => {
     let activeView = (window.scrollY / (window.innerHeight - 56)) + 1;
     return activeView;
 }

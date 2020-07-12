@@ -1,6 +1,6 @@
 import * as React from 'react';
 import './displayImage.css';
-import { Spinner } from 'react-bootstrap';
+import { Loader } from 'semantic-ui-react';
 interface IProps {
     data: Array<Array<String>>;
 }
@@ -9,8 +9,8 @@ interface IState {
     loading: boolean;
 }
 
-export class DisplayImage extends React.Component <{}, IState>{
-    
+export class DisplayImage extends React.Component<{}, IState>{
+
     constructor(props) {
         super(props);
         this.state = {
@@ -18,11 +18,11 @@ export class DisplayImage extends React.Component <{}, IState>{
         }
     }
     componentDidMount() {
-        this.setState({loading: false})
+        this.setState({ loading: false })
     }
 
     render() {
-        return <Spinner animation="grow" />
+        return <Loader active />
     }
 }
 export default DisplayImage;

@@ -2,7 +2,7 @@ import * as React from 'react';
 import './displaySet.css';
 //import { IContentArray } from '../../../../schemas';
 import { IContent } from '../../../../schemas';
-import { Button, Card, CardGroup, CardDeck, CardColumns } from 'react-bootstrap';
+import { Button, Card, CardGroup, CardDeck, CardColumns, Col, Container, Row } from 'react-bootstrap';
 
 interface IProps {
     component: Array<IContent>;
@@ -28,17 +28,23 @@ export class DisplaySet extends React.Component<IProps, any> {
         if (this.props.component == undefined) return <p>error</p>
         let sets = this.props.component.map((set, index) => {
             if (index == 0 || set.content.pictures.length == 0) return <div key={index + "nocard"}></div>;
-            return <Card
-                style={cardstyle}
-                key={index + "card"}
-                onClick={() => this.clickme(set.content.url)}
-            >
-                <Card.Img style={imagestyle} src={set.content.pictures[0].path} />
-                <Card.Body><Card.Title>{set.content.title}</Card.Title></Card.Body>
-            </Card>
+            return <Col key={index}>
+                <Card
+                    style={cardstyle}
+                    key={index + "card"}
+                    onClick={() => this.clickme(set.content.url)}
+                >
+                    <Card.Img style={imagestyle} src={set.content.pictures[0].path} />
+                    <Card.Body><Card.Title>{set.content.title}</Card.Title></Card.Body>
+                </Card>
+            </Col>
         })
         this.props.component.map
         //let sets = <Card></Card>;      
-        return <div className="setFrame" key={"displayset"}>{<CardColumns>{sets}</CardColumns>}</div>;
+        return <Container>
+            <Row>
+                {sets}
+            </Row>
+        </Container>;
     }
 }

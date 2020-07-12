@@ -3,10 +3,10 @@ import './fullscreenScroller.css';
 import * as styles from './fullscreenScrollerStyles';
 import * as DisplayArticles from '../displayArticle';
 import { INavArray } from '../../interfaces/componentInterfaces';
-import { handleScrollEvent, handleInitalScroll, scrollToElem } from '../../handler/scrollHandler';
+import { handleScrollEvent, removeStopScrolling, addStopScrolling, analyseWindowPosition, scrollToElem } from '../../handler/scrollHandler';
 import autobind from 'autobind-decorator';
 import { Link } from "react-scroll";
-import { Spinner } from 'react-bootstrap';
+import { Loader } from 'semantic-ui-react';
 
 interface IFullcreenScrollerProps {
     componentStructure: any;
@@ -50,27 +50,27 @@ export class FullscreenScroller extends React.Component<IFullcreenScrollerProps,
         //sets listeners
         this.handleSetListeners();
         //gets active view from router
-        let newActiveView = handleInitalScroll();
+        addStopScrolling();
+        let newActiveView = analyseWindowPosition();
         scrollToElem(this.props.navs[(newActiveView - 1)].id)
         //sets state
         await this.setState({ activeView: newActiveView })
     }
 
     componentWillUnmount() {
+        removeStopScrolling();
         //remove listeners
         this.handleSetListeners(true);
     }
 
     @autobind
     touchstartHandler(event) {
-        console.log("touchstartHandler")
         touchY = event.touches[0].clientY;
         touchX = event.touches[0].clientX;
     }
 
     @autobind
     touchmoveHandler(event) {
-        console.log("touchmoveHandler")
         let activeY = event.touches[0].clientY;
         // let acitveX = e.touches[0].clientX;
         if (touchX === 999 && touchY === 999) return;
@@ -117,7 +117,7 @@ export class FullscreenScroller extends React.Component<IFullcreenScrollerProps,
 
     render() {
         //checks for undefined componentstructure  - todo exception
-        // if (this.state.loading) return <Spinner animation="grow" />
+        // if (this.state.loading) return <Loader active />
         //builds navs
         if (this.props.navs != undefined) {
             let scrollNav;

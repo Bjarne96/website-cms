@@ -4,7 +4,7 @@ import Header from './components/header/header';
 import autobind from 'autobind-decorator';
 import { getStructure } from './handler/structureRequests';
 import { IStructure, IContent, IArticle } from '../schemas';
-import { Spinner } from 'react-bootstrap';
+import { Loader } from 'semantic-ui-react';
 import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
 import { INavArray, IRouteArray } from './interfaces/componentInterfaces';
 import { Home } from './views/home/home';
@@ -149,7 +149,7 @@ export class Main extends React.Component<any, IMainState> {
     }
 
     render() {
-        if (this.state.loading) return <Spinner animation="grow" />
+        if (this.state.loading) return <Loader active />
         let routeComps;
         routeComps = <></>
         if (routerStructure != undefined) {
