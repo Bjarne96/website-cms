@@ -1,11 +1,11 @@
-import { ReactElement } from "react";
+export interface INavArray extends Array<INavComponent>{}
 
-export interface IViewArray extends Array<IViewComponent>{}
-
-export interface IViewComponent {
+export interface INavComponent {
     id: string,
     nav: string,
-    name: string
+    name: string,
+    url: string
+
 }
 
 export interface IRouteArray extends Array<IRouteComponent>{}

@@ -1,27 +1,35 @@
 import * as React from 'react';
 import autobind from "autobind-decorator";
 import './default.css';
+import { Container, Row, Col } from 'react-bootstrap';
 
 interface IProps {
+    content: string;
 }
 
-interface IState {
-}
-
-export class Default extends React.Component <IProps, IState>{
+export class Default extends React.Component<IProps, {}>{
 
     constructor(props) {
         super(props);
-        this.state = {}
     }
 
     render() {
-        return <div className="defaultClass">Default</div>;
+        return <Container className="marginTopHeader">
+            <Row>
+                <Col
+                    lg={{ span: 3, offset: 3 }}
+                    md={{ span: 3, offset: 3 }}
+                    sm={{ span: 3, offset: 3 }}
+                >
+                    <div className="tableCellDynamic" dangerouslySetInnerHTML={{ __html: this.props.content }} />
+                </Col>
+            </Row>
+        </Container>;
     }
 
     @autobind
     default() {
-            //do something
+        //do something
     }
 }
 export default Default;
