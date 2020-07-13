@@ -1,11 +1,11 @@
 import * as React from 'react';
 import './main.css';
-// import Header from './components/header/header';
+import Header from './components/header/header';
 import autobind from 'autobind-decorator';
 import { getStructure } from './handler/structureRequests';
 import { IStructure, IContent, IArticle } from '../schemas';
 import { Loader } from 'semantic-ui-react';
-// import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
 import { INavArray, IRouteArray } from './interfaces/componentInterfaces';
 // import { Home } from './views/home/home';
 // import Default from './views/default/default';
@@ -149,39 +149,40 @@ export class Main extends React.Component<any, IMainState> {
     }
 
     render() {
-        return <Loader active />
-        // if (this.state.loading) return <Loader active />
-        // let routeComps;
-        // routeComps = <></>
-        // if (routerStructure != undefined) {
-        //     //maps componentstrcuture into routes
-        //     routeComps = routerStructure.map((data) => {
-        //         let article: IArticle = data.content;
-        //         if (data.componentType == "route") {
-        //             return <Route
-        //                 key={article._id}
-        //                 path={article.url}
-        //                 exact
-        //                 strict
-        //                 component={() => <Default content={article.content} />}
-        //             />
-        //         }
-        //         return
-        //     })
-        // }
-        // return (
-        //     <Router>
-        //         <Header
-        //             routes={routes}
-        //             isMobile={isMobile}
-        //             toggleSidebar={this.toggleSidebar}
-        //             showSidebar={this.state.showSidebar}
-        //         />
-        //         {routeComps}
-        //         <Route path="/home" exact component={() => <Home navs={navs} componentStructure={componentStructure} />} />
-        //         <Route path="" component={() => <Redirect to="/home" />} />
-        //     </Router>
-        // );
+        if (this.state.loading) return <Loader active />
+        let routeComps;
+        routeComps = <></>
+        if (routerStructure != undefined) {
+            //maps componentstrcuture into routes
+            routeComps = routerStructure.map((data) => {
+                let article: IArticle = data.content;
+                if (data.componentType == "route") {
+                    return <Route
+                        key={article._id}
+                        path={article.url}
+                        exact
+                        strict
+                        component={() => <div></div>}
+                    // component={() => <Default content={article.content} />}
+                    />
+                }
+                return
+            })
+        }
+        return (
+            <Router>
+                <Header
+                    routes={routes}
+                    isMobile={isMobile}
+                    toggleSidebar={this.toggleSidebar}
+                    showSidebar={this.state.showSidebar}
+                />
+                {routeComps}
+                {/* <Route path="/home" exact component={() => <Home navs={navs} componentStructure={componentStructure} />} /> */}
+                {/* <Route path="" component={() => <Redirect to="/home" />} /> */}
+                <Route path="" component={() => <div></div>} />
+            </Router>
+        );
     }
 }
 export default Main;
