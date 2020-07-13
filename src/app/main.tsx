@@ -180,19 +180,20 @@ export class Main extends React.Component<any, IMainState> {
         return (
             <Router>
                 <Switch>
-                    {routeComps}
-                    <Route path="/home" exact component={() =>
+                    {/* {routeComps} */}
+                    {/* <Route path="/home" exact component={() =>
                         <div>
-                            {/* <Header
+                            <Header
                                 routes={routes}
                                 isMobile={isMobile}
                                 toggleSidebar={this.toggleSidebar}
                                 showSidebar={this.state.showSidebar}
-                            /> */}
+                            />
                             <Home navs={navs} componentStructure={componentStructure} />
                         </div>}
-                    />
-                    <Route path="" component={() => <Redirect to="/home" />} />
+                    /> */}
+                    {/* <Route path="" component={() => <Redirect to="/home" />} /> */}
+                    <Route path="" component={() => <div></div>} />
                 </Switch>
             </Router>
         );
