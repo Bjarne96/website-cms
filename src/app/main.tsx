@@ -173,12 +173,12 @@ export class Main extends React.Component<any, IMainState> {
         return (
             <Router>
                 <Switch>
-                    <Header
+                    {/* <Header
                         routes={routes}
                         isMobile={isMobile}
                         toggleSidebar={this.toggleSidebar}
                         showSidebar={this.state.showSidebar}
-                    />
+                    /> */}
                     {/* {routeComps} */}
                     {/* <Route path="/home" exact component={() => <Home navs={navs} componentStructure={componentStructure} />} /> */}
                     {/* <Route path="" component={() => <Redirect to="/home" />} /> */}
