@@ -1,13 +1,12 @@
 import * as React from 'react';
 import './main.css';
-import Header from './components/header/header';
+// import Header from './components/header/header';
 import autobind from 'autobind-decorator';
 import { getStructure } from './handler/structureRequests';
 import { IStructure, IContent, IArticle } from '../schemas';
 import { Loader } from 'semantic-ui-react';
-import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-dom';
 import { INavArray, IRouteArray } from './interfaces/componentInterfaces';
-import Switch from 'react-bootstrap/esm/Switch';
 import { Home } from './views/home/home';
 import Default from './views/default/default';
 
@@ -165,12 +164,12 @@ export class Main extends React.Component<any, IMainState> {
                         strict
                         component={() =>
                             <div>
-                                <Header
+                                {/* <Header
                                     routes={routes}
                                     isMobile={isMobile}
                                     toggleSidebar={this.toggleSidebar}
                                     showSidebar={this.state.showSidebar}
-                                />
+                                /> */}
                                 <Default content={article.content} />
                             </div>}
                     />
@@ -180,20 +179,21 @@ export class Main extends React.Component<any, IMainState> {
         }
         return (
             <Router>
-                {routeComps}
-                <Route path="/home" exact component={() =>
-                    <div>
-                        <Header
-                            routes={routes}
-                            isMobile={isMobile}
-                            toggleSidebar={this.toggleSidebar}
-                            showSidebar={this.state.showSidebar}
-                        />
-                        <Home navs={navs} componentStructure={componentStructure} />
-                    </div>}
-                />
-
-                <Route path="" component={() => <Redirect to="/home" />} />
+                <Switch>
+                    {routeComps}
+                    <Route path="/home" exact component={() =>
+                        <div>
+                            {/* <Header
+                                routes={routes}
+                                isMobile={isMobile}
+                                toggleSidebar={this.toggleSidebar}
+                                showSidebar={this.state.showSidebar}
+                            /> */}
+                            <Home navs={navs} componentStructure={componentStructure} />
+                        </div>}
+                    />
+                    <Route path="" component={() => <Redirect to="/home" />} />
+                </Switch>
             </Router>
         );
     }
