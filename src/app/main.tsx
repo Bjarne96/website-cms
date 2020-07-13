@@ -7,6 +7,7 @@ import { IStructure, IContent, IArticle } from '../schemas';
 import { Loader } from 'semantic-ui-react';
 import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
 import { INavArray, IRouteArray } from './interfaces/componentInterfaces';
+import Switch from 'react-bootstrap/esm/Switch';
 // import { Home } from './views/home/home';
 // import Default from './views/default/default';
 
@@ -171,16 +172,18 @@ export class Main extends React.Component<any, IMainState> {
         }
         return (
             <Router>
-                <Header
-                    routes={routes}
-                    isMobile={isMobile}
-                    toggleSidebar={this.toggleSidebar}
-                    showSidebar={this.state.showSidebar}
-                />
-                {routeComps}
-                {/* <Route path="/home" exact component={() => <Home navs={navs} componentStructure={componentStructure} />} /> */}
-                {/* <Route path="" component={() => <Redirect to="/home" />} /> */}
-                <Route path="" component={() => <div></div>} />
+                <Switch>
+                    <Header
+                        routes={routes}
+                        isMobile={isMobile}
+                        toggleSidebar={this.toggleSidebar}
+                        showSidebar={this.state.showSidebar}
+                    />
+                    {/* {routeComps} */}
+                    {/* <Route path="/home" exact component={() => <Home navs={navs} componentStructure={componentStructure} />} /> */}
+                    {/* <Route path="" component={() => <Redirect to="/home" />} /> */}
+                    <Route path="" component={() => <div></div>} />
+                </Switch>
             </Router>
         );
     }
