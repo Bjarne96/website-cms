@@ -5,7 +5,7 @@ import autobind from 'autobind-decorator';
 import { getStructure } from './handler/structureRequests';
 import { IStructure, IContent, IArticle } from '../schemas';
 import { Loader } from 'semantic-ui-react';
-import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
 import { INavArray, IRouteArray } from './interfaces/componentInterfaces';
 import { Home } from './views/home/home';
 import Default from './views/default/default';
@@ -179,9 +179,8 @@ export class Main extends React.Component<any, IMainState> {
         }
         return (
             <Router>
-                <Switch>
-                    {/* {routeComps} */}
-                    {/* <Route path="/home" exact component={() =>
+                {/* {routeComps} */}
+                {/* <Route path="/home" exact component={() =>
                         <div>
                             <Header
                                 routes={routes}
@@ -192,9 +191,8 @@ export class Main extends React.Component<any, IMainState> {
                             <Home navs={navs} componentStructure={componentStructure} />
                         </div>}
                     /> */}
-                    {/* <Route path="" component={() => <Redirect to="/home" />} /> */}
-                    <Route path="" component={() => <div></div>} />
-                </Switch>
+                {/* <Route path="" component={() => <Redirect to="/home" />} /> */}
+                <Route path="" component={() => <div></div>} />
             </Router>
         );
     }
