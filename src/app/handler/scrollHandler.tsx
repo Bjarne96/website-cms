@@ -13,9 +13,9 @@ export const addStopScrolling = () => {
 }
 
 export const removeStopScrolling = () => {
-    console.log("removeStopScrolling")
     body.classList.remove("stop-scrolling");
 }
+
 //window offset / window height = how many components are scrolled down
 export const analyseWindowPosition = () => {
     let activeView = (window.scrollY / (window.innerHeight - 56)) + 1;
