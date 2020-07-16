@@ -14,18 +14,17 @@ export class Default extends React.Component<IProps, {}>{
     }
 
     render() {
-        return <Container><div className="tableCellDynamic" dangerouslySetInnerHTML={{ __html: this.props.content }} /></Container>
-        // return <Container className="marginTopHeader">
-        //     <Row>
-        //         <Col
-        //             lg={{ span: 3, offset: 3 }}
-        //             md={{ span: 3, offset: 3 }}
-        //             sm={{ span: 3, offset: 3 }}
-        //         >
-        //             <div className="tableCellDynamic" dangerouslySetInnerHTML={{ __html: this.props.content }} />
-        //         </Col>
-        //     </Row>
-        // </Container>;
+        return <Container className="marginTopHeader">
+            <Row>
+                <Col
+                    lg={{ span: 3, offset: 3 }}
+                    md={{ span: 3, offset: 3 }}
+                    sm={{ span: 3, offset: 3 }}
+                >
+                    <div className="tableCellDynamic" dangerouslySetInnerHTML={{ __html: this.props.content }} />
+                </Col>
+            </Row>
+        </Container>;
     }
 
     @autobind
