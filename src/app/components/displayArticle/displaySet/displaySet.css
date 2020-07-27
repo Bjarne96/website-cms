@@ -3,3 +3,12 @@
     height: 100% !important;
     width: 100% !important;
 }
+.center-container{
+    position: relative;
+}
+
+.set-container {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+}
