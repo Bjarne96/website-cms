@@ -1,7 +1,6 @@
 import * as React from 'react';
 import './header.css';
 import { Link as RouterLink } from 'react-router-dom';
-import { Navbar, Nav, Spinner, Image } from 'react-bootstrap';
 import { INavArray, IRouteArray } from '../../interfaces/componentInterfaces';
 import { Icon, Sidebar, Menu } from 'semantic-ui-react';
 import autobind from 'autobind-decorator';
@@ -56,25 +55,20 @@ export class Header extends React.Component<IProps, Istate>{
 
     @autobind
     renderNavbar() {
-        return <Navbar bg="dark" variant="dark" fixed="top" expand="lg">
-            <Navbar.Collapse id="basic-navbar-nav">
-                <Nav className="mr-auto">
-                    <Nav.Item>
-                        <Image src="./../../../public/logo.png" alt="logo.png" width="40" height="40" />
-                    </Nav.Item>
-                    <Navbar.Brand>&nbsp;&nbsp;&nbsp;&nbsp;Tiefschlaf&nbsp;&nbsp;&nbsp;&nbsp;</Navbar.Brand>
-                    {this.props.routes.map((route) => {
-                        return <RouterLink
-                            className="nav-link"
-                            key={route.url}
-                            to={route.url}
-                        >
-                            {route.title}
-                        </RouterLink>
-                    })}
-                </Nav>
-            </Navbar.Collapse>
-        </Navbar>
+        return <nav className="main-nav">
+            <img src="./../../../public/logo.png" alt="logo.png" width="40" height="40" />
+            <ul className="main-menu">
+                {this.props.routes.map((route) => {
+                    return <li><RouterLink
+                        className="nav-link"
+                        key={route.url}
+                        to={route.url}
+                    >
+                        {route.title}
+                    </RouterLink></li>
+                })}
+            </ul>
+        </nav>;
     }
 
     render() {

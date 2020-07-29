@@ -1,9 +1,33 @@
-.logoMenu{
-    width: 150px;
+/* Nav */
+.main-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+    padding: 18px;
+    font-size: 13px;
+    position: fixed;
+    top: 0;
+    background-color: darkslategray;
+    width: 100%;
 }
-.active {
-    color: red;
+  
+.main-nav ul {
+    display: flex;
+    list-style: none;
 }
-.nav-link{
-    cursor: pointer;
+  
+.main-nav ul li a {
+    font-weight: bold;
+    color: white;
+    padding-top: 16px;
+}
+  
+.main-nav ul li a:hover {
+    color: blue;
+}
+
+.main-nav ul.main-menu {
+    flex: 1;
+    margin-left: 20px;
 }
