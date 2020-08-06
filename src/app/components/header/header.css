@@ -10,6 +10,7 @@
     top: 0;
     background-color: darkslategray;
     width: 100%;
+    z-index: 1;
 }
   
 .main-nav ul {

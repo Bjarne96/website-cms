@@ -63,6 +63,7 @@ export class Header extends React.Component<IProps, Istate>{
                         className="nav-link"
                         key={route.url}
                         to={route.url}
+                        onClick={() => { window.scrollTo(0, 0); }}
                     >
                         {route.title}
                     </RouterLink></li>
