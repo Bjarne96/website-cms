@@ -1,3 +1,12 @@
 .marginTopHeader {
     margin-top: 56px !important;
 }
+.outerContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+}
+.centeredContainer{
+    width: 50%;
+}

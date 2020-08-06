@@ -1,22 +1,9 @@
 import * as React from 'react';
 import './displaySet.css';
-//import { IContentArray } from '../../../../schemas';
 import { IContent } from '../../../../schemas';
-import { Card, Col, Container, Row } from 'react-bootstrap';
 
 interface IProps {
     component: Array<IContent>;
-}
-let widthDivider = 3.3;
-let heightDivider = 3.3;
-
-let cardstyle = {
-    //width: (window.innerWidth / widthDivider)
-    //height: (window.innerHeight/heightDivider)
-}
-let imagestyle = {
-    //width: window.innerWidth / widthDivider - 2,
-    //height: window.innerHeight / heightDivider
 }
 
 let containerStyle = {
@@ -26,6 +13,8 @@ let containerStyle = {
 
 //dummy mobile
 let mobile = false;
+
+let mobileString = "";
 
 export class DisplaySet extends React.Component<IProps, any> {
 
@@ -60,34 +49,22 @@ export class DisplaySet extends React.Component<IProps, any> {
             let content = this.props.component.map((set, index) => {
                 if (index == 0 || set.content.pictures.length == 0) return;
                 if (index >= startColumnRange && index <= endColumnRange) {
-                    let card = <Card
-                        style={cardstyle}
+                    return <div className="card-container"><div
+                        className="cardStyle"
                         key={index + "card"}
                         onClick={() => this.clickme(set.content.url)}
                     >
-                        <Card.Img style={imagestyle} src={set.content.pictures[0].path} />
-                        <Card.Body><Card.Title>{set.content.title}</Card.Title></Card.Body>
-                    </Card>
-                    if (mobile) return <Row key={"row" + index}>{card}</Row>
-                    return <Col key={"col" + index}>{card}</Col>
+                        <img className="imageSize" src={set.content.pictures[0].path} />
+                        <div className="titleSize">{set.content.title}</div>
+                    </div></div>
                 }
-                return
             })
-            if (mobile) rowsAndCols.push(<Col key={"col" + line}>{content}</Col>);
-            else rowsAndCols.push(<Row key={"row" + line}>{content}</Row>);
+            rowsAndCols.push(<div className={"card-row halfHeight " + mobileString} key={"row" + line}>{content}</div>);
         }
-        return <div className="center-container" style={containerStyle}>
-            <Container className="set-container">
-                <Row>
-                    {mobile ?
-                        (<Row>
-                            {rowsAndCols}
-                        </Row>)
-                        :
-                        (<>{rowsAndCols}</>)
-                    }
-                </Row>
-            </Container>
-        </div>;
+        return <div className="borderScaler">
+            <div className="card-parent fullScale">
+                {rowsAndCols}
+            </div>
+        </div>
     }
 }
