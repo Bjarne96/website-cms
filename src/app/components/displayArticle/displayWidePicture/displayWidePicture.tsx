@@ -12,7 +12,7 @@ export class DisplayWidePicture extends React.Component<IProps, any> {
         return <div>
             <div className="titleBox" dangerouslySetInnerHTML={{ __html: this.props.component.content }} />
             {/* <img width="100%"src={this.props.component.pictures[0].path} /> */}
-            <img className="img-fluid" src={this.props.component.pictures[0].path} />
+            <img className="imageWide" src={this.props.component.pictures[0].path} />
         </div>;
     }
 }

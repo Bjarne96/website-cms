@@ -55,13 +55,12 @@ export class Header extends React.Component<IProps, Istate>{
 
     @autobind
     renderNavbar() {
-        return <nav className="main-nav">
+        return <nav className="main-nav" key="mainnav">
             <img src="./../../../public/logo.png" alt="logo.png" width="40" height="40" />
             <ul className="main-menu">
-                {this.props.routes.map((route) => {
-                    return <li><RouterLink
+                {this.props.routes.map((route, index) => {
+                    return <li key={route.url + index}><RouterLink
                         className="nav-link"
-                        key={route.url}
                         to={route.url}
                         onClick={() => { window.scrollTo(0, 0); }}
                     >

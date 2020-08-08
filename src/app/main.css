@@ -50,3 +50,11 @@
     margin-bottom: 15px !important;
     overflow: auto !important;
 }
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #fff;
+    color: #000;
+    font-size: 15px;
+    line-height: 1.5;
+    margin: 0px !important;
+  }

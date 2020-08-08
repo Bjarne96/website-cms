@@ -1,6 +1,5 @@
 import * as React from 'react';
 import './fullscreenScroller.css';
-import * as styles from './fullscreenScrollerStyles';
 import * as DisplayArticles from '../displayArticle';
 import { INavArray } from '../../interfaces/componentInterfaces';
 import { handleScrollEvent, removeStopScrolling, addStopScrolling, analyseWindowPosition, scrollToElem } from '../../handler/scrollHandler';
@@ -122,7 +121,7 @@ export class FullscreenScroller extends React.Component<IFullcreenScrollerProps,
         if (this.props.navs != undefined) {
             let scrollNav;
             scrollNav = <></>
-            scrollNav = <div className="scrollNav" style={styles.sidebarNavStyle}>{this.props.navs.map((obj, key) => {
+            scrollNav = <div className="scrollNav">{this.props.navs.map((obj, key) => {
                 let className = "scrollNavItem"
                 // handles active class
                 if (this.state.activeView == key + 1) className = className + " scrollNavItemActive"
@@ -130,7 +129,6 @@ export class FullscreenScroller extends React.Component<IFullcreenScrollerProps,
                 return <Link
                     key={obj.nav}
                     className={className}
-                    style={styles.sidebarNavItemStyle}
                     onClick={() => { this.scrollComponent(key + 1) }}
                     to={obj.id}
                     id={obj.nav}
@@ -159,7 +157,6 @@ export class FullscreenScroller extends React.Component<IFullcreenScrollerProps,
                             <div
                                 key={this.props.navs[index].id}
                                 className={"allScrollingContainer" + (index == 0 ? " firstScrollingContainer" : "")}
-                                style={styles.divstyle}
                                 id={this.props.navs[index].id}
 
                             >

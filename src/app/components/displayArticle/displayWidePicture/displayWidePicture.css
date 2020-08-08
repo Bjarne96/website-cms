@@ -5,3 +5,7 @@
     width: 100%;
     text-align: center;
 }
+.imageWide{
+    width: 100vw;
+    height: calc(100vh - 56px);
+}

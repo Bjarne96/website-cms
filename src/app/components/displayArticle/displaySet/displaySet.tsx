@@ -49,7 +49,7 @@ export class DisplaySet extends React.Component<IProps, any> {
             let content = this.props.component.map((set, index) => {
                 if (index == 0 || set.content.pictures.length == 0) return;
                 if (index >= startColumnRange && index <= endColumnRange) {
-                    return <div className="card-container"><div
+                    return <div className="card-container" key={index + "cardcontainer"}><div
                         className="cardStyle"
                         key={index + "card"}
                         onClick={() => this.clickme(set.content.url)}
