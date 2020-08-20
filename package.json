@@ -46,7 +46,6 @@
         "semantic-ui-react": "^0.87.3",
         "source-map-loader": "^0.2.4",
         "style-loader": "^0.23.1",
-        "tinymce": "^5.4.1",
         "ts-loader": "^6.2.2",
         "typescript": "^3.9.7",
         "universal-cookie": "^4.0.2",
