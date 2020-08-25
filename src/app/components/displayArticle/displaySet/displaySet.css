@@ -1,19 +1,20 @@
 .imageSize {
+    display: block;
     width: calc(25vw);
     height: calc(100vw/6);
 }
 .cardStyle {
-    width: calc(100vw/4);
-    margin: calc(1vw/2);
-}
-.halfHeight {
-    height: 50%;
+    width: calc(25vw);
+    margin: calc(0.5vw);
 }
 .card-parent{
     width: calc((26vw*3));
 }
 .titleSize {
-    font-size: medium;
+    display: block;
+    font-size: 25px;
+    font-weight: normal;
+    color: rgb(65, 65, 65)
 }
 .borderScaler {
     width: 100%;
@@ -24,7 +25,7 @@
 }
 .titleSize {
     height: 50px;
-    line-height: 50px;
+    line-height: 46px;
     width: 100%;
     text-align: center; 
     vertical-align:middle;

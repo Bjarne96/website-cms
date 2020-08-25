@@ -6,11 +6,6 @@ interface IProps {
     component: Array<IContent>;
 }
 
-let containerStyle = {
-    width: window.innerWidth,
-    height: window.innerHeight - 56
-}
-
 //dummy mobile
 let mobile = false;
 
@@ -59,7 +54,7 @@ export class DisplaySet extends React.Component<IProps, any> {
                     </div></div>
                 }
             })
-            rowsAndCols.push(<div className={"card-row halfHeight " + mobileString} key={"row" + line}>{content}</div>);
+            rowsAndCols.push(<div className={"card-row " + mobileString} key={"row" + line}>{content}</div>);
         }
         return <div className="borderScaler">
             <div className="card-parent fullScale">
