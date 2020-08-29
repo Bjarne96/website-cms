@@ -24,8 +24,8 @@ export class Header extends React.Component<IProps, Istate>{
 
     @autobind
     renderSidebar() {
-        return <div className="infrontandfixed">
-            <Icon className="mobileSidebarToggle margin10" name='bars' onClick={this.props.toggleSidebar} />
+        return <div className="mobileSidebarContainer">
+            <Icon className="mobileSidebarToggle mobileSidebarOpen margin10" name='bars' size="big" onClick={this.props.toggleSidebar} />
             <Sidebar
                 animation='overlay'
                 icon='labeled'
@@ -35,11 +35,10 @@ export class Header extends React.Component<IProps, Istate>{
                 visible={this.props.showSidebar}
                 width='thin'
                 as={Menu}
-                className="mobileSidebarContainer"
             >
-                <Icon className="mobileSidebarToggle mobileSidebarClose margin10" name='window close outline' onClick={this.props.toggleSidebar} />
+                <Icon className="mobileSidebarToggle mobileSidebarClose margin10" size="big" name='close' onClick={this.props.toggleSidebar} />
                 {this.props.routes.map((obj, key) => {
-                    return <Menu.Item className="mobileSidebarItem" as='a' key={key + "route"}>
+                    return <Menu.Item className="mobileSidebarItem" as='div' key={key + "route"}>
                         <RouterLink
                             className="nav-link"
                             key={obj.url}

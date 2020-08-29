@@ -1,8 +1,25 @@
+.mobileSidebarToggle {
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: block;
+}
+.mobileSidebarOpen {
+    color: black !important
+}
+
+.mobileSidebarClose {
+    color: white !important;
+    z-index: 2;
+    top: 3px !important;
+    left: 3px !important;
+}
+
 .main-nav {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 20px;
+    height: 56px !important;
     padding: 18px;
     font-size: 13px;
     position: fixed;

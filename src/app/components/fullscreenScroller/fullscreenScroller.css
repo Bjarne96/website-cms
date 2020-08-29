@@ -1,6 +1,5 @@
 /* General */
 
-
 /* Scrolling */
 .angleLink{
     display: inline;
@@ -30,7 +29,7 @@
     justify-content: space-between;
     position: fixed;
     z-index: 2;
-    margin-left: 1.5vw;
+    margin-left: 20px;
     width: 2vw;
     top: 37.5vh;
     height: 25vh;
@@ -59,6 +58,14 @@
     z-index: -1;
     overflow: hidden;
     width: 100vw;
-    height: calc(100vh - 56px);     
+    height: calc(100vh - 56px);
+}
 
+@media only screen and (max-width: 760px) {
+    .allScrollingContainer{
+        height: 100vh !important;
+    }
+    .firstScrollingContainer{
+        margin-top: 0px !important;
+    }
 }

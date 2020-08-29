@@ -1,5 +1,5 @@
 .marginTopHeader {
-    margin-top: 56px !important;
+    margin-top: 56px;
 }
 .outerContainer{
     display: flex;
@@ -9,4 +9,21 @@
 }
 .centeredContainer{
     width: 50%;
+}
+/* makes images always stay their format while never pushing boundries */
+.tableCellDynamic img {
+    display: inline-block;
+    max-width: 100%;
+    width: auto;
+    height: auto;
+}
+@media only screen and (max-width: 760px) {
+    .marginTopHeader {
+        padding-top: 30px;
+        margin-top: 0px !important;
+        height: 100%;
+    }
+    .centeredContainer{
+        width: calc(100% - 64px) !important;
+    }
 }

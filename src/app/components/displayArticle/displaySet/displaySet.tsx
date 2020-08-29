@@ -6,8 +6,7 @@ interface IProps {
     component: Array<IContent>;
 }
 
-//dummy mobile
-let mobile = false;
+let isMobile = window.matchMedia("only screen and (max-width: 760px)").matches;
 
 let mobileString = "";
 
@@ -38,20 +37,25 @@ export class DisplaySet extends React.Component<IProps, any> {
             }
         };
         let rowsAndCols = [];
+        if (isMobile) {
+            let _temp = lineRange;
+            lineRange = columnRange;
+            columnRange = _temp;
+        }
         for (let line = 1; line <= lineRange; line++) {
             let startColumnRange = (columnRange * (line - 1)) + 1;
             let endColumnRange = columnRange * line;
             let content = this.props.component.map((set, index) => {
                 if (index == 0 || set.content.pictures.length == 0) return;
                 if (index >= startColumnRange && index <= endColumnRange) {
-                    return <div className="card-container" key={index + "cardcontainer"}><div
-                        className="cardStyle"
-                        key={index + "card"}
+                    return <div
+                        className="card-container"
+                        key={index + "cardcontainer"}
                         onClick={() => this.clickme(set.content.url)}
                     >
                         <img className="imageSize" src={set.content.pictures[0].path} />
                         <div className="titleSize">{set.content.title}</div>
-                    </div></div>
+                    </div>
                 }
             })
             rowsAndCols.push(<div className={"card-row " + mobileString} key={"row" + line}>{content}</div>);

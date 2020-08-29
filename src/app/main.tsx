@@ -5,7 +5,7 @@ import autobind from 'autobind-decorator';
 import { getStructure } from './handler/structureRequests';
 import { IStructure, IContent, IArticle } from '../schemas';
 import { Loader } from 'semantic-ui-react';
-import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { INavArray, IRouteArray } from './interfaces/componentInterfaces';
 import { Home } from './views/home/home';
 import Default from './views/default/default';
@@ -27,9 +27,6 @@ let routerStructure = [];
 
 let navs: INavArray = [];
 let routes: IRouteArray = [];
-
-let isMobile = false;
-
 
 var delay = false;
 
@@ -150,6 +147,7 @@ export class Main extends React.Component<any, IMainState> {
 
     render() {
         if (this.state.loading) return <Loader active />
+        let isMobile = window.matchMedia("only screen and (max-width: 760px)").matches;
         let routeComps;
         routeComps = <></>
         if (routerStructure != undefined) {
@@ -161,7 +159,6 @@ export class Main extends React.Component<any, IMainState> {
                         key={article._id}
                         path={article.url}
                         exact
-                        strict
                         component={() => <Default content={article.content} />}
                     />
                 }
@@ -177,9 +174,11 @@ export class Main extends React.Component<any, IMainState> {
                         toggleSidebar={this.toggleSidebar}
                         showSidebar={this.state.showSidebar}
                     />
-                    {routeComps}
-                    <Route path="/home" exact component={() => <Home navs={navs} componentStructure={componentStructure} />} />
-                    <Route path="" component={() => <Redirect to="/home" />} />
+                    <div>
+                        {routeComps}
+                        <Route path="/home" exact component={() => <Home navs={navs} componentStructure={componentStructure} />} />
+                        <Route path="/" exact component={() => <Home navs={navs} componentStructure={componentStructure} />} />
+                    </div>
                 </div>
             </Router>
         );

@@ -26,6 +26,7 @@ var touchstartHandler;
 //Coordinat for touch reference
 var touchX = 999;
 var touchY = 999;
+let isMobile = window.matchMedia("only screen and (max-width: 760px)").matches;
 
 
 export class FullscreenScroller extends React.Component<IFullcreenScrollerProps, IFullcreenScrollerState> {
@@ -51,6 +52,7 @@ export class FullscreenScroller extends React.Component<IFullcreenScrollerProps,
         //gets active view from router
         addStopScrolling();
         let newActiveView = analyseWindowPosition();
+        console.log("newActiveView", newActiveView)
         scrollToElem(this.props.navs[(newActiveView - 1)].id)
         //sets state
         await this.setState({ activeView: newActiveView })
@@ -100,7 +102,6 @@ export class FullscreenScroller extends React.Component<IFullcreenScrollerProps,
         if (delay) return;
         delay = true;
         setTimeout(() => { delay = false; }, 200)
-
         //scrolling by wheel event
         let newView = await handleScrollEvent(this.state.activeView, this.props.navs, event, touch);
         this.scrollComponent(newView);
@@ -113,68 +114,74 @@ export class FullscreenScroller extends React.Component<IFullcreenScrollerProps,
         //pushHistory(newRoute)
     }
 
+    @autobind
+    renderScrollNav() {
+        let scrollIndicators = this.props.navs.map((obj, key) => {
+            let className = "scrollNavItem"
+            // handles active class
+            if (this.state.activeView == key + 1) className = className + " scrollNavItemActive"
+            //link for clicking the scrolling / indexing
+            return <Link
+                key={obj.nav}
+                className={className}
+                onClick={() => { this.scrollComponent(key + 1) }}
+                to={obj.id}
+                id={obj.nav}
+                spy={true}
+                smooth={true}
+                offset={isMobile ? 0 : -56}
+                duration={500}>
+            </Link>
+        })
+
+        let upScrollAngle = <a><i className="angleIcon angleupIcon" /></a>;
+        let downScrollAngle = <a><i className="angleIcon angledownIcon" /></a>;
+        if (this.state.activeView != 1) {
+            upScrollAngle = <Link className={"angleLink"}
+                onClick={() => { this.scrollComponent(this.state.activeView - 1) }}
+                to={this.props.navs[this.state.activeView - 2].id}
+                id={this.props.navs[this.state.activeView - 2].nav}
+                spy={true}
+                smooth={true}
+                offset={isMobile ? 0 : -56}
+                duration={500}
+            >
+                <i className="angleIcon angleupIcon angleHover" />
+            </Link>
+        }
+        if (this.state.activeView != this.props.navs.length) {
+            downScrollAngle = <Link className={"angleLink"}
+                onClick={() => { this.scrollComponent(this.state.activeView + 1) }}
+                to={this.props.navs[this.state.activeView].id}
+                id={this.props.navs[this.state.activeView].nav}
+                spy={true}
+                smooth={true}
+                offset={isMobile ? 0 : -56}
+                duration={500}
+            >
+                <i className="angleIcon angledownIcon angleHover" />
+            </Link>
+        }
+        let scrollNavComp = <div className="scrollNav">
+            {upScrollAngle}
+            {scrollIndicators}
+            {downScrollAngle}
+        </div>;
+        return scrollNavComp;
+    }
+
 
     render() {
         //checks for undefined componentstructure  - todo exception
         // if (this.state.loading) return <Loader active />
         //builds navs
         if (this.props.navs != undefined) {
-            let scrollIndicators = this.props.navs.map((obj, key) => {
-                let className = "scrollNavItem"
-                // handles active class
-                if (this.state.activeView == key + 1) className = className + " scrollNavItemActive"
-                //link for clicking the scrolling / indexing
-                return <Link
-                    key={obj.nav}
-                    className={className}
-                    onClick={() => { this.scrollComponent(key + 1) }}
-                    to={obj.id}
-                    id={obj.nav}
-                    spy={true}
-                    smooth={true}
-                    offset={-56}
-                    duration={500}>
-                </Link>
-            })
+            let scrollNav = <></>;
+            if (!isMobile) scrollNav = this.renderScrollNav();
             //maps componentstructure
             return (
                 <div id="scrollComponent">
-                    <div className="scrollNav">
-                        {
-                            this.state.activeView == 1 ?
-                                <a><i className="angleIcon angleupIcon" /></a>
-                                :
-                                <Link className={"angleLink"}
-                                    onClick={() => { this.scrollComponent(this.state.activeView - 1) }}
-                                    to={this.props.navs[this.state.activeView - 2].id}
-                                    id={this.props.navs[this.state.activeView - 2].nav}
-                                    spy={true}
-                                    smooth={true}
-                                    offset={-58}
-                                    duration={500}
-                                >
-                                    <i className="angleIcon angleupIcon angleHover" />
-                                </Link>
-                        }
-                        {scrollIndicators}
-                        {
-                            this.state.activeView == this.props.navs.length ?
-                                <a><i className="angleIcon angledownIcon" /></a>
-                                :
-                                <Link className={"angleLink"}
-                                    onClick={() => { this.scrollComponent(this.state.activeView + 1) }}
-                                    to={this.props.navs[this.state.activeView].id}
-                                    id={this.props.navs[this.state.activeView].nav}
-                                    spy={true}
-                                    smooth={true}
-                                    offset={-58}
-                                    duration={500}
-                                >
-                                    <i className="angleIcon angledownIcon angleHover" />
-                                </Link>
-                        }
-                    </div>
-
+                    {scrollNav}
                     {this.props.componentStructure.map((data, index) => {
                         let displayComponent = <></>
                         let compType = data.componentType;
