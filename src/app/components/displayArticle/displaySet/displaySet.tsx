@@ -8,7 +8,7 @@ interface IProps {
 
 let isMobile = window.matchMedia("only screen and (max-width: 760px)").matches;
 
-let mobileString = "";
+let deviceAspectRatio = window.innerWidth / window.innerHeight;
 
 export class DisplaySet extends React.Component<IProps, any> {
 
@@ -37,7 +37,7 @@ export class DisplaySet extends React.Component<IProps, any> {
             }
         };
         let rowsAndCols = [];
-        if (isMobile) {
+        if ((isMobile && deviceAspectRatio < 1) || (deviceAspectRatio < 1)) {
             let _temp = lineRange;
             lineRange = columnRange;
             columnRange = _temp;
@@ -58,10 +58,10 @@ export class DisplaySet extends React.Component<IProps, any> {
                     </div>
                 }
             })
-            rowsAndCols.push(<div className={"card-row " + mobileString} key={"row" + line}>{content}</div>);
+            rowsAndCols.push(<div className={"card-row "} key={"row" + line}>{content}</div>);
         }
         return <div className="borderScaler">
-            <div className="card-parent fullScale">
+            <div className="card-parent">
                 {rowsAndCols}
             </div>
         </div>

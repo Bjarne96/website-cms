@@ -1,14 +1,15 @@
 .imageSize {
     display: block;
-    width: calc(25vw);
-    height: calc(100vw/6);
+    width: calc(85vw / 3);
+    height: calc(calc(calc(85vw / 3) / 4) * 3);
+    border-radius: 3px 3px 0px 0px;
 }
 .cardStyle {
-    width: calc(25vw);
-    margin: calc(0.5vw);
+    width: 25vw;
+    margin: 0.5vw;
 }
 .card-parent{
-    width: calc((26vw*3));
+    width: 88vw;
 }
 .titleSize {
     font-size: 25px;
@@ -26,9 +27,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-}
-.imageSize {
-    border-radius: 3px 3px 0px 0px;
 }
 .card-parent{
     display: flex;
@@ -50,10 +48,14 @@
     background-color: white;
     border-radius: 3px;
 }
-@media only screen and (max-width: 760px) {
+@media only screen and (max-width: 760px) and (max-device-aspect-ratio: 1) {
+    .card-parent {
+        width: 100%;
+    }
     .imageSize {
-        width: 100% !important;
-        height: calc(160vw/6)!important;
+        /* 4:3 Bildverhältnisse */
+        width: 49vw !important;
+        height: calc(calc(49 / 4) * 3vw) !important;
     }
     .titleSize {
         font-size: 4vw;
@@ -70,5 +72,44 @@
         display: flex;
         align-items: center;
         justify-content: center;
+    }
+}
+@media only screen and (max-device-aspect-ratio: 1) {
+    .card-parent {
+        width: 88vw !important;
+    }
+    .imageSize {
+        /* 4:3 Bildverhältnisse */
+        width: 43vw !important;
+        height: calc(calc(43 / 4) * 3vw) !important;
+    }
+    .titleSize {
+        font-size: 4vw;
+        width: 100%;
+        /* overflow: hidden; */
+        color: rgb(65, 65, 65);
+        text-align: center; 
+        vertical-align:middle;
+        word-wrap: break-word;
+    }
+    .borderScaler {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+@media only screen and (min-device-aspect-ratio: 1.7) {
+    .titleSize {
+        color: rgb(255, 0, 0) !important;
+    }
+    .card-parent {
+        width: calc(calc(90vh * 4) / 3 );
+        height: 90vh;
+    }
+    .imageSize {
+        /* 4:3 Bildverhältnisse */
+        width: calc(calc(calc(90vh * 4) / 3 ) / 3 ) !important;
     }
 }

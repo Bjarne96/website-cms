@@ -1,8 +1,64 @@
+.mobileSidebar {
+    width: 70vw !important;
+    background-color: darkslategray !important;
+    cursor: pointer;
+}
+.mobileSidebar p{
+    font-size: 5vw;
+}
+.mobileSidebarHeaderItem {
+    background-color: rgb(32, 32, 148) !important;
+    font-weight: bold;
+}
+.mobileSidebarItem {
+    padding-left: 45px !important;
+    padding-right: 5px !important;
+}
+.mobileSidebarItem p{
+   width: 100% !important;
+   text-align: left !important;
+   display: block !important;
+
+}
+.angleIconSidebar{
+    border: solid white;
+    border-width: 2px 2px 0 0;
+    display: inline-block !important;
+    padding: 5px;
+    transform: rotate(-135deg);
+    -webkit-transform: rotate(-135deg);
+}
+.item:hover {
+    color: red !important;
+    cursor: pointer !important;
+}
+
 .mobileSidebarToggle {
     position: fixed;
-    top: 0;
-    left: 0;
+    top: 5px;
+    left: 5px;
     display: block;
+}
+#mobileSidebarClose {
+    width: 20px;
+    height: 20px;
+}
+  
+.mdiv {
+    height: 20px;
+    width: 2px;
+    margin-left: 12px;
+    background-color: white;
+    transform: rotate(45deg);
+    Z-index: 1;
+}
+  
+.md {
+    height: 20px;
+    width: 2px;
+    background-color: white;
+    transform: rotate(90deg);
+    Z-index: 2;
 }
 .mobileSidebarOpen {
     color: black !important
@@ -11,8 +67,12 @@
 .mobileSidebarClose {
     color: white !important;
     z-index: 2;
-    top: 3px !important;
-    left: 3px !important;
+    top: 15px !important;
+    left: 58vw !important;
+}
+.mobileSidebarAngle {
+    left: 10px !important;
+    top: 19px !important;
 }
 
 .main-nav {

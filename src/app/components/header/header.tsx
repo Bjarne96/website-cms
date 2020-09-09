@@ -1,7 +1,7 @@
 import * as React from 'react';
 import './header.css';
-import { Link as RouterLink } from 'react-router-dom';
-import { INavArray, IRouteArray } from '../../interfaces/componentInterfaces';
+import { Link as RouterLink, withRouter } from 'react-router-dom';
+import { IRouteArray } from '../../interfaces/componentInterfaces';
 import { Icon, Sidebar, Menu } from 'semantic-ui-react';
 import autobind from 'autobind-decorator';
 
@@ -9,7 +9,8 @@ interface IProps {
     routes: IRouteArray;
     showSidebar: boolean;
     isMobile: boolean;
-    toggleSidebar(newHandler);
+    toggleSidebar();
+    history;
 }
 
 
@@ -23,10 +24,18 @@ export class Header extends React.Component<IProps, Istate>{
     }
 
     @autobind
+    changeHistory(url) {
+        console.log('url', url);
+        document.getElementById("mobileSidebarClose").click();
+        this.props.history.push(url);
+    }
+
+    @autobind
     renderSidebar() {
         return <div className="mobileSidebarContainer">
             <Icon className="mobileSidebarToggle mobileSidebarOpen margin10" name='bars' size="big" onClick={this.props.toggleSidebar} />
             <Sidebar
+                className="mobileSidebar"
                 animation='overlay'
                 icon='labeled'
                 inverted={true}
@@ -36,16 +45,25 @@ export class Header extends React.Component<IProps, Istate>{
                 width='thin'
                 as={Menu}
             >
-                <Icon className="mobileSidebarToggle mobileSidebarClose margin10" size="big" name='close' onClick={this.props.toggleSidebar} />
+                <div id="mobileSidebarClose" onClick={this.props.toggleSidebar} className="mobileSidebarToggle mobileSidebarClose"><div className="mdiv"><div className="md"></div></div></div>
+                <i className="mobileSidebarToggle mobileSidebarClose mobileSidebarAngle angleIconSidebar" />
+                {/* <Icon className=" margin10" size="big" name='angle left' onClick={this.props.toggleSidebar} /> */}
+                {/* <Icon id="mobileSidebarClose" className="mobileSidebarToggle mobileSidebarClose margin10" size="big" name='close' onClick={this.props.toggleSidebar} /> */}
+                <Menu.Item
+                    className="mobileSidebarItem mobileSidebarHeaderItem"
+                    as='div'
+                    onClick={() => this.changeHistory("/")}
+                >
+                    <p>Tiefschlafen</p>
+                </Menu.Item>
+
                 {this.props.routes.map((obj, key) => {
-                    return <Menu.Item className="mobileSidebarItem" as='div' key={key + "route"}>
-                        <RouterLink
-                            className="nav-link"
-                            key={obj.url}
-                            to={obj.url}
-                        >
-                            {obj.title}
-                        </RouterLink>
+                    return <Menu.Item
+                        className={this.props.history.location.pathname == obj.url ? "mobileSidebarItem active" : "mobileSidebarItem"}
+                        as='div'
+                        key={key + "route"}
+                        onClick={() => this.changeHistory(obj.url)}>
+                        <p>{obj.title}</p>
                     </Menu.Item>
                 })}
             </Sidebar>
@@ -75,4 +93,4 @@ export class Header extends React.Component<IProps, Istate>{
         return this.renderNavbar();
     }
 }
-export default Header;
+export default withRouter(Header);

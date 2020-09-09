@@ -52,7 +52,6 @@ export class FullscreenScroller extends React.Component<IFullcreenScrollerProps,
         //gets active view from router
         addStopScrolling();
         let newActiveView = analyseWindowPosition();
-        console.log("newActiveView", newActiveView)
         scrollToElem(this.props.navs[(newActiveView - 1)].id)
         //sets state
         await this.setState({ activeView: newActiveView })

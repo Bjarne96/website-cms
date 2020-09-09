@@ -5,7 +5,7 @@ import autobind from 'autobind-decorator';
 import { getStructure } from './handler/structureRequests';
 import { IStructure, IContent, IArticle } from '../schemas';
 import { Loader } from 'semantic-ui-react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, withRouter } from 'react-router-dom';
 import { INavArray, IRouteArray } from './interfaces/componentInterfaces';
 import { Home } from './views/home/home';
 import Default from './views/default/default';
@@ -29,6 +29,8 @@ let navs: INavArray = [];
 let routes: IRouteArray = [];
 
 var delay = false;
+var touchstartHandler;
+var touchX;
 
 export class Main extends React.Component<any, IMainState> {
 
@@ -49,6 +51,7 @@ export class Main extends React.Component<any, IMainState> {
         this.loadComponentAndRouterStructure(structure);
         this.loadNav();
         this.loadRoutes();
+        touchstartHandler = this.touchstartHandler.bind(this);
         this.setState({ loading: false })
     }
 
@@ -95,12 +98,22 @@ export class Main extends React.Component<any, IMainState> {
 
     @autobind
     toggleSidebar() {
+        console.log("toggle")
         //debounce
         if (delay) return
         delay = true;
         setTimeout(() => { delay = false; }, 500)
         //sets sidebar state
         this.setState({ showSidebar: !this.state.showSidebar })
+        //Sets Listener
+        if (!this.state.showSidebar) window.addEventListener('touchstart', touchstartHandler, false)
+        if (this.state.showSidebar) window.removeEventListener('touchstart', touchstartHandler, false)
+    }
+
+    @autobind
+    touchstartHandler(event) {
+        touchX = event.touches[0].clientX;
+        if (touchX > (window.innerWidth * 0.7)) this.toggleSidebar();
     }
 
     @autobind
@@ -173,8 +186,9 @@ export class Main extends React.Component<any, IMainState> {
                         isMobile={isMobile}
                         toggleSidebar={this.toggleSidebar}
                         showSidebar={this.state.showSidebar}
+                        history={this.props.history}
                     />
-                    <div>
+                    <div className="mainContainer">
                         {routeComps}
                         <Route path="/home" exact component={() => <Home navs={navs} componentStructure={componentStructure} />} />
                         <Route path="/" exact component={() => <Home navs={navs} componentStructure={componentStructure} />} />

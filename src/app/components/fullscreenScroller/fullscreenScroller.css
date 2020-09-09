@@ -64,6 +64,8 @@
 @media only screen and (max-width: 760px) {
     .allScrollingContainer{
         height: 100vh !important;
+        width: 100vw !important;
+        border: 1px solid red;
     }
     .firstScrollingContainer{
         margin-top: 0px !important;

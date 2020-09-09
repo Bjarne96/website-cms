@@ -31,5 +31,14 @@
         /* 100vh / 0,67 * 100 = Bildschirmhöhe geteilt durch die Bildratio mal 100 */
         width: 149vh !important;
         height: 100vh !important;
+        border: 1px solid blue;
+    }
+}
+@media only screen and (max-device-aspect-ratio: 1.4) {
+    .wideImage {
+        margin-top: 0px !important;
+        width: 149vh !important;
+        height: 100vh !important;
+        border: 1px solid black;
     }
 }
