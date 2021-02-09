@@ -1,0 +1,10 @@
+:root{
+    /* General Background-Colors */
+    --body-bg-color: #f4f4f4;
+
+    /* TextColors */
+    --text-dark-color: black;
+    --text-dark-active-color: limegreen;
+    --text-light-color: white;
+    --text-light-active-color: limegreen;
+}

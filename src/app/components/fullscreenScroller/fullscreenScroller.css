@@ -49,25 +49,23 @@
     background-color: white;
     cursor: context-menu !important;
 }
-.firstScrollingContainer{
-    margin-top: 56px;
-}
 .allScrollingContainer{
-    background-color: #e9e9e9;
     text-align: center;
     z-index: -1;
     overflow: hidden;
     width: 100vw;
-    height: calc(100vh - 56px);
 }
-
-@media only screen and (max-width: 760px) {
+@media (orientation: landscape) {
     .allScrollingContainer{
-        height: 100vh !important;
-        width: 100vw !important;
-        border: 1px solid red;
+        height: calc(100vh - 56px);
     }
     .firstScrollingContainer{
-        margin-top: 0px !important;
+        margin-top: 56px;
+    }
+}
+  
+@media (orientation: portrait) {
+    .allScrollingContainer{
+        height: 100vh;
     }
 }

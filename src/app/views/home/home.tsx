@@ -5,6 +5,7 @@ import FullscreenScroller from '../../components/fullscreenScroller/fullscreenSc
 interface IProps {
     componentStructure: any;
     navs: any;
+    isMobile: boolean;
 }
 
 interface IState {
@@ -16,6 +17,7 @@ export class Home extends React.Component<IProps, IState>{
         return <FullscreenScroller
             navs={this.props.navs}
             componentStructure={this.props.componentStructure}
+            isMobile={this.props.isMobile}
         />
     }
 }

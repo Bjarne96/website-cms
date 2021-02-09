@@ -8,13 +8,7 @@
 .flexitem {
     align-self: center;
 }
-.wideImage {
-    /* 3600 / 2154 = 0.67 image ratio*/
-    width: 100vw;
-    height: 67vw;
-    /* Die Differenz von Bildschirmhöhe und Bildhöhe um die hälfte nach oben ziehen (centering) */
-    margin-top: calc(calc(calc(100vh - 56px) - 67vw) / 2);
-}
+
 .titleBox {
     position: absolute;
     top: 20%;
@@ -24,21 +18,21 @@
 }
 
 
-@media only screen and (max-width: 760px) {
-    /* center by flexbox */
+@media (orientation: landscape) {
     .wideImage {
-        margin-top: 0px !important;
-        /* 100vh / 0,67 * 100 = Bildschirmhöhe geteilt durch die Bildratio mal 100 */
-        width: 149vh !important;
-        height: 100vh !important;
-        border: 1px solid blue;
-    }
+        /* 3600 / 2154 = 0.67 image ratio*/
+        width: 100vw;
+        height: 67vw;
+        /* Die Differenz von Bildschirmhöhe und Bildhöhe um die hälfte nach oben ziehen (centering) */
+        margin-top: calc(calc(calc(100vh - 56px) - 67vw) / 2);
+    } 
+    
 }
-@media only screen and (max-device-aspect-ratio: 1.4) {
+  
+@media (orientation: portrait) {
     .wideImage {
-        margin-top: 0px !important;
-        width: 149vh !important;
-        height: 100vh !important;
-        border: 1px solid black;
+        margin-top: 0px;
+        width: 149vh;
+        height: 100vh;
     }
 }

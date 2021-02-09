@@ -5,7 +5,6 @@ import autobind from 'autobind-decorator';
 import { Link } from 'react-router-dom';
 
 import { IRouteArray } from './../../interfaces/componentInterfaces'
-import { Loader } from 'semantic-ui-react';
 
 interface ISidebarState {
     loading: boolean;
@@ -45,7 +44,7 @@ export default class Base extends React.Component<ISidebarProps, ISidebarState> 
         </Sidebar>
     }
 
-    @autobind
+
     renderMenuItems() {
         return (this.props.routes.map((route) => {
             if (route.showInSidebar) {

@@ -37,7 +37,7 @@ export class Views extends React.Component<IRouterProps, IRouterState> {
         </Switch>
     }
 
-    @autobind
+
     renderRoutes() {
         return (this.props.routes.map((route) => {
             return <Route

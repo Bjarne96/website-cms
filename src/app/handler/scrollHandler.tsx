@@ -1,7 +1,7 @@
 import { INavArray } from "../interfaces/componentInterfaces";
 import * as $ from "jquery";
 
-let isMobile = window.matchMedia("only screen and (max-width: 760px)").matches;
+let isMobile = window.matchMedia("(orientation: portrait)").matches;
 let offset = 56;
 
 export const scrollToElem = (id: string) => {
@@ -52,6 +52,6 @@ export const handleScrollEvent = (activeView: number, navs: INavArray, event, to
         newView--;
     }
     let arrayNumber = newView - 1
-    this.scrollToElem(navs[arrayNumber].id)
+    scrollToElem(navs[arrayNumber].id)
     return newView;
 }

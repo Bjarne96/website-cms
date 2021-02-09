@@ -1,4 +1,4 @@
-export interface INavArray extends Array<INavComponent>{}
+export interface INavArray extends Array<INavComponent> { }
 
 export interface INavComponent {
     id: string,
@@ -8,9 +8,11 @@ export interface INavComponent {
 
 }
 
-export interface IRouteArray extends Array<IRouteComponent>{}
+export interface IRouteArray extends Array<IRouteComponent> { }
 
 export interface IRouteComponent {
     url: string;
     title: string;
+    path?: string;
+    showInSidebar?: boolean;
 }

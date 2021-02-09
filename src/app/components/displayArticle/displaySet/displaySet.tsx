@@ -4,11 +4,8 @@ import { IContent } from '../../../../schemas';
 
 interface IProps {
     component: Array<IContent>;
+    isMobile: boolean;
 }
-
-let isMobile = window.matchMedia("only screen and (max-width: 760px)").matches;
-
-let deviceAspectRatio = window.innerWidth / window.innerHeight;
 
 export class DisplaySet extends React.Component<IProps, any> {
 
@@ -18,51 +15,27 @@ export class DisplaySet extends React.Component<IProps, any> {
 
     render() {
         if (this.props.component == undefined) return <p>error</p>;
-        //sets real set count
-        let setCount = this.props.component.length - 1;
-        //default
-        let lineRange = 0;
-        let columnRange = setCount / 2;
-        for (let i = 0; i < setCount; i++) {
-            //specifies for less than 3
-            if (setCount <= 3) {
-                lineRange = 1;
-                columnRange = 3;
-                //specifices 2 lines for 4,6,8...
-            } else if (setCount >= 3 && setCount % 2 == 0) {
-                lineRange = 2;
-            } else {
-                //Todo: proper error handling
-                lineRange = 2;
-            }
-        };
-        let rowsAndCols = [];
-        if ((isMobile && deviceAspectRatio < 1) || (deviceAspectRatio < 1)) {
-            let _temp = lineRange;
-            lineRange = columnRange;
-            columnRange = _temp;
-        }
-        for (let line = 1; line <= lineRange; line++) {
-            let startColumnRange = (columnRange * (line - 1)) + 1;
-            let endColumnRange = columnRange * line;
-            let content = this.props.component.map((set, index) => {
-                if (index == 0 || set.content.pictures.length == 0) return;
-                if (index >= startColumnRange && index <= endColumnRange) {
-                    return <div
-                        className="card-container"
-                        key={index + "cardcontainer"}
-                        onClick={() => this.clickme(set.content.url)}
-                    >
-                        <img className="imageSize" src={set.content.pictures[0].path} />
-                        <div className="titleSize">{set.content.title}</div>
-                    </div>
+        let cards = this.props.component.map((set, index) => {
+            if (index == 0 || set.content.pictures.length == 0) return;
+            return <div
+                className="card-container"
+                key={index + "cardcontainer"}
+                onClick={() => this.clickme(set.content.url)}
+            >
+                {/* <img className="card-image" src={set.content.pictures[0].path} /> */}
+                {this.props.isMobile ?
+                    <img className="card-image" src={"https://s3.eu-central-1.amazonaws.com/files.tiefschlafen.de/public/cardportrait.jpg"} />
+                    :
+                    <img className="card-image" src={"https://s3.eu-central-1.amazonaws.com/files.tiefschlafen.de/public/cardwidescreen.jpg"} />
                 }
-            })
-            rowsAndCols.push(<div className={"card-row "} key={"row" + line}>{content}</div>);
-        }
-        return <div className="borderScaler">
+                <div className="card-titleframe">
+                    <div className="card-title">{set.content.title}</div>
+                </div>
+            </div>;
+        });
+        return <div className="card-outerframe">
             <div className="card-parent">
-                {rowsAndCols}
+                {cards}
             </div>
         </div>
     }

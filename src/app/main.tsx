@@ -1,7 +1,6 @@
 import * as React from 'react';
 import './main.css';
 import Header from './components/header/header';
-import autobind from 'autobind-decorator';
 import { getStructure } from './handler/structureRequests';
 import { IStructure, IContent, IArticle } from '../schemas';
 import { Loader } from 'semantic-ui-react';
@@ -55,7 +54,6 @@ export class Main extends React.Component<any, IMainState> {
         this.setState({ loading: false })
     }
 
-    @autobind
     loadNav() {
         componentStructure.forEach((data) => {
             let compType = data.componentType;
@@ -80,7 +78,6 @@ export class Main extends React.Component<any, IMainState> {
 
     }
 
-    @autobind
     loadRoutes() {
         //home element
         routes.push({
@@ -96,7 +93,6 @@ export class Main extends React.Component<any, IMainState> {
 
     }
 
-    @autobind
     toggleSidebar() {
         console.log("toggle")
         //debounce
@@ -110,13 +106,13 @@ export class Main extends React.Component<any, IMainState> {
         if (this.state.showSidebar) window.removeEventListener('touchstart', touchstartHandler, false)
     }
 
-    @autobind
+
     touchstartHandler(event) {
         touchX = event.touches[0].clientX;
         if (touchX > (window.innerWidth * 0.7)) this.toggleSidebar();
     }
 
-    @autobind
+
     loadComponentAndRouterStructure(structure: IStructure) {
         //sets object dummy for filling in set data
         let setObject = {
@@ -160,7 +156,8 @@ export class Main extends React.Component<any, IMainState> {
 
     render() {
         if (this.state.loading) return <Loader active />
-        let isMobile = window.matchMedia("only screen and (max-width: 760px)").matches;
+        let isMobile = false;
+        if (window.innerWidth / window.innerHeight <= 1) isMobile = true;
         let routeComps;
         routeComps = <></>
         if (routerStructure != undefined) {
@@ -182,6 +179,7 @@ export class Main extends React.Component<any, IMainState> {
             <Router>
                 <div>
                     <Header
+                        //@ts-ignore
                         routes={routes}
                         isMobile={isMobile}
                         toggleSidebar={this.toggleSidebar}
@@ -190,8 +188,8 @@ export class Main extends React.Component<any, IMainState> {
                     />
                     <div className="mainContainer">
                         {routeComps}
-                        <Route path="/home" exact component={() => <Home navs={navs} componentStructure={componentStructure} />} />
-                        <Route path="/" exact component={() => <Home navs={navs} componentStructure={componentStructure} />} />
+                        <Route path="/home" exact component={() => <Home navs={navs} componentStructure={componentStructure} isMobile={isMobile} />} />
+                        <Route path="/" exact component={() => <Home navs={navs} componentStructure={componentStructure} isMobile={isMobile} />} />
                     </div>
                 </div>
             </Router>

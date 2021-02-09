@@ -1,12 +1,11 @@
 import * as React from 'react';
 import './header.css';
 import { Link as RouterLink, withRouter } from 'react-router-dom';
-import { IRouteArray } from '../../interfaces/componentInterfaces';
+// import { IRouteArray } from '../../interfaces/componentInterfaces';
 import { Icon, Sidebar, Menu } from 'semantic-ui-react';
-import autobind from 'autobind-decorator';
 
 interface IProps {
-    routes: IRouteArray;
+    routes: any; // temporary fix for tslint
     showSidebar: boolean;
     isMobile: boolean;
     toggleSidebar();
@@ -21,16 +20,19 @@ export class Header extends React.Component<IProps, Istate>{
 
     constructor(props) {
         super(props);
+        this.renderSidebar = this.renderSidebar.bind(this);
+        this.renderNavbar = this.renderNavbar.bind(this);
+        this.changeHistory = this.changeHistory.bind(this);
     }
 
-    @autobind
+
     changeHistory(url) {
         console.log('url', url);
         document.getElementById("mobileSidebarClose").click();
         this.props.history.push(url);
     }
 
-    @autobind
+
     renderSidebar() {
         return <div className="mobileSidebarContainer">
             <Icon className="mobileSidebarToggle mobileSidebarOpen margin10" name='bars' size="big" onClick={this.props.toggleSidebar} />
@@ -70,7 +72,7 @@ export class Header extends React.Component<IProps, Istate>{
         </div>
     }
 
-    @autobind
+
     renderNavbar() {
         return <nav className="main-nav" key="mainnav">
             <img src="./../../../public/logo.png" alt="logo.png" width="40" height="40" />
@@ -93,4 +95,5 @@ export class Header extends React.Component<IProps, Istate>{
         return this.renderNavbar();
     }
 }
+// @ts-ignore
 export default withRouter(Header);

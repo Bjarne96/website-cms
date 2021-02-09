@@ -3,13 +3,12 @@ import './fullscreenScroller.css';
 import * as DisplayArticles from '../displayArticle';
 import { INavArray } from '../../interfaces/componentInterfaces';
 import { handleScrollEvent, removeStopScrolling, addStopScrolling, analyseWindowPosition, scrollToElem } from '../../handler/scrollHandler';
-import autobind from 'autobind-decorator';
 import { Link } from "react-scroll";
-import { Loader } from 'semantic-ui-react';
 
 interface IFullcreenScrollerProps {
     componentStructure: any;
     navs: INavArray;
+    isMobile: boolean;
 }
 
 interface IFullcreenScrollerState {
@@ -26,7 +25,6 @@ var touchstartHandler;
 //Coordinat for touch reference
 var touchX = 999;
 var touchY = 999;
-let isMobile = window.matchMedia("only screen and (max-width: 760px)").matches;
 
 
 export class FullscreenScroller extends React.Component<IFullcreenScrollerProps, IFullcreenScrollerState> {
@@ -63,13 +61,11 @@ export class FullscreenScroller extends React.Component<IFullcreenScrollerProps,
         this.handleSetListeners(true);
     }
 
-    @autobind
     touchstartHandler(event) {
         touchY = event.touches[0].clientY;
         touchX = event.touches[0].clientX;
     }
 
-    @autobind
     touchmoveHandler(event) {
         let activeY = event.touches[0].clientY;
         // let acitveX = e.touches[0].clientX;
@@ -82,7 +78,6 @@ export class FullscreenScroller extends React.Component<IFullcreenScrollerProps,
         }
     }
 
-    @autobind
     handleSetListeners(remove?: boolean) {
         if (remove) {
             window.removeEventListener('wheel', scrollHandler, false)
@@ -95,7 +90,6 @@ export class FullscreenScroller extends React.Component<IFullcreenScrollerProps,
         }
     }
 
-    @autobind
     async handleScroll(event, touch?: boolean) {
         //debounce with 1 sec
         if (delay) return;
@@ -107,13 +101,11 @@ export class FullscreenScroller extends React.Component<IFullcreenScrollerProps,
     }
 
     //Todo: Route scrolling
-    @autobind
     scrollComponent(activeView) {
         this.setState({ activeView: activeView })
         //pushHistory(newRoute)
     }
 
-    @autobind
     renderScrollNav() {
         let scrollIndicators = this.props.navs.map((obj, key) => {
             let className = "scrollNavItem"
@@ -128,7 +120,7 @@ export class FullscreenScroller extends React.Component<IFullcreenScrollerProps,
                 id={obj.nav}
                 spy={true}
                 smooth={true}
-                offset={isMobile ? 0 : -56}
+                offset={this.props.isMobile ? 0 : -56}
                 duration={500}>
             </Link>
         })
@@ -142,7 +134,7 @@ export class FullscreenScroller extends React.Component<IFullcreenScrollerProps,
                 id={this.props.navs[this.state.activeView - 2].nav}
                 spy={true}
                 smooth={true}
-                offset={isMobile ? 0 : -56}
+                offset={this.props.isMobile ? 0 : -56}
                 duration={500}
             >
                 <i className="angleIcon angleupIcon angleHover" />
@@ -155,7 +147,7 @@ export class FullscreenScroller extends React.Component<IFullcreenScrollerProps,
                 id={this.props.navs[this.state.activeView].nav}
                 spy={true}
                 smooth={true}
-                offset={isMobile ? 0 : -56}
+                offset={this.props.isMobile ? 0 : -56}
                 duration={500}
             >
                 <i className="angleIcon angledownIcon angleHover" />
@@ -176,8 +168,9 @@ export class FullscreenScroller extends React.Component<IFullcreenScrollerProps,
         //builds navs
         if (this.props.navs != undefined) {
             let scrollNav = <></>;
-            if (!isMobile) scrollNav = this.renderScrollNav();
+            if (!this.props.isMobile) scrollNav = this.renderScrollNav();
             //maps componentstructure
+            console.log("renderFS")
             return (
                 <div id="scrollComponent">
                     {scrollNav}
@@ -189,7 +182,7 @@ export class FullscreenScroller extends React.Component<IFullcreenScrollerProps,
                         } else if (compType == "productdetail") {
                             displayComponent = <DisplayArticles.DisplayDetails key={index} component={data.content} />
                         } else if (compType == "set") {
-                            displayComponent = <DisplayArticles.DisplaySet key={index} component={data.content} />
+                            displayComponent = <DisplayArticles.DisplaySet key={index} component={data.content} isMobile={this.props.isMobile} />
                         }
                         //basic frame for each scrollable component
                         return (
