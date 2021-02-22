@@ -10,9 +10,12 @@ export class DisplayWidePicture extends React.Component<IProps, any> {
 
     render() {
         return <div className="wideContainer">
-            <div className="flexitem">
-                <div className="titleBox" dangerouslySetInnerHTML={{ __html: this.props.component.content }} />
-                <img className="wideImage" src={this.props.component.pictures[0].path} />
+            <div className="textBox">
+                <div className="headline" dangerouslySetInnerHTML={{ __html: this.props.component.content }} />
+                <div className="more-btn">Entdecken</div>
+            </div>
+            <div className="wideImageWrapper">
+                <img className="wideImage" src={"https://s3.eu-central-1.amazonaws.com/files.tiefschlafen.de/public/widescreendummy.jpg"} />
             </div>
         </div>;
     }

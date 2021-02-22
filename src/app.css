@@ -1,10 +1,92 @@
+/* Global Variables */
 :root{
-    /* General Background-Colors */
+    /* General Colors */
     --body-bg-color: #f4f4f4;
 
-    /* TextColors */
+    --element-dark-bg-color: rgb(66, 66, 66);
+    --element-light-bg-color: rgb(180, 180, 180);
+
+    --border-light-color:limegreen;
+    --border-dark-color: darkgreen;
+
     --text-dark-color: black;
-    --text-dark-active-color: limegreen;
     --text-light-color: white;
+
+    --text-dark-active-color: darkgreen;
     --text-light-active-color: limegreen;
+
+/* 
+   --text-normal-fontsize:11px;
+   --text-l-fontsize:25px;
+   --text-xl-fontsize: 40px; */
+}
+/* Reponsive Design */
+/*  Mobile */
+@media screen and (min-width: 0px) and (orientation: portrait)   {
+    /* Textsizes */
+    .item{  
+        font-size: 16px !important;
+    }
+    h1{  
+        font-size: 30px;
+    }
+    h2{  
+        font-size: 20px !important;
+    }
+    /* Icon- & Logosizes */
+    i{
+        font-size: 20px !important;
+    }
+    .logo{
+        height: 25px;
+    }
+}
+@media screen and (min-width: 600px) and (orientation: portrait)   {
+    p{  
+        font-size: 20px !important;
+    }
+}
+@media screen and (min-width: 768px) and (orientation: portrait) {
+    h1{  
+        font-size: 40px;
+    }
+}
+/* @media screen and (min-width: 1080px) and (orientation: portrait)  {
+}
+@media screen and (min-width: 1366px) and (orientation: portrait)  {
+} */
+
+/* Desktop */
+@media screen and (min-width: 0px) and (orientation: landscape)   {
+    /* Textsizes */
+    p{  
+        font-size: 16px !important;
+    }
+    h1{  
+        font-size: 30px;
+    }
+    h2{  
+        font-size: 20px !important;
+    }
+    
+    /* Icon- & Logosizes */
+    i{
+        font-size: 20px !important;
+    }
+    .logo{
+        height: 25px;
+    }
+}
+@media screen and (min-width: 600px) and (orientation: landscape)   {
+    /* Textsizes */
+    p{  
+        font-size: 20px !important;
+    }
+}
+@media screen and (min-width: 768px) and (orientation: landscape) {
+}
+@media screen and (min-width: 1080px) and (orientation: landscape)  {
+}
+@media screen and (min-width: 1366px) and (orientation: landscape)  {
+
 }

@@ -170,7 +170,6 @@ export class FullscreenScroller extends React.Component<IFullcreenScrollerProps,
             let scrollNav = <></>;
             if (!this.props.isMobile) scrollNav = this.renderScrollNav();
             //maps componentstructure
-            console.log("renderFS")
             return (
                 <div id="scrollComponent">
                     {scrollNav}

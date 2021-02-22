@@ -1,6 +1,31 @@
-.sidebarItem {
-    border-top: 1px solid white !important;
+.sidebar {
+    height: 50%;
+    width: 50%;
+    position: fixed;
+    z-index: 3;
+    top: 62px;
+    right: -50%;
+    background-color: var(--element-dark-bg-color);
+    overflow: hidden;
+    transition: 0.5s;
+    border-bottom-left-radius: 5px;
 }
-.sidebarCustomStyle {
-    opacity: 0.8;
+.sidebar-active {
+    right: 0;
+}
+.sidebar .topline {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    color: var(--text-light-color);
+    padding: 5px;
+    padding-right: 50px;
+}
+.sidebar .item{
+    color: var(--text-light-color);
+    border-top: 1px solid var(--element-light-bg-color);
+    overflow: hidden;
+    margin: 10px;
+    padding-top: 10px;
+    cursor: pointer !important;
 }

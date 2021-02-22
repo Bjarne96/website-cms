@@ -1,100 +1,61 @@
-import React, { Component } from "react";
-import { Link, animateScroll as scroll } from "react-scroll";
-import { Loader } from "semantic-ui-react";
+import * as React from 'react';
+import { Menu, Loader, Icon } from 'semantic-ui-react';
+import './navbar.css';
+import * as config from "./../../../../config";
+import { IRouteArray } from './../../interfaces/componentInterfaces'
 
-interface IState {
+interface INavbarState {
     loading: boolean;
 }
 
+interface INavbarProps {
+    routes: IRouteArray;
+    history;
+    isMobile: boolean;
+    toggleSidebar();
+    changeHistory(url);
+}
 
-export class NavBar extends Component<{}, IState> {
+export default class Navbar extends React.Component<INavbarProps, INavbarState> {
+
     constructor(props) {
         super(props);
+        this.navbarEvent = this.navbarEvent.bind(this);
         this.state = {
             loading: true
         }
     }
 
-    scrollToTop = () => {
-        scroll.scrollToTop();
-    };
-
     componentDidMount() {
-        this.setState({ loading: true })
+        window.onscroll = this.navbarEvent;
+        this.setState({ loading: false })
+    }
+
+    navbarEvent() {
+        if (window.scrollY > 200) document.getElementById("navbar").classList.add("animateT");
     }
 
     render() {
-        return <></>
         if (this.state.loading) return <Loader active />
-        return (
-            <nav className="nav" id="navbar">
-                <div className="nav-content">
-                    <ul className="nav-items">
-                        <li className="nav-item">
-                            <Link
-                                activeClass="active"
-                                to="div1"
-                                spy={true}
-                                smooth={true}
-                                offset={-70}
-                                duration={500}
-                            >
-                                Section 1
-				</Link>
-                        </li>
-                        <li className="nav-item">
-                            <Link
-                                activeClass="active"
-                                to="div2"
-                                spy={true}
-                                smooth={true}
-                                offset={-70}
-                                duration={500}
-                            >
-                                Section 2
-				</Link>
-                        </li>
-                        <li className="nav-item">
-                            <Link
-                                activeClass="active"
-                                to="div3"
-                                spy={true}
-                                smooth={true}
-                                offset={-70}
-                                duration={500}
-                            >
-                                Section 3
-				</Link>
-                        </li>
-                        <li className="nav-item">
-                            <Link
-                                activeClass="active"
-                                to="div4"
-                                spy={true}
-                                smooth={true}
-                                offset={-70}
-                                duration={500}
-                            >
-                                Section 4
-				</Link>
-                        </li>
-                        <li className="nav-item">
-                            <Link
-                                activeClass="active"
-                                to="div5"
-                                spy={true}
-                                smooth={true}
-                                offset={-70}
-                                duration={500}
-                            >
-                                Section 5
-				</Link>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-        );
+        return <nav id="navbar" className="navbar-container misterT" key="mainnav">
+            <img src="./../../../public/logo.png" className="logo" alt="logo" onClick={() => window.location.href = config.domain} />
+            <div onClick={() => window.location.href = config.domain}><h2>Tiefschlafen</h2></div>
+            <div className={"navbar-menu"}>
+                {this.props.routes.map((route, key) => {
+                    let itemClass = "mobileSidebarItem";
+                    if (this.props.history.location.pathname == route.url) itemClass += " active";
+                    return <Menu.Item
+                        as='div'
+                        key={key + "route"}
+                        onClick={() => this.props.changeHistory(route.url)}>
+                        <p className={itemClass}>{route.title}</p>
+                    </Menu.Item>
+                })}
+            </div>
+            <div className="navbar-btns">
+                <Icon className="btn cart-btn" name='cart' size="big" />
+                <Icon className="btn sidebar-btn" name='bars' size="big" onClick={this.props.toggleSidebar} />
+            </div>
+        </nav>;
     }
 }
-
-export default NavBar;

@@ -1,8 +1,7 @@
 import * as React from 'react';
-import { Menu, Sidebar, Loader } from 'semantic-ui-react';
+import { Loader, Icon } from 'semantic-ui-react';
 import './sidebar.css';
-import autobind from 'autobind-decorator';
-import { Link } from 'react-router-dom';
+import * as config from "./../../../../config";
 
 import { IRouteArray } from './../../interfaces/componentInterfaces'
 
@@ -13,9 +12,11 @@ interface ISidebarState {
 interface ISidebarProps {
     routes: IRouteArray;
     showSidebar: boolean;
+    history;
+    changeHistory(url);
 }
 
-export default class Base extends React.Component<ISidebarProps, ISidebarState> {
+export default class Sidebar extends React.Component<ISidebarProps, ISidebarState> {
 
     constructor(props) {
         super(props);
@@ -30,30 +31,18 @@ export default class Base extends React.Component<ISidebarProps, ISidebarState> 
 
     render() {
         if (this.state.loading) return <Loader active />
-        let menuItems = this.renderMenuItems();
-        return <Sidebar
-            as={Menu}
-            animation="overlay"
-            visible={this.props.showSidebar}
-            icon="labeled"
-            vertical
-            width='thin'
-            className='noBorderTop sidebarCustomStyle'
-        >
-            {menuItems}
-        </Sidebar>
-    }
-
-
-    renderMenuItems() {
-        return (this.props.routes.map((route) => {
-            if (route.showInSidebar) {
-                return <Menu.Item className='sidebarItem' key={route.path}>
-                    <Link key={route.path} to={route.path} >
-                        <strong className="whiteColor">{route.title}</strong>
-                    </Link>
-                </Menu.Item>
-            }
-        }))
+        return <>
+            <div id="sidebar" className="sidebar">
+                {this.props.routes.map((route, key) => {
+                    return <p
+                        className={this.props.history.location.pathname == route.url ? "item active" : "item"}
+                        key={key + "route"}
+                        onClick={() => this.props.changeHistory(route.url)}
+                    >
+                        {route.title}
+                    </p>
+                })}
+            </div>
+        </>
     }
 }

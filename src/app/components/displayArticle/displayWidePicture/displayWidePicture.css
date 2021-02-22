@@ -4,35 +4,71 @@
     flex-direction: row;
     flex-grow: 1;
     justify-content: center;
-}
-.flexitem {
-    align-self: center;
+    margin-bottom: 150px;
 }
 
-.titleBox {
+.textBox {
+    z-index: 2;
+    cursor: pointer;
     position: absolute;
-    top: 20%;
+    top: 40%;
     left: 0;
     width: 100%;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    opacity: 0;
+    color: var(--text-dark-color);
+    animation-delay: 1.5s;
+    -webkit-animation: fade 1.5s forwards 1.5s normal 1 ease-in-out;
+    animation: fade 1.5s forwards 1.5s 1 normal ease-in-out;
+}
+@-webkit-keyframes fade {
+    100% {
+        opacity: 1;
+    }
+}
+@keyframes fade {
+    100% {
+        opacity: 1;
+    }
+}
+.more-btn {
+    padding: 0.5em 1em;
+    border: 2px solid var(--text-dark-color);
+}
+.wideImageWrapper {
+    overflow: hidden;
+}
+.wideImage {
+    transform: scale(1.3);
+    -webkit-animation: zoom 1.5s forwards  normal ease-in-out;
+    animation: zoom 1.5s forwards  normal ease-in-out;
+}
+@-webkit-keyframes zoom {
+    100% {transform: scale(1.0);}
+}
+@keyframes zoom {
+    100% {transform: scale(1.0);}
 }
 
-
-@media (orientation: landscape) {
+@media screen and (orientation: portrait) {
+    .wideContainer {
+        height: 100vh !important;
+        width: 100vw !important;
+    }
     .wideImage {
-        /* 3600 / 2154 = 0.67 image ratio*/
-        width: 100vw;
-        height: 67vw;
-        /* Die Differenz von Bildschirmhöhe und Bildhöhe um die hälfte nach oben ziehen (centering) */
-        margin-top: calc(calc(calc(100vh - 56px) - 67vw) / 2);
-    } 
-    
+        height: 100vh !important;
+    }
 }
-  
-@media (orientation: portrait) {
+
+@media screen and (orientation: landscape) {
+    .wideContainer {
+        height: 100vh !important;
+        width: 100vw !important;
+    }
     .wideImage {
-        margin-top: 0px;
-        width: 149vh;
-        height: 100vh;
+        width: 100vw !important;
     }
 }

@@ -35,6 +35,10 @@ export class Main extends React.Component<any, IMainState> {
 
     constructor(props) {
         super(props);
+        this.touchstartHandler = this.touchstartHandler.bind(this);
+        this.loadNav = this.loadNav.bind(this);
+        this.toggleSidebar = this.toggleSidebar.bind(this);
+
         this.state = {
             loading: true,
             showSidebar: false
@@ -95,12 +99,16 @@ export class Main extends React.Component<any, IMainState> {
 
     toggleSidebar() {
         console.log("toggle")
+
         //debounce
         if (delay) return
         delay = true;
         setTimeout(() => { delay = false; }, 500)
         //sets sidebar state
         this.setState({ showSidebar: !this.state.showSidebar })
+        if (!this.state.showSidebar) document.getElementById("sidebar").classList.add("sidebar-active");
+        if (this.state.showSidebar) document.getElementById("sidebar").classList.remove("sidebar-active");
+
         //Sets Listener
         if (!this.state.showSidebar) window.addEventListener('touchstart', touchstartHandler, false)
         if (this.state.showSidebar) window.removeEventListener('touchstart', touchstartHandler, false)

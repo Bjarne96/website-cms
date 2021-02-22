@@ -1,0 +1,82 @@
+.animateT {
+    -webkit-transition: all 0.4s ease;
+    transition: all 0.4s ease;
+    background-color: var(--element-dark-bg-color) !important;
+}
+
+.navbar-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 62px;
+    padding: 18px 15px;
+    position: fixed;
+    top: 0;
+    background-color:rgba(0,0,0,0);
+    width: 100%;
+    z-index: 3;
+}
+.navbar-container * {
+    color: var(--text-light-color);
+}
+.navbar-container *:hover {
+    color: var(--text-light-active-color);
+}
+  
+.navbar-container div {
+    display: flex;
+    list-style: none;
+    text-decoration: none ;
+}
+.navbar-container .navbar-menu {
+    display: none;
+    flex: 1;
+    margin-left: 1rem;
+}
+.navbar-menu .item{
+    margin: 0px 1rem;
+    cursor: pointer !important;
+    /* related to navbar height & padding */
+    max-height: 28px;
+}
+.navbar-menu .item p{
+    overflow: hidden;
+}
+.navbar-btns {
+    top: var(--btns-center);
+    right: var(--btns-right);
+    color: var(--text-light-color);
+    position: fixed;
+    z-index: 4;
+}
+.btn {
+    margin-left: 1em !important;
+}
+@media screen and (min-width: 1200px)   {
+    .navbar-menu {
+        display: flex !important;
+    }
+    .navbar-container {
+        justify-content: left !important;
+    }
+    .sidebar-btn {
+        display: none !important;
+    }
+}
+
+
+:root {
+
+    /* Sizes */
+
+    --navbar-padding: 18px;
+
+    /* navbar-padding */
+    --btns-right: 18px;
+
+    /* top = navbar-padding + ((height-fontsize)/2) */
+    /* 21 = ((62 - 20)/2) */
+    --btns-center: 21px;
+    
+
+}
