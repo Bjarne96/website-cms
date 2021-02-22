@@ -22,14 +22,10 @@ export class DisplaySet extends React.Component<IProps, any> {
                 key={index + "cardcontainer"}
                 onClick={() => this.clickme(set.content.url)}
             >
-                {/* <img className="card-image" src={set.content.pictures[0].path} /> */}
-                {this.props.isMobile ?
-                    <img className="card-image" src={"https://s3.eu-central-1.amazonaws.com/files.tiefschlafen.de/public/cardportrait.jpg"} />
-                    :
-                    <img className="card-image" src={"https://s3.eu-central-1.amazonaws.com/files.tiefschlafen.de/public/cardwidescreen.jpg"} />
-                }
+                <img className="card-image" src={set.content.pictures[0].path} />
+                {/* <img className="card-image" src={"https://s3.eu-central-1.amazonaws.com/files.tiefschlafen.de/public/cardwidescreen.jpg"} /> */}
                 <div className="card-titleframe">
-                    <div className="card-title">{set.content.title}</div>
+                    <p className="card-title">{set.content.title}</p>
                 </div>
             </div>;
         });

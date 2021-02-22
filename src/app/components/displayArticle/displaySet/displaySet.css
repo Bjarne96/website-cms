@@ -3,8 +3,9 @@
 }
 .card-outerframe {
     width: 100%;
-    height: 100%;
-    padding: 75px;
+    max-width: 1510px;
+    padding: 0px 5px;
+    margin: auto;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -14,11 +15,10 @@
     display: flex;
     flex-wrap: wrap;
     height: 100%;
+    justify-content: center;
 }
 .card-container {
     flex-grow: 1;
-    background-color: white;
-    color: var(--text-dark-color);
     overflow: hidden;
 }
 .card-image {
@@ -33,19 +33,18 @@
 .card-titleframe {
     position: relative;
     top: 83%;
-    background-color: rgba(255, 255, 255, 0.7);
+    background-color: var(--element-light-bg-color);
     border-radius: 2px;
     width: 60%;
     height: 48px;
     margin: auto;
-    overflow: hidden;
-    z-index: 2;
     display: block;
+    opacity: 0.8;
 }
+/* todo flex box align item */
 .card-title {
-    font-size: 25px;
+    color: var(--text-dark-color);
     font-weight: normal;
-    line-height: 46px;
     width: 100%;
     text-align: center; 
     overflow: hidden;
@@ -64,7 +63,7 @@
 
 :root {
     /* Margins */
-    --card-margin: 10px;
+    --card-margin: 5px;
     /* --card-margin-total: calc(var(--card-margin) * 2); */
     /* Card Active Hover Settings */
     /* Boxshadows */
@@ -74,28 +73,50 @@
     --card-move-up: -0.3vh;
     --card-move-down: 0.3vh;
 }
-@media (orientation: landscape) {
+
+@media screen and (orientation: landscape) {
+    .card-outerframe {
+        height: 100%;
+    }
     .card-parent {
         flex-direction: row;
         width: 100%;
     }
     .card-container {
         margin: var(--card-margin);
-        width: calc(33% - 20px);
-        height: calc(50% - 20px);
+        width: calc(33vw - 15px);
+        height: calc(33vw - 15px);
+        max-width:480px;
+        max-height:480px;
     }
-    
   }
   
-  @media (orientation: portrait) {
+  @media screen and (orientation: portrait) {
+    .card-outerframe {
+        height: 150vw;
+    }
     .card-parent {
         flex-direction: column;
         width: 100%;
     }
     .card-container {
         margin: var(--card-margin);
-        width: calc(50% - 20px);
-        height: calc(33% - 20px);
+        width: calc(50vw - 15px);
+        height: calc(50vw - 15px);
+    }
+  }
+  @media screen and (max-width: 480px) and (orientation: portrait) {
+    .card-outerframe {
+        height: 100%;
+    }
+    .card-parent {
+        flex-direction: row;
+        width: 100%;
+    }
+    .card-container {
+        margin: var(--card-margin);
+        width: calc(100vw - 10px);
+        height: calc(100vw - 10px);
     }
   }
 
