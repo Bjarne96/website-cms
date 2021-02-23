@@ -22,8 +22,13 @@ export class DisplaySet extends React.Component<IProps, any> {
                 key={index + "cardcontainer"}
                 onClick={() => this.clickme(set.content.url)}
             >
-                <img className="card-image" src={set.content.pictures[0].path} />
-                {/* <img className="card-image" src={"https://s3.eu-central-1.amazonaws.com/files.tiefschlafen.de/public/cardwidescreen.jpg"} /> */}
+                <div className="card-image-wrapper">
+                    {/* <img className="card-image" src={set.content.pictures[0].path} /> */}
+                    <img
+                        className="card-image"
+                        src={"https://s3.eu-central-1.amazonaws.com/files.tiefschlafen.de/public/widescreendummy.jpg"}
+                    />
+                </div>
                 <div className="card-titleframe">
                     <p className="card-title">{set.content.title}</p>
                 </div>

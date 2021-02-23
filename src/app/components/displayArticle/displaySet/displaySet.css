@@ -1,45 +1,49 @@
-.mobile{
+.mobile {
     flex-direction: column;
 }
 .card-outerframe {
     width: 100%;
     max-width: 1510px;
-    padding: 0px 5px;
+    padding: 0px 3.5vw;
     margin: auto;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.card-parent{
+.card-parent {
     display: flex;
     flex-wrap: wrap;
     height: 100%;
     justify-content: center;
 }
 .card-container {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    /* justify-items: center; */
     flex-grow: 1;
     overflow: hidden;
+    padding: 1vw;
+    margin: var(--card-margin);
+}
+.card-image-wrapper {
+    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden !important;
+    height: 100%;
+    width: 100%;
 }
 .card-image {
-    position: absolute;
-    left: -1000%;
-    right: -1000%;
-    top: -1000%;
-    bottom: -1000%;
     margin: auto;
-    height: 100%;
+    width: 100%;
 }
 .card-titleframe {
-    position: relative;
-    top: 83%;
-    background-color: var(--element-light-bg-color);
-    border-radius: 2px;
-    width: 60%;
-    height: 48px;
-    margin: auto;
+    z-index: 2;
+    padding: 15px;
     display: block;
-    opacity: 0.8;
 }
 /* todo flex box align item */
 .card-title {
@@ -58,12 +62,13 @@
     position: relative;
     -webkit-animation: notActiveCard 0.2s forwards  normal ease-in-out;
     animation: notActiveCard 0.2s forwards  normal ease-in-out;
-    
 }
 
 :root {
     /* Margins */
-    --card-margin: 5px;
+    --card-margin: 3.5vw;
+    --card-landscape-width: 23vw;
+    --card-mobile-width: 40vw;
     /* --card-margin-total: calc(var(--card-margin) * 2); */
     /* Card Active Hover Settings */
     /* Boxshadows */
@@ -83,9 +88,8 @@
         width: 100%;
     }
     .card-container {
-        margin: var(--card-margin);
-        width: calc(33vw - 15px);
-        height: calc(33vw - 15px);
+        width: var(--card-landscape-width);
+        /* height: var(--card-landscape-width); */
         max-width:480px;
         max-height:480px;
     }
@@ -101,8 +105,8 @@
     }
     .card-container {
         margin: var(--card-margin);
-        width: calc(50vw - 15px);
-        height: calc(50vw - 15px);
+        width: var(--card-mobile-width);
+        /* height: var(--card-mobile-width); */
     }
   }
   @media screen and (max-width: 480px) and (orientation: portrait) {
