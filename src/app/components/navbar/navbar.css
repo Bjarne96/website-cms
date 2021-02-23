@@ -1,3 +1,8 @@
+.transparent {
+    -webkit-transition: all 0.1s ease;
+    transition: all 0.1s ease;
+    background-color:rgba(0,0,0,0) !important;
+}
 .animateT {
     -webkit-transition: all 0.4s ease;
     transition: all 0.4s ease;
@@ -12,7 +17,7 @@
     padding: 18px 15px;
     position: fixed;
     top: 0;
-    background-color:rgba(0,0,0,0);
+    background-color: var(--element-dark-bg-color);
     width: 100%;
     z-index: 3;
 }
