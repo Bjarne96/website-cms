@@ -3,7 +3,7 @@
     width: 50%;
     position: fixed;
     z-index: 3;
-    top: 62px;
+    padding-top: 62px;
     right: -50%;
     background-color: var(--element-dark-bg-color);
     overflow: hidden;

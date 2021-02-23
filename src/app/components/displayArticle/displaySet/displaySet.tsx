@@ -4,7 +4,6 @@ import { IContent } from '../../../../schemas';
 
 interface IProps {
     component: Array<IContent>;
-    isMobile: boolean;
 }
 
 export class DisplaySet extends React.Component<IProps, any> {

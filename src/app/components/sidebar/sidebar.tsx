@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { Loader, Icon } from 'semantic-ui-react';
+import { Loader } from 'semantic-ui-react';
 import './sidebar.css';
-import * as config from "./../../../../config";
 
 import { IRouteArray } from './../../interfaces/componentInterfaces'
 
@@ -11,7 +10,6 @@ interface ISidebarState {
 
 interface ISidebarProps {
     routes: IRouteArray;
-    showSidebar: boolean;
     history;
     changeHistory(url);
 }

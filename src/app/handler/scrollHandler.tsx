@@ -1,13 +1,10 @@
 import { INavArray } from "../interfaces/componentInterfaces";
 import * as $ from "jquery";
 
-let isMobile = window.matchMedia("(orientation: portrait)").matches;
-let offset = 56;
-
 export const scrollToElem = (id: string) => {
-    if (isMobile) offset = 0;
+    // if (isMobile) offset = 0;
     $("html, body").animate({
-        scrollTop: $("#" + id).offset().top - offset
+        scrollTop: $("#" + id).offset().top //- offset
     }, 500);
 }
 let body = document.body;
@@ -22,8 +19,8 @@ export const removeStopScrolling = () => {
 
 //window offset / window height = how many components are scrolled down
 export const analyseWindowPosition = () => {
-    if (isMobile) offset = 0;
-    let activeView = Math.round((window.scrollY / (window.innerHeight - offset)) + 1);
+    //if (isMobile) offset = 0;
+    let activeView = Math.round((window.scrollY / (window.innerHeight)) + 1); //- offset
     return activeView;
 }
 

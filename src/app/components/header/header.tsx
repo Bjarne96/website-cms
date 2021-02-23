@@ -7,41 +7,90 @@ import Navbar from "./../navbar/navbar";
 
 interface IProps {
     routes: any; // temporary fix for tslint
-    showSidebar: boolean;
-    isMobile: boolean;
-    toggleSidebar();
     history;
 }
 
-
 interface Istate {
+    navbarTransparent: boolean;
+    showSidebar: boolean;
 }
 
+var delay = false;
+var touchstartHandler;
+var touchX;
+
 export class Header extends React.Component<IProps, Istate>{
+
+
 
     constructor(props) {
         super(props);
         this.changeHistory = this.changeHistory.bind(this);
+        this.evaluateStyle = this.evaluateStyle.bind(this);
+        this.toggleSidebar = this.toggleSidebar.bind(this);
+        this.touchstartHandler = this.touchstartHandler.bind(this);
+        this.state = {
+            navbarTransparent: true,
+            showSidebar: false
+        }
+    }
+
+    toggleSidebar() {
+        // Debounce
+        if (delay) return
+        delay = true;
+        setTimeout(() => { delay = false; }, 500)
+
+        //Toggles showSidebar State
+        this.setState({ showSidebar: !this.state.showSidebar })
+
+        if (!this.state.showSidebar) {
+            //Shows Sidebar
+            document.getElementById("sidebar").classList.add("sidebar-active");
+            //Set Listener
+            window.addEventListener('touchstart', touchstartHandler, false)
+        } else {
+            //Hides Sidebar
+            document.getElementById("sidebar").classList.remove("sidebar-active");
+            //Remove Listener
+            window.removeEventListener('touchstart', touchstartHandler, false)
+        }
+    }
+
+    //Mobile Sidebar Handler
+    touchstartHandler(event) {
+        touchX = event.touches[0].clientX;
+        if (touchX > (window.innerWidth * 0.7)) this.toggleSidebar();
+    }
+
+    evaluateStyle(url) {
+        if (url == "/home") {
+            this.setState({ navbarTransparent: true })
+        } else {
+            this.setState({ navbarTransparent: false })
+        }
     }
 
     changeHistory(url) {
         console.log('url', url);
-        if (this.props.isMobile) this.props.toggleSidebar();
+        this.evaluateStyle(url);
+        if (this.state.showSidebar) this.toggleSidebar();
         this.props.history.push(url);
+        window.scrollTo(0, 0);
     }
 
     render() {
         return <>
             <Navbar
-                isMobile={this.props.isMobile}
-                toggleSidebar={this.props.toggleSidebar}
                 changeHistory={this.changeHistory}
+                toggleSidebar={this.toggleSidebar}
+                evaluateStyle={this.evaluateStyle}
+                navbarTransparent={this.state.navbarTransparent}
                 routes={this.props.routes}
                 history={this.props.history}
             />
             <Sidebar
                 changeHistory={this.changeHistory}
-                showSidebar={this.props.showSidebar}
                 routes={this.props.routes}
                 history={this.props.history}
             />

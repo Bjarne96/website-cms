@@ -11,12 +11,6 @@ import Default from './views/default/default';
 
 interface IMainState {
     loading: boolean;
-    showSidebar: boolean;
-}
-
-let divstyle = {
-    width: window.innerWidth,
-    height: window.innerHeight
 }
 
 let structureId = "5ecf937004cc1b001752148d";
@@ -27,21 +21,16 @@ let routerStructure = [];
 let navs: INavArray = [];
 let routes: IRouteArray = [];
 
-var delay = false;
-var touchstartHandler;
-var touchX;
+
 
 export class Main extends React.Component<any, IMainState> {
 
     constructor(props) {
         super(props);
-        this.touchstartHandler = this.touchstartHandler.bind(this);
         this.loadNav = this.loadNav.bind(this);
-        this.toggleSidebar = this.toggleSidebar.bind(this);
 
         this.state = {
-            loading: true,
-            showSidebar: false
+            loading: true
         }
     }
 
@@ -54,7 +43,7 @@ export class Main extends React.Component<any, IMainState> {
         this.loadComponentAndRouterStructure(structure);
         this.loadNav();
         this.loadRoutes();
-        touchstartHandler = this.touchstartHandler.bind(this);
+
         this.setState({ loading: false })
     }
 
@@ -95,29 +84,6 @@ export class Main extends React.Component<any, IMainState> {
             })
         })
 
-    }
-
-    toggleSidebar() {
-        console.log("toggle")
-
-        //debounce
-        if (delay) return
-        delay = true;
-        setTimeout(() => { delay = false; }, 500)
-        //sets sidebar state
-        this.setState({ showSidebar: !this.state.showSidebar })
-        if (!this.state.showSidebar) document.getElementById("sidebar").classList.add("sidebar-active");
-        if (this.state.showSidebar) document.getElementById("sidebar").classList.remove("sidebar-active");
-
-        //Sets Listener
-        if (!this.state.showSidebar) window.addEventListener('touchstart', touchstartHandler, false)
-        if (this.state.showSidebar) window.removeEventListener('touchstart', touchstartHandler, false)
-    }
-
-
-    touchstartHandler(event) {
-        touchX = event.touches[0].clientX;
-        if (touchX > (window.innerWidth * 0.7)) this.toggleSidebar();
     }
 
 
@@ -164,8 +130,6 @@ export class Main extends React.Component<any, IMainState> {
 
     render() {
         if (this.state.loading) return <Loader active />
-        let isMobile = false;
-        if (window.innerWidth / window.innerHeight <= 1) isMobile = true;
         let routeComps;
         routeComps = <></>
         if (routerStructure != undefined) {
@@ -189,15 +153,12 @@ export class Main extends React.Component<any, IMainState> {
                     <Header
                         //@ts-ignore
                         routes={routes}
-                        isMobile={isMobile}
-                        toggleSidebar={this.toggleSidebar}
-                        showSidebar={this.state.showSidebar}
                         history={this.props.history}
                     />
                     <div className="mainContainer">
                         {routeComps}
-                        <Route path="/home" exact component={() => <Home navs={navs} componentStructure={componentStructure} isMobile={isMobile} />} />
-                        <Route path="/" exact component={() => <Home navs={navs} componentStructure={componentStructure} isMobile={isMobile} />} />
+                        <Route path="/home" exact component={() => <Home navs={navs} componentStructure={componentStructure} />} />
+                        <Route path="/" exact component={() => <Home navs={navs} componentStructure={componentStructure} />} />
                     </div>
                 </div>
             </Router>

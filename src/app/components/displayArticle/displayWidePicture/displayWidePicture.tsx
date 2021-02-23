@@ -7,7 +7,6 @@ interface IProps {
 }
 
 export class DisplayWidePicture extends React.Component<IProps, any> {
-
     render() {
         return <div className="wideContainer">
             <div className="textBox">

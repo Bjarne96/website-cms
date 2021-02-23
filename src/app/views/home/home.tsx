@@ -6,7 +6,6 @@ import * as DisplayArticles from './../../components/displayArticle';
 interface IProps {
     componentStructure: any;
     navs: any;
-    isMobile: boolean;
 }
 
 interface IState {
@@ -20,16 +19,11 @@ export class Home extends React.Component<IProps, IState>{
                 if (data.componentType == "widescreen") {
                     return <DisplayArticles.DisplayWidePicture key={index} component={data.content} />
                 } else if (data.componentType == "set") {
-                    return <DisplayArticles.DisplaySet key={index} component={data.content} isMobile={this.props.isMobile} />
+                    return <DisplayArticles.DisplaySet key={index} component={data.content} />
                 } else if (data.componentType == "productdetail") {
                     return <DisplayArticles.DisplayDetails key={index} component={data.content} />
                 }
             })}
         </div>
-        // return <FullscreenScroller
-        //     navs={this.props.navs}
-        //     componentStructure={this.props.componentStructure}
-        //     isMobile={this.props.isMobile}
-        // />
     }
 }

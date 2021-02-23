@@ -19,7 +19,7 @@
     top: 0;
     background-color: var(--element-dark-bg-color);
     width: 100%;
-    z-index: 3;
+    z-index: 4;
 }
 .navbar-container * {
     color: var(--text-light-color);

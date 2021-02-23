@@ -6,15 +6,16 @@ import { IRouteArray } from './../../interfaces/componentInterfaces'
 
 interface INavbarState {
     loading: boolean;
-    transparent: boolean;
+    showSidebar: boolean;
 }
 
 interface INavbarProps {
     routes: IRouteArray;
     history;
-    isMobile: boolean;
-    toggleSidebar();
+    navbarTransparent: boolean;
     changeHistory(url);
+    toggleSidebar();
+    evaluateStyle(url);
 }
 
 export default class Navbar extends React.Component<INavbarProps, INavbarState> {
@@ -22,45 +23,27 @@ export default class Navbar extends React.Component<INavbarProps, INavbarState> 
     constructor(props) {
         super(props);
         this.navbarEvent = this.navbarEvent.bind(this);
-        this.navbarRouteChange = this.navbarRouteChange.bind(this);
-        this.evaluateStyle = this.evaluateStyle.bind(this);
         this.state = {
             loading: false,
-            transparent: false
+            showSidebar: false
         }
     }
 
     componentDidMount() {
         window.onscroll = this.navbarEvent;
-
+        if (window.scrollY > 0) document.getElementById("navbar").classList.add("animateT");
         this.setState({ loading: false })
-        console.log('mount');
-        this.evaluateStyle(this.props.history.location.pathname);
+        this.props.evaluateStyle(this.props.history.location.pathname);
     }
 
     navbarEvent() {
-        if (window.scrollY > 200) document.getElementById("navbar").classList.add("animateT");
-    }
-
-    navbarRouteChange(url) {
-        this.evaluateStyle(url);
-        this.props.changeHistory(url);
-    }
-
-    evaluateStyle(url) {
-        if (url == "/home") {
-            this.setState({ transparent: true })
-        } else {
-            this.setState({ transparent: false })
-        }
+        if (window.scrollY > 100) document.getElementById("navbar").classList.add("animateT");
     }
 
     render() {
-        console.log('render');
         if (this.state.loading) return <Loader active />
         let navbarClassName = "navbar-container misterT";
-        if (this.state.transparent) {
-            console.log('this.state.transparent', this.state.transparent);
+        if (this.props.navbarTransparent) {
             navbarClassName += " transparent"
         }
         return <nav id="navbar" className={navbarClassName} key="mainnav">
@@ -73,7 +56,7 @@ export default class Navbar extends React.Component<INavbarProps, INavbarState> 
                     return <Menu.Item
                         as='div'
                         key={key + "route"}
-                        onClick={() => this.navbarRouteChange(route.url)}>
+                        onClick={() => this.props.changeHistory(route.url)}>
                         <p className={itemClass}>{route.title}</p>
                     </Menu.Item>
                 })}
