@@ -24,8 +24,8 @@
     /* justify-items: center; */
     flex-grow: 1;
     overflow: hidden;
-    padding: 1vw;
-    margin: var(--card-margin);
+    padding: 0.5vw;
+    margin: 0px ;/*var(--card-margin)*/
 }
 .card-image-wrapper {
     display: block;
@@ -42,7 +42,7 @@
 }
 .card-titleframe {
     z-index: 2;
-    padding: 15px;
+    padding: 5px;
     display: block;
 }
 /* todo flex box align item */
@@ -66,8 +66,8 @@
 
 :root {
     /* Margins */
-    --card-margin: 3.5vw;
-    --card-landscape-width: 23vw;
+    --card-margin: 1vw;
+    --card-landscape-width: 21vw;
     --card-mobile-width: 40vw;
     /* --card-margin-total: calc(var(--card-margin) * 2); */
     /* Card Active Hover Settings */

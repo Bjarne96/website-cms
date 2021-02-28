@@ -1,0 +1,66 @@
+:root {
+    /* General Measures */
+    --pd-layer-height: 500px;
+    --pd-layer-offset: 150px;
+    --pd-img-offset-top: 166px;
+    --pd-img-offset-left: 89px
+}
+.pd-outerframe {
+    border: 1px solid red;
+    margin-top: 100px;
+    height: 100%;
+    width: 100%;
+    padding: 100px;
+}
+.pd-container {
+    height: calc(var(--pd-layer-height) + var(--pd-layer-offset));
+    width: 100%;
+    max-width: 1200px;;
+    position: relative;
+    margin: auto;
+}
+.dummy-blanket {
+    position: absolute;
+    top: var(--pd-img-offset-top);
+    left: var(--pd-img-offset-left);
+    transform: rotate(-45deg);
+    height: 220px;
+    width: 400px;
+    z-index: 3;
+    background-color: white;
+    border: 2px solid grey;
+}
+.pd-bg-layer {
+    position: absolute;
+    top: 0;
+    right: 0;
+    border: 5px solid var(--text-dark-color);
+    width: 100%;
+    z-index: 0;
+    height: var(--pd-layer-height);
+    width: calc(100% - var(--pd-layer-offset));
+}
+.pd-front-layer {
+    position: absolute;
+    top: var(--pd-layer-offset);
+    left: 0;
+    z-index: 1;
+    height: var(--pd-layer-height);
+    width: calc(100% - var(--pd-layer-offset));
+    background-color: var(--element-dark-bg-color);
+    color: var(--text-light-color);
+}
+.pd-title-frame {
+    position: absolute;
+    height: var(--pd-layer-offset);
+    width: 100%;
+    padding: auto 0;
+    left: calc(var(--pd-img-offset-left) + 200px);
+    display: flex;
+    align-items: center;
+    justify-content: left;
+}
+.pd-title {
+    color: var(--text-dark-color);
+    font-size: 25px !important;
+}
