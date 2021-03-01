@@ -3,17 +3,26 @@
     /* General Colors */
     --body-bg-color: #f4f4f4;
 
-    --element-dark-bg-color: rgb(66, 66, 66);
-    --element-light-bg-color: rgb(180, 180, 180);
-
-    --border-light-color:limegreen;
-    --border-dark-color: darkgreen;
-
-    --text-dark-color: black;
+    --light-color: #24B0F2;
+    --very-light-color: #94cee9;
+    --light-active-color: rgb(49, 128, 255);
     --text-light-color: white;
+    --text-light-active-color: var(--light-active-color);
 
-    --text-dark-active-color: darkgreen;
-    --text-light-active-color: limegreen;
+    --dark-color: rgb(28, 99, 214);
+    --dark-active-color: #2272f3;
+    --text-dark-color: black;/* #454545 */
+    --text-dark-active-color:  var(--dark-active-color);;
+    
+    --border-dark-color: var(--dark-color);
+    --border-light-color:var(--light-color);
+
+    --max-width-container: 1710px;
+    --outer-frame-padding: 10vw;
+    
+    
+    /* --element-dark-bg-color: rgb(66, 66, 66); */
+    /*--element-light-bg-color: rgb(180, 180, 180); */
 
 /* 
    --text-normal-fontsize:11px;

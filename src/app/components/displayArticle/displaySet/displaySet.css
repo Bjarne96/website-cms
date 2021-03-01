@@ -3,8 +3,8 @@
 }
 .card-outerframe {
     width: 100%;
-    max-width: 1510px;
-    padding: 0px 3.5vw;
+    padding: 0px var(--outer-frame-padding);
+    max-width: var(--max-width-container);
     margin: auto;
     display: flex;
     align-items: center;
@@ -24,8 +24,8 @@
     /* justify-items: center; */
     flex-grow: 1;
     overflow: hidden;
-    padding: 0.5vw;
-    margin: 0px ;/*var(--card-margin)*/
+    margin: var(--card-margin);
+    padding: var(--card-padding);
 }
 .card-image-wrapper {
     display: block;
@@ -66,7 +66,8 @@
 
 :root {
     /* Margins */
-    --card-margin: 1vw;
+    --card-margin: 5px;
+    --card-padding: 8px;
     --card-landscape-width: 21vw;
     --card-mobile-width: 40vw;
     /* --card-margin-total: calc(var(--card-margin) * 2); */

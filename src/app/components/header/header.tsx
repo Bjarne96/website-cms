@@ -64,7 +64,7 @@ export class Header extends React.Component<IProps, Istate>{
     }
 
     evaluateStyle(url) {
-        if (url == "/home") {
+        if (url == "/home" || url == "/") {
             this.setState({ navbarTransparent: true })
         } else {
             this.setState({ navbarTransparent: false })
@@ -72,7 +72,6 @@ export class Header extends React.Component<IProps, Istate>{
     }
 
     changeHistory(url) {
-        console.log('url', url);
         this.evaluateStyle(url);
         if (this.state.showSidebar) this.toggleSidebar();
         this.props.history.push(url);

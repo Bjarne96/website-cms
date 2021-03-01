@@ -42,7 +42,7 @@ export default class Navbar extends React.Component<INavbarProps, INavbarState> 
 
     render() {
         if (this.state.loading) return <Loader active />
-        let navbarClassName = "navbar-container misterT";
+        let navbarClassName = "navbar-container";
         if (this.props.navbarTransparent) {
             navbarClassName += " transparent"
         }

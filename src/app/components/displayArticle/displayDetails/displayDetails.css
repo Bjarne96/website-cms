@@ -10,12 +10,13 @@
     margin-top: 100px;
     height: 100%;
     width: 100%;
-    padding: 100px;
+    padding: var(--outer-frame-padding);
+    max-width:var(--max-width-container);
+    margin: auto;
 }
 .pd-container {
     height: calc(var(--pd-layer-height) + var(--pd-layer-offset));
     width: 100%;
-    max-width: 1200px;;
     position: relative;
     margin: auto;
 }
@@ -34,7 +35,8 @@
     position: absolute;
     top: 0;
     right: 0;
-    border: 5px solid var(--text-dark-color);
+    /* border: 5px solid var(--element-dark-bg-color); */
+    background-color: var(--very-light-color);
     width: 100%;
     z-index: 0;
     height: var(--pd-layer-height);
@@ -47,7 +49,8 @@
     z-index: 1;
     height: var(--pd-layer-height);
     width: calc(100% - var(--pd-layer-offset));
-    background-color: var(--element-dark-bg-color);
+    /* border: 2px solid var(--element-dark-bg-color); */
+    background-color: var(--light-color);
     color: var(--text-light-color);
 }
 .pd-title-frame {
@@ -59,6 +62,7 @@
     display: flex;
     align-items: center;
     justify-content: left;
+    font-weight: 600;
 }
 .pd-title {
     color: var(--text-dark-color);
