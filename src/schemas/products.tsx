@@ -7,7 +7,7 @@ export interface IDependendProduct {
     text: string,
     price: string,
     pictures: [], //Array<mongoose.Types.ObjectId>,
-    properties:  Array<Array<string>>
+    properties: Array<Array<string>>
 }
 
 export interface IProduct {
@@ -19,7 +19,17 @@ export interface IProduct {
     properties: Array<Array<string>>
 }
 
-export interface IProperties{
+export interface ICartProduct {
+    _id: any, //mongoose.Types.ObjectId,
+    amount: number,
+    name: string,
+    text: string,
+    price: number,
+    pictures: Array<IResource>,
+    properties: Array<Array<string>>
+}
+
+export interface IProperties {
     properties: Array<Array<string>>
 }
 
@@ -44,50 +54,50 @@ export const productWebSchema: IDefaultSchema = {
             name: "",
             type: "text",
             required: false,
-            error : "Missing ID.",
+            error: "Missing ID.",
             hideInForm: true,
             hideInTable: true,
-            checkErr : (field: string) => {return false}
+            checkErr: (field: string) => { return false }
         },
         {
             id: "name",
             name: "Name",
             type: "text",
             required: true,
-            error : "Fill in product number please.",
-            checkErr : (field: string) => {return false}
+            error: "Fill in product number please.",
+            checkErr: (field: string) => { return false }
         },
         {
             id: "text",
             name: "Product Text",
             type: "tinymce",
             required: true,
-            error : "Fill in product number please.",
-            checkErr : (field: string) => {return false}
+            error: "Fill in product number please.",
+            checkErr: (field: string) => { return false }
         },
         {
             id: "price",
             name: "Price",
             type: "number",
             required: false,
-            error : "Fill in Last name please.",
-            checkErr : (field: string) => {return false}
+            error: "Fill in Last name please.",
+            checkErr: (field: string) => { return false }
         },
         {
             id: "pictures",
             name: "Uploaded Pictures",
             type: "pictures",
             required: true,
-            error : "Fill in Street name please.",
-            checkErr : (field: string) => {return false}
+            error: "Fill in Street name please.",
+            checkErr: (field: string) => { return false }
         },
         {
             id: "properties",
             name: "Properties",
             type: "properties",
             required: true,
-            error : "Fill in Street number please.",
-            checkErr : (field: string) => {return false}
+            error: "Fill in Street number please.",
+            checkErr: (field: string) => { return false }
         }
     ]
 }

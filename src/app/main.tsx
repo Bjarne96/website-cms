@@ -7,6 +7,7 @@ import { Loader } from 'semantic-ui-react';
 import { BrowserRouter as Router, Route, withRouter } from 'react-router-dom';
 import { INavArray, IRouteArray } from './interfaces/componentInterfaces';
 import { Home } from './views/home/home';
+import { Shoppingcart } from './views/shoppingcart/shoppingcart';
 import Default from './views/default/default';
 
 interface IMainState {
@@ -158,6 +159,7 @@ export class Main extends React.Component<any, IMainState> {
                     <div className="mainContainer">
                         {routeComps}
                         <Route path="/home" exact component={() => <Home navs={navs} componentStructure={componentStructure} />} />
+                        <Route path="/shoppingcart" exact component={() => <Shoppingcart navs={navs} componentStructure={componentStructure} />} />
                         <Route path="/" exact component={() => <Home navs={navs} componentStructure={componentStructure} />} />
                     </div>
                 </div>
