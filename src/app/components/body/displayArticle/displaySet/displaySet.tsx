@@ -1,9 +1,8 @@
 import * as React from 'react';
 import './displaySet.css';
-import { IContent } from '../../../../schemas';
 
 interface IProps {
-    component: Array<IContent>;
+    component: Array<any>;
 }
 
 export class DisplaySet extends React.Component<IProps, any> {

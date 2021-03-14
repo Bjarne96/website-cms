@@ -5,7 +5,6 @@ export interface INavComponent {
     nav: string,
     name: string,
     url: string
-
 }
 
 export interface IRouteArray extends Array<IRouteComponent> { }

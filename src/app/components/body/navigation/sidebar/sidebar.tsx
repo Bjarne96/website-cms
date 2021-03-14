@@ -1,17 +1,16 @@
 import * as React from 'react';
 import { Loader } from 'semantic-ui-react';
 import './sidebar.css';
-
-import { IRouteArray } from './../../interfaces/componentInterfaces'
+import { INavItem } from '../../../../../schemas';
 
 interface ISidebarState {
     loading: boolean;
 }
 
 interface ISidebarProps {
-    routes: IRouteArray;
+    routes: Array<INavItem>;
     history;
-    changeHistory(url);
+    changeHistory(title: string, url: string);
 }
 
 export default class Sidebar extends React.Component<ISidebarProps, ISidebarState> {
@@ -35,9 +34,9 @@ export default class Sidebar extends React.Component<ISidebarProps, ISidebarStat
                     return <p
                         className={this.props.history.location.pathname == route.url ? "item active" : "item"}
                         key={key + "route"}
-                        onClick={() => this.props.changeHistory(route.url)}
+                        onClick={() => this.props.changeHistory(route.url, route.title)}
                     >
-                        {route.title}
+                        {route.name}
                     </p>
                 })}
             </div>

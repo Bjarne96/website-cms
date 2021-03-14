@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { Menu, Loader, Icon } from 'semantic-ui-react';
 import './navbar.css';
-import * as config from "./../../../../config";
-import { IRouteArray } from './../../interfaces/componentInterfaces'
+import * as config from "./../../../../../../config";
+import { IRouteArray } from './../../../../interfaces/componentInterfaces'
+import { INavItem } from '../../../../../schemas';
 
 interface INavbarState {
     loading: boolean;
@@ -10,10 +11,10 @@ interface INavbarState {
 }
 
 interface INavbarProps {
-    routes: IRouteArray;
+    routes: Array<INavItem>;
     history;
     navbarTransparent: boolean;
-    changeHistory(url);
+    changeHistory(title: string, url: string);
     toggleSidebar();
     evaluateStyle(url);
 }
@@ -56,8 +57,8 @@ export default class Navbar extends React.Component<INavbarProps, INavbarState> 
                     return <Menu.Item
                         as='div'
                         key={key + "route"}
-                        onClick={() => this.props.changeHistory(route.url)}>
-                        <p className={itemClass}>{route.title}</p>
+                        onClick={() => this.props.changeHistory(route.url, route.title)}>
+                        <p className={itemClass}>{route.name}</p>
                     </Menu.Item>
                 })}
             </div>

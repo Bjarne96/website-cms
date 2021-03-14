@@ -1,12 +1,12 @@
 import * as React from 'react';
-import './header.css';
+import './navigation.css';
 import { withRouter } from 'react-router-dom';
-import Sidebar from "./../sidebar/sidebar";
-import Navbar from "./../navbar/navbar";
-// import { IRouteArray } from '../../interfaces/componentInterfaces';
+import Sidebar from "./sidebar/sidebar";
+import Navbar from "./navbar/navbar";
+import { INavItem } from '../../../../schemas';
 
 interface IProps {
-    routes: any; // temporary fix for tslint
+    routes: Array<INavItem>; // temporary fix for tslint
     history;
 }
 
@@ -19,7 +19,7 @@ var delay = false;
 var touchstartHandler;
 var touchX;
 
-export class Header extends React.Component<IProps, Istate>{
+export class Navigation extends React.Component<IProps, Istate>{
 
 
 
@@ -71,8 +71,9 @@ export class Header extends React.Component<IProps, Istate>{
         }
     }
 
-    changeHistory(url) {
+    changeHistory(url: string, title: string) {
         this.evaluateStyle(url);
+        document.getElementById("document-title").innerHTML = title;
         if (this.state.showSidebar) this.toggleSidebar();
         this.props.history.push(url);
         window.scrollTo(0, 0);
@@ -97,4 +98,4 @@ export class Header extends React.Component<IProps, Istate>{
     }
 }
 // @ts-ignore
-export default withRouter(Header);
+export default withRouter(Navigation);

@@ -1,35 +1,31 @@
 import * as React from 'react';
 import './main.css';
-import Header from './components/header/header';
-import { getStructure } from './handler/structureRequests';
-import { IStructure, IContent, IArticle } from '../schemas';
+import Navigation from './components/body/navigation/navigation';
+import { getBackbone } from "./handler/backboneRequests";
+import { IArticle, ILoadedBackbone, ILoadedFooter, INavItem } from '../schemas';
 import { Loader } from 'semantic-ui-react';
-import { BrowserRouter as Router, Route, withRouter } from 'react-router-dom';
-import { INavArray, IRouteArray } from './interfaces/componentInterfaces';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { Home } from './views/home/home';
+import { Default } from './views/default/default';
 import { Shoppingcart } from './views/shoppingcart/shoppingcart';
-import Default from './views/default/default';
+import { backboneId } from "./../../config";
+import { Footer } from './components/footer/footer';
+import Paypal from './views/paypal/paypal';
 
 interface IMainState {
     loading: boolean;
 }
 
-let structureId = "5ecf937004cc1b001752148d";
+let routes: Array<INavItem> = [];
 
-let componentStructure: Array<any> = [];
-let routerStructure = [];
-
-let navs: INavArray = [];
-let routes: IRouteArray = [];
-
-
+let loadedBackbone: ILoadedBackbone;
 
 export class Main extends React.Component<any, IMainState> {
 
     constructor(props) {
         super(props);
-        this.loadNav = this.loadNav.bind(this);
-
+        this.formatNavBB = this.formatNavBB.bind(this);
+        this.renderArticles = this.renderArticles.bind(this);
         this.state = {
             loading: true
         }
@@ -37,134 +33,66 @@ export class Main extends React.Component<any, IMainState> {
 
     async componentDidMount() {
         //load structure
-        let structureResponse = await getStructure(structureId);
+        let loadedBackboneRequest = await getBackbone(backboneId);
         //todo exception
         //build componentstructure for components
-        let structure: IStructure = structureResponse.result;
-        this.loadComponentAndRouterStructure(structure);
-        this.loadNav();
-        this.loadRoutes();
-
+        loadedBackbone = loadedBackboneRequest.result;
+        this.formatNavBB(loadedBackbone);
         this.setState({ loading: false })
     }
 
-    loadNav() {
-        componentStructure.forEach((data) => {
-            let compType = data.componentType;
-            if (compType == "widescreen" || compType == "productdetail") {
-                navs.push({
-                    id: "div" + data.content._id,
-                    nav: data.content._id + "click",
-                    name: data.content.title,
-                    url: data.content.url,
-
-                })
-            }
-            if (compType == "set") {
-                navs.push({
-                    id: "div" + data.content[0].content._id,
-                    nav: data.content[0].content._id + "click",
-                    name: data.content[0].content.title,
-                    url: data.content[0].content.url
-                })
-            }
-        })
-
-    }
-
-    loadRoutes() {
-        //home element
-        routes.push({
-            url: "/home",
-            title: "Home"
-        })
-        routerStructure.forEach((data: IContent) => {
-            routes.push({
-                url: data.content.url,
-                title: data.content.title
-            })
-        })
-
-    }
-
-
-    loadComponentAndRouterStructure(structure: IStructure) {
-        //sets object dummy for filling in set data
-        let setObject = {
-            componentType: "set",
-            contentType: "article",
-            content: []
-        };
-        //temp variable for last active set
-        let setTouchedBy = 1;
-        for (let i = 0; i < structure.content.length; i++) {
-            let _obj = structure.content[i];
-            switch (_obj.componentType) {
-                //widescreen and product detail just need to be pushed
-                case ("widescreen"):
-                case ("productdetail"): {
-                    componentStructure.push(_obj)
-                    break;
-                }
-                //sets need to be filled into one object
-                case ("set"): {
-                    let setNumber = parseInt(_obj.properties);
-                    if (setNumber == 1) {
-                        setTouchedBy = setNumber;
-                        setObject.content = [];
-                        setObject.content.push(_obj)
-                    } else if (setNumber == setTouchedBy + 1) {
-                        setTouchedBy++;
-                        setObject.content.push(_obj)
-                    }
-                    if (setNumber == 6) {
-                        componentStructure.push(setObject)
-                    }
-                    break;
-                } case ("route"): {
-                    routerStructure.push(_obj)
-                }
-            }
+    formatNavBB(backbone: ILoadedBackbone) {
+        for (let i = 0; i < backbone.navigation.length; i++) {
+            const element = backbone.navigation[i];
+            routes.push(element);
         }
-        return (componentStructure);
+        for (let i = 0; i < backbone.articles.length; i++) {
+            let article = backbone.articles[i];
+            let newNavItem: INavItem = {
+                name: article.name,
+                title: article.title,
+                url: article.url
+            }
+            routes.push(newNavItem)
+        }
+    }
+
+    renderArticles(articles: Array<IArticle>) {
+        return articles.map((article: IArticle) => {
+            return <Route
+                key={article._id}
+                path={article.url}
+                exact
+                component={() => <Default content={article.content} />}
+            />
+        });
+
     }
 
     render() {
-        if (this.state.loading) return <Loader active />
-        let routeComps;
-        routeComps = <></>
-        if (routerStructure != undefined) {
-            //maps componentstrcuture into routes
-            routeComps = routerStructure.map((data) => {
-                let article: IArticle = data.content;
-                if (data.componentType == "route") {
-                    return <Route
-                        key={article._id}
-                        path={article.url}
-                        exact
-                        component={() => <Default content={article.content} />}
-                    />
-                }
-                return
-            })
-        }
+        if (loadedBackbone == undefined) return <></>
         return (
-            <Router>
-                <div>
-                    <Header
-                        //@ts-ignore
-                        routes={routes}
-                        history={this.props.history}
-                    />
-                    <div className="mainContainer">
-                        {routeComps}
-                        <Route path="/home" exact component={() => <Home navs={navs} componentStructure={componentStructure} />} />
-                        <Route path="/shoppingcart" exact component={() => <Shoppingcart navs={navs} componentStructure={componentStructure} />} />
-                        <Route path="/" exact component={() => <Home navs={navs} componentStructure={componentStructure} />} />
+            <div>
+                <Router>
+                    <div>
+                        <Navigation
+                            //@ts-ignore
+                            routes={routes}
+                            history={this.props.history}
+                        />
+                        <div className="mainContainer">
+                            <Route path="/home" exact component={() => <Home />} />
+                            <Route path="/paypal" exact component={() => <Paypal />} />
+                            {this.renderArticles(loadedBackbone.articles)}
+                            {/* <Route path="/shoppingcart" exact component={() => <Shoppingcart navs={navs} componentStructure={componentStructure} />} /> */}
+                            {/* ToDo Error */}
+                            {/* ToDo 404 */}
+                        </div>
                     </div>
-                </div>
-            </Router>
-        );
+                </Router>
+                <Footer content={loadedBackbone.footer} />
+            </div>
+        )
     }
 }
 export default Main;

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import './displayWidePicture.css';
-import { IArticle } from '../../../../schemas';
+import { IArticle } from './../../../../../schemas';
 
 interface IProps {
     component: IArticle;
