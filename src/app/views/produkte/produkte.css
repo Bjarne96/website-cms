@@ -1,0 +1,48 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+.header {
+position: absolute;
+top: 120px;
+right: 850px;
+color: green;
+font-family: Arial;
+}
+.Textzug1 {
+    position: absolute;
+    top:    200px;
+    right: 1300px;
+}
+.Textzug2 {
+    position: absolute;
+    top:   200px;
+    right: 400px;
+}
+
+.actualPicture1 {
+    border: 1px;
+    align-self: center;
+    position: absolute;
+    top: 500px;
+    right: 1300px;
+   /* background-image: url(C:\Users\Moin\Documents\Scanned Documents\Bild (26).jpg);
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.actualPicture:hover {
+    border: 1px;
+    align-self: center;
+   background-color:gray;
+    color: white; */
+}
+.actualPicture2 {
+    border: 1px;
+    position: absolute;
+    top: 500px;
+    right: 400px;
+}
+.description {
+   text-align: center;
+}
