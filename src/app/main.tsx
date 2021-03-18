@@ -11,6 +11,7 @@ import { Shoppingcart } from './views/shoppingcart/shoppingcart';
 import { backboneId } from "./../../config";
 import { Footer } from './components/footer/footer';
 import Paypal from './views/paypal/paypal';
+import Success from './views/success/success';
 
 interface IMainState {
     loading: boolean;
@@ -83,6 +84,7 @@ export class Main extends React.Component<any, IMainState> {
                         <div className="mainContainer">
                             <Route path="/home" exact component={() => <Home />} />
                             <Route path="/paypal" exact component={() => <Paypal />} />
+                            <Route path="/success" exact component={() => <Success />} />
                             {this.renderArticles(loadedBackbone.articles)}
                             {/* <Route path="/shoppingcart" exact component={() => <Shoppingcart navs={navs} componentStructure={componentStructure} />} /> */}
                             {/* ToDo Error */}
