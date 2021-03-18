@@ -85,12 +85,8 @@ export class Main extends React.Component<any, IMainState> {
                         <div className="mainContainer">
                             <Route path="/home" exact component={() => <Home />} />
                             <Route path="/paypal" exact component={() => <Paypal />} />
-<<<<<<< HEAD
                             <Route path="/produkte" exact component={() => <Produkte products={loadedBackbone.products} />} />
-=======
                             <Route path="/success" exact component={() => <Success />} />
-                            <Route path="/produkte" exact component={() => <Produkte />} />
->>>>>>> 62019a1867cfc8056445ad2dd25149b14ccf6410
                             {this.renderArticles(loadedBackbone.articles)}
                             {/* <Route path="/shoppingcart" exact component={() => <Shoppingcart navs={navs} componentStructure={componentStructure} />} /> */}
                             {/* ToDo Error */}
