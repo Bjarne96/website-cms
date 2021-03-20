@@ -31,8 +31,12 @@ export default class Sidebar extends React.Component<ISidebarProps, ISidebarStat
         return <>
             <div id="sidebar" className="sidebar">
                 {this.props.routes.map((route, key) => {
+                    let itemClass = "item";
+                    if (this.props.history.location.pathname == route.url) itemClass += " active";
+                    if (route.hide === true) itemClass += " hide";
                     return <p
-                        className={this.props.history.location.pathname == route.url ? "item active" : "item"}
+                        id={route.url}
+                        className={itemClass}
                         key={key + "route"}
                         onClick={() => this.props.changeHistory(route.url, route.title)}
                     >

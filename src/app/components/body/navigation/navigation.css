@@ -4,3 +4,6 @@
 .logo {
     margin-right: 0.5rem;
 }
+.hide {
+    display: none !important;
+}

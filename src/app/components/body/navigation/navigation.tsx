@@ -6,7 +6,7 @@ import Navbar from "./navbar/navbar";
 import { INavItem } from '../../../../schemas';
 
 interface IProps {
-    routes: Array<INavItem>; // temporary fix for tslint
+    routes: Array<INavItem>;
     history;
 }
 
@@ -20,8 +20,6 @@ var touchstartHandler;
 var touchX;
 
 export class Navigation extends React.Component<IProps, Istate>{
-
-
 
     constructor(props) {
         super(props);
@@ -75,7 +73,8 @@ export class Navigation extends React.Component<IProps, Istate>{
         this.evaluateStyle(url);
         document.getElementById("document-title").innerHTML = title;
         if (this.state.showSidebar) this.toggleSidebar();
-        this.props.history.push(url);
+        let pushableUrl = url.toLowerCase();
+        this.props.history.push(pushableUrl);
         window.scrollTo(0, 0);
     }
 
