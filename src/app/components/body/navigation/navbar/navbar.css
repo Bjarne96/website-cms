@@ -12,7 +12,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 62px;
+    height: var(--navbar-height);
     padding: 18px 15px;
     position: fixed;
     top: 0;

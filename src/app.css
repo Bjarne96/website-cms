@@ -1,3 +1,6 @@
+html {
+    height: 100%;
+}
 /* Global Variables */
 :root{
     /* General Colors */
@@ -19,6 +22,8 @@
 
     --max-width-container: 1710px;
     --outer-frame-padding: 10vw;
+
+    --navbar-height: 62px;
     
     
     /* --element-dark-bg-color: rgb(66, 66, 66); */
