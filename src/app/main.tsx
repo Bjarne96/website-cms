@@ -6,13 +6,13 @@ import { IArticle, ILoadedBackbone, INavItem, IProduct } from '../schemas';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { Home } from './views/home/home';
 import { Default } from './views/default/default';
-import { Shoppingcart } from './views/shoppingcart/shoppingcart';
 import { backboneId } from "./../../config";
 import { Footer } from './components/footer/footer';
 import Paypal from './views/paypal/paypal';
 import Success from './views/success/success';
 import { Produkte } from './views/produkte/produkte';
 import Produktdetail from './views/produkte/produktdetail/produktdetail';
+import Warenkorb from './views/warenkorb/warenkorb';
 
 interface IMainState {
     loading: boolean;
@@ -113,6 +113,9 @@ export class Main extends React.Component<any, IMainState> {
                             } />
                             <Route path="/success" exact component={() =>
                                 <Success />
+                            } />
+                            <Route path="/warenkorb" exact component={() =>
+                                <Warenkorb />
                             } />
                             {this.renderArticles(loadedBackbone.articles)}
                             {this.renderProducts(loadedBackbone.products)}

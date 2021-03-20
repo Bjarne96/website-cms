@@ -3,13 +3,21 @@ export interface IProduct {
     _id: string,
     name: string,
     variants: [IProductVariant],
-    properties: Array<Array<{ name: string, id: Number }>>
+    properties: Array<Array<{ name: string, id: number }>>
 }
 
 export interface IProductVariant {
-    selector_1: { type: Number, required: true },
-    selector_2: { type: Number, required: true },
+    selector_1: number,
+    selector_2: number,
     pictures: Array<string>,
-    price: Number,
+    price: number,
     description: string,
+}
+
+export interface IProductSelected {
+    _id: string,
+    name: string,
+    variant: IProductVariant,
+    properties: Array<Array<{ name: string, id: number }>>
+    count: number;
 }

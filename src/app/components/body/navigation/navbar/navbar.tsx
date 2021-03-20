@@ -64,7 +64,7 @@ export default class Navbar extends React.Component<INavbarProps, INavbarState> 
                 })}
             </div>
             <div className="navbar-btns">
-                <Icon className="btn cart-btn" name='cart' size="big" />
+                <Icon className="btn cart-btn" name='cart' size="big" onClick={() => this.props.changeHistory("Warenkorb", "/warenkorb")} />
                 <Icon className="btn sidebar-btn" name='bars' size="big" onClick={this.props.toggleSidebar} />
             </div>
         </nav>;
