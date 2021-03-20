@@ -12,8 +12,8 @@ export class Default extends React.Component<IProps, {}>{
     }
 
     render() {
-        return <div className="marginTopHeader outerContainer">
-            <div className="centeredContainer">
+        return <div className="outerArticleContainer">
+            <div className="centeredArticleContainer">
                 <div className="tableCellDynamic" dangerouslySetInnerHTML={{ __html: this.props.content }} />
             </div>
         </div>

@@ -13,7 +13,7 @@ export class Footer extends React.Component<IProps, {}>{
     }
 
     render() {
-        return <div className="tableCellDynamic" dangerouslySetInnerHTML={{ __html: "" }} />
+        return <div className="footer" dangerouslySetInnerHTML={{ __html: "" }} />
     }
 }
 export default Footer;

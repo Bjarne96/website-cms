@@ -1,4 +1,4 @@
-.mainContainer {
+.main-container {
     width: 100vw !important;
     overflow: hidden;
 }
@@ -62,4 +62,9 @@ body {
     font-size: 15px;
     line-height: 1.5;
     margin: 0px !important;
-  }
+}
+@media screen and (min-width: 1200px)   {
+    .main-container {
+        padding-top: 62px;
+    }
+}

@@ -68,7 +68,7 @@ export class Main extends React.Component<any, IMainState> {
                 component={() => <Default content={article.content} />}
             />
         });
-    
+
     }
 
     render() {
@@ -82,8 +82,7 @@ export class Main extends React.Component<any, IMainState> {
                             routes={routes}
                             history={this.props.history}
                         />
-                        <div className="mainContainer">
-                            <Route path="/home" exact component={() => <Home />} />
+                        <div className="main-container">
                             <Route path="/paypal" exact component={() => <Paypal />} />
                             <Route path="/produkte" exact component={() => <Produkte products={loadedBackbone.products} />} />
                             <Route path="/success" exact component={() => <Success />} />
@@ -92,6 +91,7 @@ export class Main extends React.Component<any, IMainState> {
                             {/* ToDo Error */}
                             {/* ToDo 404 */}
                         </div>
+                        <Route path="/home" exact component={() => <Home />} />
                     </div>
                 </Router>
                 <Footer content={loadedBackbone.footer} />
