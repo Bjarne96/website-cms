@@ -13,7 +13,6 @@ export class Produkte extends React.Component<IProps, IState>{
     constructor(props) {
         super(props);
         this.renderProducts = this.renderProducts.bind(this);
-        this.displayPictures = this.displayPictures.bind(this);
         this.state = {
             loading: true
         }
@@ -54,18 +53,5 @@ export class Produkte extends React.Component<IProps, IState>{
             )
 
         });
-    }
-    displayPictures() {
-        return <>
-            <div className="header"><p>Our wonderful <strong>products</strong></p></div>
-            <div className="Textzug1"><p>1. Variante unseres Produkts</p></div>
-            <div className="actualPicture1"><img src={this.props.products[0].variants[0].pictures[0]} alt="Error 404, Connection lost" /> </div>
-            // Ending of description
-            <div className="description">
-                <p>lalal</p>
-            </div>
-            <div className="submit area"></div>
-            <input type="submit" value="In den Warenkorb legen" />
-        </>
     }
 }
