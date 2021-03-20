@@ -36,4 +36,5 @@ export interface INavItem {
     name: string;
     title: string;
     url: string;
+    hide?: boolean;
 }

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import './produkte.css';
-import { IProduct } from '../../../schemas';
+import { IProduct, IProductVariant } from '../../../schemas';
 
 interface IProps {
     products: Array<IProduct>;
@@ -12,46 +12,54 @@ interface IState {
 export class Produkte extends React.Component<IProps, IState>{
     constructor(props) {
         super(props);
-        this.renderProducts = this.renderProducts.bind(this);
+        this.clickProduct = this.clickProduct.bind(this);
         this.state = {
             loading: true
         }
     }
 
+    lowestPrice(variants: Array<IProductVariant>) {
+        let price: Number = 10000;
+        for (let i = 0; i < variants.length; i++) {
+            if (variants[i].price < price) price = variants[i].price;
+        }
+        return price;
+    }
+
+    clickProduct(name: string) {
+        document.getElementById("/produkt-" + name).click();
+    }
+
     render() {
-        return <div className="prodcuts-container">
-            <div
-                key={this.props.products[0]._id}
-                className="product"
+        if (this.props.products == undefined) return <p>error</p>;
+        let products = this.props.products.map((product, index) => {
+            return <div
+                className="product-container"
+                key={index + "productcontainer"}
+                onClick={() => this.clickProduct(product.name)}
             >
-                <img className="product-bild" src={this.props.products[0].variants[0].pictures[0]} alt={this.props.products[0].variants[0].pictures[0]} />
-                <h1>{this.props.products[0].name}</h1><p>{this.props.products[0].variants[0].price}</p>
-            </div>
-            <div
-                key={this.props.products[1]._id}
-                className="product"
-            >
-                <img className="product-bild" src={this.props.products[1].variants[0].pictures[0]} alt={this.props.products[0].variants[0].pictures[0]} />
-                <h1>{this.props.products[1].name}</h1><p>{this.props.products[1].variants[0].price}</p>
+                <div className="product-image-wrapper">
+                    {/* <img className="product-image" src={product.pictures[0].path} /> */}
+                    <img
+                        className="product-image"
+                        src={product.variants[0].pictures[0]}
+                    />
+                </div>
+                <div className="product-textframe">
+                    <p className="product-name">
+                        {product.name}
+                    </p>
+                    <p className="product-price-text">
+                        ab <span className="product-price">{this.lowestPrice(product.variants)}</span> €
+                    </p>
+                </div>
+            </div>;
+        });
+        return <div className="product-outerframe">
+            <div className="product-parent">
+                {products}
             </div>
         </div>
     }
-
-    renderProducts() {
-        return this.props.products.map((Product: IProduct, index) => {
-            console.log('Product', Product);
-            return (<>
-                <div
-                    key={Product._id}
-                    className="product"
-                    id={"test" + { index }}
-                >
-                    <img className="product-bild" src={Product.variants[0].pictures[0]} alt={Product.variants[0].pictures[0]} />
-                    <h1>{Product.name}</h1><p>{Product.variants[0].price}</p>
-                </div>
-            </>
-            )
-
-        });
-    }
 }
+export default Produkte;

@@ -2,8 +2,7 @@ import * as React from 'react';
 import './main.css';
 import Navigation from './components/body/navigation/navigation';
 import { getBackbone } from "./handler/backboneRequests";
-import { IArticle, ILoadedBackbone, ILoadedFooter, INavItem } from '../schemas';
-import { Loader } from 'semantic-ui-react';
+import { IArticle, ILoadedBackbone, INavItem, IProduct } from '../schemas';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { Home } from './views/home/home';
 import { Default } from './views/default/default';
@@ -13,6 +12,7 @@ import { Footer } from './components/footer/footer';
 import Paypal from './views/paypal/paypal';
 import Success from './views/success/success';
 import { Produkte } from './views/produkte/produkte';
+import Produktdetail from './views/produkte/produktdetail/produktdetail';
 
 interface IMainState {
     loading: boolean;
@@ -28,6 +28,7 @@ export class Main extends React.Component<any, IMainState> {
         super(props);
         this.formatNavBB = this.formatNavBB.bind(this);
         this.renderArticles = this.renderArticles.bind(this);
+        this.renderProducts = this.renderProducts.bind(this);
         this.state = {
             loading: true
         }
@@ -57,6 +58,16 @@ export class Main extends React.Component<any, IMainState> {
             }
             routes.push(newNavItem)
         }
+        for (let i = 0; i < backbone.products.length; i++) {
+            let product = backbone.products[i];
+            let newNavItem: INavItem = {
+                name: product.name,
+                title: product.name,
+                url: "/produkt-" + product.name,
+                hide: true
+            }
+            routes.push(newNavItem)
+        }
     }
 
     renderArticles(articles: Array<IArticle>) {
@@ -66,6 +77,17 @@ export class Main extends React.Component<any, IMainState> {
                 path={article.url}
                 exact
                 component={() => <Default content={article.content} />}
+            />
+        });
+    }
+
+    renderProducts(products: Array<IProduct>) {
+        return products.map((product: IProduct) => {
+            return <Route
+                key={product._id}
+                path={"/produkt-" + product.name}
+                exact
+                component={() => <Produktdetail produkt={product} />}
             />
         });
 
@@ -83,10 +105,17 @@ export class Main extends React.Component<any, IMainState> {
                             history={this.props.history}
                         />
                         <div className="main-container">
-                            <Route path="/paypal" exact component={() => <Paypal />} />
-                            <Route path="/produkte" exact component={() => <Produkte products={loadedBackbone.products} />} />
-                            <Route path="/success" exact component={() => <Success />} />
+                            <Route path="/paypal" exact component={() =>
+                                <Paypal />
+                            } />
+                            <Route path="/produkte" exact component={() =>
+                                <Produkte products={loadedBackbone.products} />
+                            } />
+                            <Route path="/success" exact component={() =>
+                                <Success />
+                            } />
                             {this.renderArticles(loadedBackbone.articles)}
+                            {this.renderProducts(loadedBackbone.products)}
                             {/* <Route path="/shoppingcart" exact component={() => <Shoppingcart navs={navs} componentStructure={componentStructure} />} /> */}
                             {/* ToDo Error */}
                             {/* ToDo 404 */}
