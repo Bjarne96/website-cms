@@ -22,39 +22,68 @@ export class Produktdetail extends React.Component<IProps, {}>{
         //document.getElementById("test").src=src;
     }
 
+    renderMe() {
+        let Array = [
+            [
+                {
+                    testi: "du nicht"
+                }
+            ],
+            {
+                er: "er nicht"
+            },
+            [
+                {
+                    du: "ich nicht"
+                }
+            ],
+        ];
+        let renderthis = Array.map((test, index) => {
+            //let test = Array[index];
+            console.log('test', test);
+            console.log('index', index);
+            //@ts-ignore
+            if (index == 0 && true) return "jooooO";
+            return "";
+        })
+        console.log('renderthis', renderthis);
+        return <></>;
+    }
+
     render() {
         const produkt = this.props.produkt.variants[0];
         console.log('this.props.produkt.properties', this.props.produkt.properties);
         console.log('this.props.produkt.properties[0][1].name', this.props.produkt.properties[0][1].name);
 
-        return <div className ="OuterFrame">
-            <div className = "Container" >
-                <div className ="PictureContainer">
+        return <div className="OuterFrame">
+            {this.renderMe()}
+            <div className="Container" >
+                <div className="PictureContainer">
                     <img src={produkt.pictures[0]} /* onClick={() => this.test(produkt.pictures[0])} */ />
-                </div> 
-                <div className = "Description"> <div className = "ProductName">
+                </div>
+                <div className="Description"> <div className="ProductName">
                     <p>{this.props.produkt.name}</p>
                     {/* <p>{this.props.produkt.properties[1][1].id}</p> */}
                     <p>{produkt.price}€</p>
                 </div>
-                <div className ="select-area">
-                    <p>{this.props.produkt.properties[0][0].name}:</p>
+                    <div className="select-area">
+                        <p>{this.props.produkt.properties[0][0].name}:</p>
                         <select name="{this.props.produkt.properties[0][0].name}" id={this.props.produkt.properties[0][0].name}>
                             <option value={this.props.produkt.properties[0][1].id}>{this.props.produkt.properties[0][1].name}</option>
                             <option value={this.props.produkt.properties[0][2].id}>{this.props.produkt.properties[0][2].name}</option>
                             <option value={this.props.produkt.properties[0][3].id}>{this.props.produkt.properties[0][3].name}</option>
                         </select>
-                    <br></br>
-                    <p>{this.props.produkt.properties[1][0].name}:</p>
-                    <select name="{this.props.produkt.properties[1][0].name}" id={this.props.produkt.properties[1][0].name}>
+                        <br></br>
+                        <p>{this.props.produkt.properties[1][0].name}:</p>
+                        <select name="{this.props.produkt.properties[1][0].name}" id={this.props.produkt.properties[1][0].name}>
                             <option value={this.props.produkt.properties[1][1].id}>{this.props.produkt.properties[1][1].name}</option>
                             <option value={this.props.produkt.properties[1][2].id}>{this.props.produkt.properties[1][2].name}</option>
                             <option value={this.props.produkt.properties[1][3].id}>{this.props.produkt.properties[1][3].name}</option>
-                            </select>
-                            <br></br>
-                    <input type="submit" value="In den Warenkorb legen"/>
+                        </select>
+                        <br></br>
+                        <input type="submit" value="In den Warenkorb legen" />
                     </div>
-            </div>
+                </div>
             </div>
             {/* <div>{this.props.produkt.properties[1]}</div> */}
         </div>
