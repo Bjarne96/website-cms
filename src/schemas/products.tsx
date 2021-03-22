@@ -20,4 +20,5 @@ export interface IProductSelected {
     variant: IProductVariant,
     properties: Array<Array<{ name: string, id: number }>>
     count: number;
+    total: number;
 }

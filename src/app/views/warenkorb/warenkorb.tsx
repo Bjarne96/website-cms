@@ -124,19 +124,60 @@ export class Warenkorb extends React.Component<IProps, IState>{
     constructor(props) {
         super(props);
         this.changeCount = this.changeCount.bind(this);
-        this.state = {
-            items: warenkorbdaten
+        this.removeItem = this.removeItem.bind(this);
+        this.addItem = this.addItem.bind(this);
+        this.numberToString = this.numberToString.bind(this);
+        this.totalCalc = this.totalCalc.bind(this);
+        let initalwarenkorb = [...warenkorbdaten];
+        for (let i = 0; i < initalwarenkorb.length; i++) {
+            let total = initalwarenkorb[i].count * initalwarenkorb[i].variant.price;
+            initalwarenkorb[i].total = total;
+
         }
+        this.state = {
+            items: initalwarenkorb
+        }
+        console.log('this.state', this.state);
     }
 
     changeCount(index: number, change: number) {
         let newItems = this.state.items;
-        newItems[index].count = newItems[index].count + change;
-        this.setState({ items: newItems })
+        let newCount = newItems[index].count + change;
+        if (newCount <= 0) return this.removeItem(index);
+        var newTotal = Math.round((newCount * newItems[index].variant.price) * 100) / 100
+        newItems[index].total = newTotal;
+        newItems[index].count = newCount;
+        this.setState({ items: newItems });
+    }
+    numberToString(number: number) {
+        let newString = String(number);
+        var newstr = newString.replace(".", ",");
+        return newstr;
+    }
+
+    totalCalc() {
+        let totalAmount: number = 0;
+        let totalCount: number = 0;
+        for (let i = 0; i < this.state.items.length; i++) {
+            let itemAmount = this.state.items[i].total;
+            let itemCount = this.state.items[i].count;
+            totalCount = totalCount + itemCount;
+            totalAmount = totalAmount + itemAmount
+        }
+        return {
+            amount: totalAmount,
+            count: totalCount
+        };
+    }
+
+    removeItem(index: number) {
+        let newItems = this.state.items;
+        newItems.splice(index, 1)
+        this.setState({ items: newItems });
     }
 
     addItem(itemNumber: number) {
-        let newItem = warenkorbdaten[itemNumber]
+        let newItem = warenkorbdaten[itemNumber];
         for (let i = 0; i < this.state.items.length; i++) {
             const item = this.state.items[i];
             if (
@@ -146,7 +187,6 @@ export class Warenkorb extends React.Component<IProps, IState>{
                 this.changeCount(i, 1);
                 return
             }
-
         }
         let newItems = this.state.items;
         newItems.push(newItem);
@@ -154,42 +194,72 @@ export class Warenkorb extends React.Component<IProps, IState>{
     }
 
     render() {
-        console.log('render');
-        console.log('this.state.items', this.state.items);
         let items = this.state.items.map((item, index) => {
             return <div
-                className="product-container"
-                key={index + "productcontainer"}
+                className="warenkorb-parent"
+                key={index + "warenkorb-parent"}
             >
-                <div className="product-image-wrapper">
-                    {/* <img className="product-image" src={product.pictures[0].path} /> */}
-                    <img
-                        className="product-image"
-                        src={item.variant.pictures[0]}
-                    />
-                </div>
-                <div className="product-textframe">
-                    <p className="product-name">
+                <img
+                    className="warenkorb-image"
+                    src={item.variant.pictures[0]}
+                />
+                <div className="warenkorb-textframe">
+                    <h3 className="h3roduct-name">
                         {item.name}
+                    </h3>
+                    <p className="warenkorb-specification">
+                        {item.properties.map((propArray, index) => {
+                            let selector = item.variant["selector_" + (index + 1)];
+                            return propArray.map((prop, i) => {
+                                if (prop.id == 0) {
+                                    return <span key={prop.name + selector}>{prop.name}:&nbsp;</span>
+                                }
+                                if (prop.id == selector) {
+                                    return <><span key={prop.name + selector} className="">{prop.name}</span><br key={"br" + prop.name + selector} /></>
+                                }
+                            })
+                        })}
                     </p>
-                    <p className="product-price-text">
-                        <span className="product-price">{item.variant.price}</span> €
+                    <p className="warenkorb-price-text">
+                        <span className="warenkorb-price">Stückpreis: {this.numberToString(item.variant.price)}</span> €
                     </p>
-                    <p className="product-price-text">
+                    <p className="warenkorb-price-text">
                         <Icon className="btn cart-btn" name='plus' size="big" onClick={() => this.changeCount(index, 1)} />
                         {item.count}
                         <Icon className="btn cart-btn" name='minus' size="big" onClick={() => this.changeCount(index, -1)} />
                     </p>
                 </div>
+                <div className="warenkorb-total">
+                    <p>{this.numberToString(item.total)}€</p>
+                </div>
             </div>;
         });
-        return <div className="warenkorb-containerx">
-            {items}
-            <div>
-                <div className="btn" onClick={() => this.addItem(0)}>Add Item Nr.1</div>
-                <div className="btn" onClick={() => this.addItem(1)}>Add Item Nr.2</div>
+        let total = this.totalCalc();
+        return <div className="warenkorb-container">
+            <div className="warenkorb-list">
+                {/* <div className="warenkorb-parent"> */}
+                <div className="warenkorb-title">
+                    <h1>Warenkorb</h1>
+                </div>
+                {/* </div> */}
+                <div className="warenkorb-items">
+                    {this.state.items.length ?
+                        items
+                        :
+                        <p>kauf ma was</p>
+                    }
+                    <div className="warenkorb-parent">
+                        <div className="warenkorb-total">
+                            <p>Summe ({total.count} Artikel): {this.numberToString(total.amount)}€</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     }
 }
+{/* <div>
+                <div className="fixedtopleft" onClick={() => this.addItem(0)}>Add Item Nr.1</div>
+                <div className="fixedtopleft2" onClick={() => this.addItem(1)}>Add Item Nr.2</div>
+            </div> */}
 export default Warenkorb;

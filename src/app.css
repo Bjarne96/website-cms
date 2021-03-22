@@ -15,10 +15,10 @@ html {
     --dark-color: rgb(28, 99, 214);
     --dark-active-color: #2272f3;
     --text-dark-color: black;/* #454545 */
-    --text-dark-active-color:  var(--dark-active-color);;
+    --text-dark-active-color: var(--dark-active-color);;
     
     --border-dark-color: var(--dark-color);
-    --border-light-color:var(--light-color);
+    --border-light-color: var(--light-color);
 
     --max-width-container: 1710px;
     --outer-frame-padding: 10vw;
