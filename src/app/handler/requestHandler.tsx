@@ -2,7 +2,7 @@ import { getJWT, saveJWT, removeJWT } from './JWTHandler';
 import * as config from "./../../../config";
 
 //request
-let Request = async (path: string, fetchType: "GET" | "POST" | "PUT" | "DELETE", data, fileupload?) => {
+let Request = async (path: string, fetchType: "GET" | "POST" | "PUT" | "DELETE", data) => {
     let JWT = await getJWT();
 
     let header = { "Content-Type": "application/json", "Authorization": JWT, }
@@ -34,6 +34,12 @@ let Request = async (path: string, fetchType: "GET" | "POST" | "PUT" | "DELETE",
     return json;
 
 }
+
+//Posts data to API
+export const postData = async (path: string, data) => {
+    let json = await Request(path, "POST", data);
+    return json;
+};
 
 //Gets all data from a table
 export const getData = async (path: string) => {
@@ -78,13 +84,6 @@ export const loginUser = async (email: string, password) => {
     //Posts body
     let json = await Request("login", "POST", body);
 
-    return json;
-};
-
-//Form POST that uploads a file
-export const uploadFile = async (data: any) => {
-    //Data equals the file and true will add the file in header
-    let json = await Request("fileupload", "POST", data, true);
     return json;
 };
 
