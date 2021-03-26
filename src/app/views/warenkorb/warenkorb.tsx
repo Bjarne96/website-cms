@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { Icon } from 'semantic-ui-react';
+import { Button, Icon } from 'semantic-ui-react';
 import { IProductSelected } from '../../../schemas';
+import { getWarenkorb, updateWarenkorb } from '../../handler/localstorageHandler';
 import './warenkorb.css';
 
 interface IProps {
@@ -127,53 +128,45 @@ export class Warenkorb extends React.Component<IProps, IState>{
         this.removeItem = this.removeItem.bind(this);
         this.addItem = this.addItem.bind(this);
         this.numberToString = this.numberToString.bind(this);
+        this.updateItems = this.updateItems.bind(this);
         this.totalCalc = this.totalCalc.bind(this);
-        let initalwarenkorb = [...warenkorbdaten];
+        // let initalwarenkorb = [...warenkorbdaten];
+        let initalwarenkorb = getWarenkorb();
         for (let i = 0; i < initalwarenkorb.length; i++) {
             let total = initalwarenkorb[i].count * initalwarenkorb[i].variant.price;
             initalwarenkorb[i].total = total;
-
         }
         this.state = {
             items: initalwarenkorb
         }
-        console.log('this.state', this.state);
     }
 
     changeCount(index: number, change: number) {
         let newItems = this.state.items;
         let newCount = newItems[index].count + change;
-        if (newCount <= 0) return this.removeItem(index);
-        var newTotal = Math.round((newCount * newItems[index].variant.price) * 100) / 100
+        if (newCount <= 0) return;
+        var newTotal = Math.round((newCount * newItems[index].variant.price) * 100) / 100;
+        if (String(newTotal).length > 8) alert('ERROR' + String(newTotal));
         newItems[index].total = newTotal;
         newItems[index].count = newCount;
-        this.setState({ items: newItems });
-    }
-    numberToString(number: number) {
-        let newString = String(number);
-        var newstr = newString.replace(".", ",");
-        return newstr;
+        this.updateItems(newItems);
     }
 
-    totalCalc() {
-        let totalAmount: number = 0;
-        let totalCount: number = 0;
-        for (let i = 0; i < this.state.items.length; i++) {
-            let itemAmount = this.state.items[i].total;
-            let itemCount = this.state.items[i].count;
-            totalCount = totalCount + itemCount;
-            totalAmount = totalAmount + itemAmount
-        }
-        return {
-            amount: totalAmount,
-            count: totalCount
-        };
+    updateItems(newItems: Array<IProductSelected>) {
+        updateWarenkorb(newItems);
+        this.setState({ items: newItems });
+    }
+
+    numberToString(number: number) {
+        let newString = number.toFixed(2);
+        var newstr = newString.replace(".", ",");
+        return newstr;
     }
 
     removeItem(index: number) {
         let newItems = this.state.items;
         newItems.splice(index, 1)
-        this.setState({ items: newItems });
+        this.updateItems(newItems);
     }
 
     addItem(itemNumber: number) {
@@ -190,7 +183,29 @@ export class Warenkorb extends React.Component<IProps, IState>{
         }
         let newItems = this.state.items;
         newItems.push(newItem);
-        this.setState({ items: newItems })
+        this.updateItems(newItems);
+    }
+
+    checkout() {
+        console.log('checkout');
+        //create payment request
+        //update localstorage
+        //redirect to paymentwall view
+    }
+
+    totalCalc() {
+        let totalAmount: number = 0;
+        let totalCount: number = 0;
+        for (let i = 0; i < this.state.items.length; i++) {
+            let itemAmount = this.state.items[i].total;
+            let itemCount = this.state.items[i].count;
+            totalCount = totalCount + itemCount;
+            totalAmount = Math.round((totalAmount + itemAmount) * 100) / 100;
+        }
+        return {
+            amount: totalAmount,
+            count: totalCount
+        };
     }
 
     render() {
@@ -204,7 +219,7 @@ export class Warenkorb extends React.Component<IProps, IState>{
                     src={item.variant.pictures[0]}
                 />
                 <div className="warenkorb-textframe">
-                    <h3 className="h3roduct-name">
+                    <h3 className="product-name">
                         {item.name}
                     </h3>
                     <p className="warenkorb-specification">
@@ -221,13 +236,12 @@ export class Warenkorb extends React.Component<IProps, IState>{
                         })}
                     </p>
                     <p className="warenkorb-price-text">
-                        <span className="warenkorb-price">Stückpreis: {this.numberToString(item.variant.price)}</span> €
-                    </p>
-                    <p className="warenkorb-price-text">
+                        <span className="warenkorb-price">{this.numberToString(item.variant.price)}</span> €
                         <Icon className="btn cart-btn" name='plus' size="big" onClick={() => this.changeCount(index, 1)} />
                         {item.count}
                         <Icon className="btn cart-btn" name='minus' size="big" onClick={() => this.changeCount(index, -1)} />
                     </p>
+                    <Button className="warekorb-btn" primary onClick={() => this.removeItem(index)}>Entfernen</Button>
                 </div>
                 <div className="warenkorb-total">
                     <p>{this.numberToString(item.total)}€</p>
@@ -235,23 +249,24 @@ export class Warenkorb extends React.Component<IProps, IState>{
             </div>;
         });
         let total = this.totalCalc();
+        if (!this.state.items.length) {
+            return <div className="warenkorb-container">
+                <div className="warenkorb-placeholder"><p>Dein Warenkorb ist noch leer :)</p></div>
+            </div>
+        }
         return <div className="warenkorb-container">
             <div className="warenkorb-list">
                 {/* <div className="warenkorb-parent"> */}
                 <div className="warenkorb-title">
                     <h1>Warenkorb</h1>
+                    <p className="marginLeft">Gesamt</p>
                 </div>
                 {/* </div> */}
                 <div className="warenkorb-items">
-                    {this.state.items.length ?
-                        items
-                        :
-                        <p>kauf ma was</p>
-                    }
-                    <div className="warenkorb-parent">
-                        <div className="warenkorb-total">
-                            <p>Summe ({total.count} Artikel): {this.numberToString(total.amount)}€</p>
-                        </div>
+                    {items}
+                    <div className="warenkorb-sum">
+                        <p><strong>Summe ({total.count} Artikel): {this.numberToString(total.amount)}€</strong></p>
+                        <Button className="warekorb-btn" primary onClick={() => this.checkout()}>Zur Kasse</Button>
                     </div>
                 </div>
             </div>
