@@ -17,17 +17,20 @@ export const getWarenkorb = () => {
     return JSON.parse(warenkorb);
 };
 
-//later
-export const addApprovalUrl = (payment: any) => {
-
+//sets approvalUrl
+export const addApprovalUrl = (approvalUrl: string) => {
+    if (approvalUrl == undefined && approvalUrl.length) return [];
+    localStorage.setItem("approvalUrl", approvalUrl);
+    return;
 };
 
-//later
-export const addOrderId = (payment: any) => {
-
+//gets approvalUrl
+export const getApprovalUrl = () => {
+    return localStorage.getItem("approvalUrl");
 };
 
-//later
+//removes approvalUrl
 export const removeApprovalUrl = (paymentId: string) => {
-
+    localStorage.removeItem("approvalUrl");
+    return;
 };

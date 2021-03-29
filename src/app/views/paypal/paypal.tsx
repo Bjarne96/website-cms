@@ -1,5 +1,6 @@
 import * as React from 'react';
 import './paypal.css';
+import { getApprovalUrl } from '../../handler/localstorageHandler';
 
 interface IProps {
 }
@@ -8,7 +9,7 @@ interface IState {
     loading: boolean;
 }
 
-export class Paypal extends React.Component<IProps, IState>{
+export class Kasse extends React.Component<IProps, IState>{
 
     constructor(props) {
         super(props);
@@ -18,10 +19,12 @@ export class Paypal extends React.Component<IProps, IState>{
         }
     }
 
-    renderPaymentWall() {
+    async renderPaymentWall() {
+        let approvalURL = await getApprovalUrl();
+        console.log('approvalURL', approvalURL);
         //@ts-ignore
         var ppp: any = PAYPAL.apps.PPP({
-            "approvalUrl": "https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_express-checkout&token=EC-3BA43676YS411092J",
+            "approvalUrl": approvalURL,
             "placeholder": "ppplus",
             "mode": "sandbox"
         });
@@ -39,4 +42,4 @@ export class Paypal extends React.Component<IProps, IState>{
         </>
     }
 }
-export default Paypal;
+export default Kasse;

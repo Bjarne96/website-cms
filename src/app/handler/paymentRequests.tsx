@@ -2,7 +2,7 @@ import * as request from "./requestHandler"
 import { IProductSelected } from "../../schemas";
 
 //Post Request Payment and gets Apporval URL back
-export const updatePayment = async (data: Array<IProductSelected>) => {
+export const createPayment = async (data: Array<IProductSelected>) => {
     let product = await request.postData("create_payment", data);
     return product;
 }

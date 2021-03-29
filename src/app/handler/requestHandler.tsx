@@ -3,34 +3,23 @@ import * as config from "./../../../config";
 
 //request
 let Request = async (path: string, fetchType: "GET" | "POST" | "PUT" | "DELETE", data) => {
-    let JWT = await getJWT();
-
-    let header = { "Content-Type": "application/json", "Authorization": JWT, }
-
+    let header = { "Content-Type": "application/json" }
     //Sets url
     let url = config.api + path;
 
-    //Sends Request
-    let response = await fetch(url);
-
-    const json: any = await response.json();
-
-    //If the Request was successful, an new Token from the server will refresh the cookie
-    if (json.status === "ok") {
-        //Sets token and saves it as cookie (only working with forEach)
-        let token;
-        response.headers.forEach((val, key) => { if (key === "authorization") { token = val; } });
-        saveJWT(token);
-        //Todo: setTimeout here and cancel the other timeout
-
-        //Checks for expired token and loggs out the user
-    } else if (json.result === "Login expired.") {
-        await removeJWT();
-        location.reload();
+    //let requestOptions
+    let requestOptions = {
+        headers: header,
+        method: fetchType
+    }
+    if (fetchType == "POST" || fetchType == "PUT") {
+        requestOptions["body"] = JSON.stringify(data);
     }
 
-    //Returns body as json
-    //console.log("json", json)
+    //Sends Request
+    let response = await fetch(url, requestOptions);
+
+    const json: any = await response.json();
     return json;
 
 }

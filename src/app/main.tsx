@@ -8,7 +8,7 @@ import { Home } from './views/home/home';
 import { Default } from './views/default/default';
 import { backboneId } from "./../../config";
 import { Footer } from './components/footer/footer';
-import Paypal from './views/paypal/paypal';
+import Kasse from './views/paypal/paypal';
 import Success from './views/success/success';
 import { Produkte } from './views/produkte/produkte';
 import Produktdetail from './views/produkte/produktdetail/produktdetail';
@@ -105,8 +105,8 @@ export class Main extends React.Component<any, IMainState> {
                             history={this.props.history}
                         />
                         <div className="main-container">
-                            <Route path="/paypal" exact component={() =>
-                                <Paypal />
+                            <Route path="/kasse" exact component={() =>
+                                <Kasse />
                             } />
                             <Route path="/produkte" exact component={() =>
                                 <Produkte products={loadedBackbone.products} />

@@ -52,10 +52,11 @@ export default class Navbar extends React.Component<INavbarProps, INavbarState> 
             <div onClick={() => window.location.href = config.domain}><h2>Tiefschlafen</h2></div>
             <div className={"navbar-menu"}>
                 {this.props.routes.map((route, key) => {
-                    let itemClass = "mobileSidebarItem";
+                    let itemClass = "";
                     if (this.props.history.location.pathname == route.url) itemClass += " active";
                     if (route.hide === true) itemClass += " hide";
                     return <Menu.Item
+                        className={itemClass}
                         as='div'
                         key={key + "route"}
                         onClick={() => this.props.changeHistory(route.url, route.title)}>

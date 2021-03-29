@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { Button, Icon } from 'semantic-ui-react';
 import { IProductSelected } from '../../../schemas';
-import { getWarenkorb, updateWarenkorb } from '../../handler/localstorageHandler';
+import { addApprovalUrl, getWarenkorb, updateWarenkorb } from '../../handler/localstorageHandler';
+import { createPayment } from '../../handler/paymentRequests';
 import './warenkorb.css';
 
 interface IProps {
-    //item: IProductSelected;
 }
 
 interface IState {
@@ -122,6 +122,7 @@ const warenkorbdaten: Array<any> = [{
 }]
 
 export class Warenkorb extends React.Component<IProps, IState>{
+
     constructor(props) {
         super(props);
         this.changeCount = this.changeCount.bind(this);
@@ -186,11 +187,15 @@ export class Warenkorb extends React.Component<IProps, IState>{
         this.updateItems(newItems);
     }
 
-    checkout() {
+    async checkout() {
         console.log('checkout');
         //create payment request
+        let response = await createPayment(this.state.items);
+        let approvalUrl = response.result;
         //update localstorage
+        addApprovalUrl(approvalUrl);
         //redirect to paymentwall view
+        document.getElementById("/kasse").click();
     }
 
     totalCalc() {
@@ -230,7 +235,7 @@ export class Warenkorb extends React.Component<IProps, IState>{
                                     return <span key={prop.name + selector}>{prop.name}:&nbsp;</span>
                                 }
                                 if (prop.id == selector) {
-                                    return <><span key={prop.name + selector} className="">{prop.name}</span><br key={"br" + prop.name + selector} /></>
+                                    return <span key={prop.name + selector} className="">{prop.name}<br key={"br" + prop.name + selector} /></span>
                                 }
                             })
                         })}
