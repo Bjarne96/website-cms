@@ -3,12 +3,12 @@ import { IProductSelected } from "../../schemas";
 
 //Post Request Payment and gets Apporval URL back
 export const createPayment = async (data: Array<IProductSelected>) => {
-    let product = await request.postData("create_payment", data);
-    return product;
+    let response = await request.postData("create_payment", data);
+    return response;
 }
 
-//Inserts one specific product
-export const checkOrderPayment = async (orderId) => {
-    let product = await request.insertRow("check_order", orderId);
-    return product;
+//Finishes up a sale
+export const executePayment = async (data) => {
+    let response = await request.postData("execute_payment", data);
+    return response;
 }
