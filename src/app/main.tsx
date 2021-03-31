@@ -10,6 +10,7 @@ import { backboneId } from "./../../config";
 import { Footer } from './components/footer/footer';
 import Kasse from './views/paypal/paypal';
 import Success from './views/success/success';
+import Cancel from './views/cancel/cancel';
 import { Produkte } from './views/produkte/produkte';
 import Produktdetail from './views/produkte/produktdetail/produktdetail';
 import Warenkorb from './views/warenkorb/warenkorb';
@@ -116,6 +117,8 @@ export class Main extends React.Component<any, IMainState> {
                             history={this.props.history}
                         />
                         <div className="main-container">
+                            <Route path="/" exact component={() => <Home />} />
+                            <Route path="/home" exact component={() => <Home />} />
                             <Route path="/kasse" exact component={() =>
                                 <Kasse />
                             } />
@@ -124,6 +127,9 @@ export class Main extends React.Component<any, IMainState> {
                             } />
                             <Route path="/success" exact component={() =>
                                 <Success />
+                            } />
+                            <Route path="/cancel" exact component={() =>
+                                <Cancel />
                             } />
                             <Route path="/warenkorb" exact component={() =>
                                 <Warenkorb />
@@ -135,7 +141,6 @@ export class Main extends React.Component<any, IMainState> {
                             {/* ToDo Error */}
                             {/* ToDo 404 */}
                         </div>
-                        <Route path="/home" exact component={() => <Home />} />
                     </div>
                 </Router>
                 <Footer content={loadedBackbone.footer} />

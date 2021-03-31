@@ -17,7 +17,6 @@ export class Footer extends React.Component<IProps, {}>{
     }
 
     render() {
-        console.log('content', this.props.content);
         return <div className="footer-outerframe">
             <div className="footer-container">
                 <div className="footer-row">

@@ -1,9 +1,9 @@
-.success-outerframe {
+.cancel-outerframe {
     display: flex;
     align-items: center;
     justify-content: center;
 }
-.success-container {
+.cancel-container {
     padding: var(--outer-frame-padding);
     max-width:var(--max-width-container);
     display: flex;
@@ -11,22 +11,22 @@
     align-items: center;
     justify-content: center;
 }
-.success-headframe {
+.cancel-headframe {
     display: block;
     width: 100%;
 }
-.success-title {
+.cancel-title {
     font-weight: bold;
     display: inline;
     margin: 0px;
 }
-.success-btn {
+.cancel-btn {
     display: inline !important;
-    color: green;
+    color: darkred;
     font-size: 30px !important;
     margin-top: 10px !important;
     vertical-align: top !important;
 }
-.success-text {
+.cancel-text {
     padding: 4px;
 }

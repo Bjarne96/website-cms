@@ -3,14 +3,13 @@ import './displayWidePicture.css';
 import { IArticle } from './../../../../../schemas';
 
 interface IProps {
-    component: IArticle;
 }
 
 export class DisplayWidePicture extends React.Component<IProps, any> {
     render() {
         return <div className="wideContainer">
             <div className="textBox">
-                <div className="headline" dangerouslySetInnerHTML={{ __html: this.props.component.content }} />
+                <div className="headline">Willkommen</div>
                 <div className="more-btn">Entdecken</div>
             </div>
             <div className="wideImageWrapper">

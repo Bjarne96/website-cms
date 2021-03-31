@@ -42,7 +42,7 @@ export class Produkte extends React.Component<IProps, IState>{
                     {/* <img className="product-image" src={product.pictures[0].path} /> */}
                     <img
                         className="product-image"
-                        src={product.variants[0].pictures[0]}
+                        src={product.variants[index].pictures[0]}
                     />
                 </div>
                 <div className="product-textframe">
