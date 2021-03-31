@@ -2,7 +2,6 @@ import * as React from 'react';
 import { Menu, Loader, Icon } from 'semantic-ui-react';
 import './navbar.css';
 import * as config from "./../../../../../../config";
-import { IRouteArray } from './../../../../interfaces/componentInterfaces'
 import { INavItem } from '../../../../../schemas';
 
 interface INavbarState {
@@ -65,7 +64,7 @@ export default class Navbar extends React.Component<INavbarProps, INavbarState> 
                 })}
             </div>
             <div className="navbar-btns">
-                <Icon className="btn cart-btn" name='cart' size="big" onClick={() => this.props.changeHistory("Warenkorb", "/warenkorb")} />
+                <Icon className="btn cart-btn" name='cart' size="big" onClick={() => this.props.changeHistory("/warenkorb", "Warenkorb")} />
                 <Icon className="btn sidebar-btn" name='bars' size="big" onClick={this.props.toggleSidebar} />
             </div>
         </nav>;

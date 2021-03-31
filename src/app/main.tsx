@@ -68,6 +68,17 @@ export class Main extends React.Component<any, IMainState> {
             }
             routes.push(newNavItem)
         }
+        let footerArticles = backbone.footer[0].articles
+        for (let i = 0; i < footerArticles.length; i++) {
+            let article = footerArticles[i];
+            let newNavItem: INavItem = {
+                name: article.name,
+                title: article.title,
+                url: article.url,
+                hide: true
+            }
+            routes.push(newNavItem)
+        }
     }
 
     renderArticles(articles: Array<IArticle>) {
@@ -118,6 +129,7 @@ export class Main extends React.Component<any, IMainState> {
                                 <Warenkorb />
                             } />
                             {this.renderArticles(loadedBackbone.articles)}
+                            {this.renderArticles(loadedBackbone.footer[0].articles)}
                             {this.renderProducts(loadedBackbone.products)}
                             {/* <Route path="/shoppingcart" exact component={() => <Shoppingcart navs={navs} componentStructure={componentStructure} />} /> */}
                             {/* ToDo Error */}
