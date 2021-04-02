@@ -2,21 +2,23 @@ import * as React from 'react';
 import './main.css';
 import Navigation from './components/body/navigation/navigation';
 import { getBackbone } from "./handler/backboneRequests";
-import { IArticle, ILoadedBackbone, INavItem, IProduct } from '../schemas';
+import { IArticle, ILoadedBackbone, INavItem, IProduct, IProductSelected } from '../schemas';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { Home } from './views/home/home';
 import { Default } from './views/default/default';
 import { backboneId } from "./../../config";
 import { Footer } from './components/footer/footer';
-import Kasse from './views/paypal/paypal';
+import Kasse from './views/kasse/kasse';
 import Success from './views/success/success';
 import Cancel from './views/cancel/cancel';
-import { Produkte } from './views/produkte/produkte';
-import Produktdetail from './views/produkte/produktdetail/produktdetail';
+import { Product } from './views/product/product';
+import Productdetail from './views/product/productdetail/productdetail';
 import Warenkorb from './views/warenkorb/warenkorb';
+import { getWarenkorb } from './handler/localstorageHandler';
 
 interface IMainState {
     loading: boolean;
+    warenkorbCount: Number;
 }
 
 let routes: Array<INavItem> = [];
@@ -30,9 +32,12 @@ export class Main extends React.Component<any, IMainState> {
         this.formatNavBB = this.formatNavBB.bind(this);
         this.renderArticles = this.renderArticles.bind(this);
         this.renderProducts = this.renderProducts.bind(this);
+        this.warenkorbChange = this.warenkorbChange.bind(this);
         this.state = {
-            loading: true
+            loading: true,
+            warenkorbCount: null
         }
+        this.warenkorbChange()
     }
 
     async componentDidMount() {
@@ -43,6 +48,17 @@ export class Main extends React.Component<any, IMainState> {
         loadedBackbone = loadedBackboneRequest.result;
         this.formatNavBB(loadedBackbone);
         this.setState({ loading: false })
+    }
+
+    async warenkorbChange() {
+        let warenkorb = await getWarenkorb();
+        let totalCount = 0;
+        for (let i = 0; i < warenkorb.length; i++) {
+            totalCount = totalCount + warenkorb[i].count;
+        }
+        await this.setState({
+            warenkorbCount: totalCount
+        })
     }
 
     formatNavBB(backbone: ILoadedBackbone) {
@@ -64,7 +80,7 @@ export class Main extends React.Component<any, IMainState> {
             let newNavItem: INavItem = {
                 name: product.name,
                 title: product.name,
-                url: "/produkt-" + product.name,
+                url: "/product-" + product.name,
                 hide: true
             }
             routes.push(newNavItem)
@@ -98,8 +114,13 @@ export class Main extends React.Component<any, IMainState> {
             return <Route
                 key={product._id}
                 path={"/produkt-" + product.name}
-                exact
-                component={() => <Produktdetail produkt={product} />}
+                component={() =>
+                    <Productdetail
+                        //@ts-ignore
+                        history={this.props.history}
+                        warenkorbChange={this.warenkorbChange}
+                        product={product}
+                    />}
             />
         });
 
@@ -109,40 +130,39 @@ export class Main extends React.Component<any, IMainState> {
         if (loadedBackbone == undefined) return <></>
         return (
             <div>
-                <Router>
-                    <div>
-                        <Navigation
-                            //@ts-ignore
-                            routes={routes}
-                            history={this.props.history}
-                        />
-                        <div className="main-container">
-                            <Route path="/" exact component={() => <Home />} />
-                            <Route path="/home" exact component={() => <Home />} />
-                            <Route path="/kasse" exact component={() =>
-                                <Kasse />
-                            } />
-                            <Route path="/produkte" exact component={() =>
-                                <Produkte products={loadedBackbone.products} />
-                            } />
-                            <Route path="/success" exact component={() =>
-                                <Success />
-                            } />
-                            <Route path="/cancel" exact component={() =>
-                                <Cancel />
-                            } />
-                            <Route path="/warenkorb" exact component={() =>
-                                <Warenkorb />
-                            } />
-                            {this.renderArticles(loadedBackbone.articles)}
-                            {this.renderArticles(loadedBackbone.footer[0].articles)}
-                            {this.renderProducts(loadedBackbone.products)}
-                            {/* <Route path="/shoppingcart" exact component={() => <Shoppingcart navs={navs} componentStructure={componentStructure} />} /> */}
-                            {/* ToDo Error */}
-                            {/* ToDo 404 */}
-                        </div>
+                <div>
+                    <Navigation
+                        //@ts-ignore
+                        routes={routes}
+                        warenkorbCount={this.state.warenkorbCount}
+                        history={this.props.history}
+                    />
+                    <div className="main-container">
+                        <Route path="/" exact component={() => <Home />} />
+                        <Route path="/home" exact component={() => <Home />} />
+                        <Route path="/kasse" exact component={() =>
+                            <Kasse />
+                        } />
+                        <Route path="/produkte" exact component={() =>
+                            <Product products={loadedBackbone.products} />
+                        } />
+                        <Route path="/success" exact component={() =>
+                            <Success />
+                        } />
+                        <Route path="/cancel" exact component={() =>
+                            <Cancel />
+                        } />
+                        <Route path="/warenkorb" exact component={() =>
+                            <Warenkorb warenkorbChange={this.warenkorbChange} />
+                        } />
+                        {this.renderArticles(loadedBackbone.articles)}
+                        {this.renderArticles(loadedBackbone.footer[0].articles)}
+                        {this.renderProducts(loadedBackbone.products)}
+                        {/* <Route path="/shoppingcart" exact component={() => <Shoppingcart navs={navs} componentStructure={componentStructure} />} /> */}
+                        {/* ToDo Error */}
+                        {/* ToDo 404 */}
                     </div>
-                </Router>
+                </div>
                 <Footer content={loadedBackbone.footer} />
             </div>
         )

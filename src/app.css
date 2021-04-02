@@ -24,6 +24,7 @@ html {
     --outer-frame-padding: 10vw;
 
     --navbar-height: 62px;
+    --calc-min-height: calc(100vh - 62px);
     
     
     /* --element-dark-bg-color: rgb(66, 66, 66); */
