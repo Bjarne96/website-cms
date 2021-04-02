@@ -80,7 +80,7 @@ export class Main extends React.Component<any, IMainState> {
             let newNavItem: INavItem = {
                 name: product.name,
                 title: product.name,
-                url: "/product-" + product.name,
+                url: "/produkt-" + product.name,
                 hide: true
             }
             routes.push(newNavItem)

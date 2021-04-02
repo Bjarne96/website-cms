@@ -83,11 +83,13 @@ export class Productdetail extends React.Component<IProps, IState>{
             console.log('err');
         }
         let returnObj = {};
-        if (tempObj["selector_1"]) {
-            selectedProduct.variant.selector_1 = tempObj["selector_1"];
-        }
-        if (tempObj["selector_2"]) {
-            selectedProduct.variant.selector_2 = tempObj["selector_2"];
+        for (let i = 0; i < this.props.product.variants.length; i++) {
+            const element = this.props.product.variants[i];
+
+            if (tempObj["selector_1"] == element.selector_1 && tempObj["selector_2"] == element.selector_2) {
+                console.log('element.selector_1', element.selector_1, element.selector_2);
+                selectedProduct.variant = element;
+            }
         }
         returnObj["selectedImage"] = this.props.product.variants[0].pictures[0];
         if (tempObj["image"]) {
@@ -179,7 +181,7 @@ export class Productdetail extends React.Component<IProps, IState>{
                         })}
                     </div>
                     <div className="productdetail-other">
-
+                        <div className="productdetail-description"><div className="tableCellDynamic" dangerouslySetInnerHTML={{ __html: this.state.selectedProduct.variant.description }} /></div>
                     </div>
                     <div className="productdetail-warenkorb">
                         <Button primary onClick={() => this.addToWarenkorb()}>In den Warenkorb</Button>
