@@ -1,0 +1,34 @@
+.paypalplus-outerframe {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    min-width: 100vw;
+}
+.paypalplus-container {
+    max-width: 1000px;
+    padding: 50px;
+    background-color: white;
+    border-radius: 5px;
+}
+.paypalplus-iframe {
+    width: 100%;
+}
+.dummy-width {
+    width: 50vw;
+    max-width: 1000px;
+}
+
+@media screen and (orientation: landscape) {
+    .paypalplus-container {
+    }
+  }
+  
+@media screen and (orientation: portrait) {
+    .paypalplus-container {
+    }
+}
+@media screen and (max-width: 480px) and (orientation: portrait) {
+    .paypalplus-container {
+    }
+}

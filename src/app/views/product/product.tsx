@@ -1,5 +1,5 @@
 import * as React from 'react';
-import './produkte.css';
+import './product.css';
 import { IProduct, IProductVariant } from '../../../schemas';
 
 interface IProps {
@@ -9,7 +9,7 @@ interface IProps {
 interface IState {
 }
 
-export class Produkte extends React.Component<IProps, IState>{
+export class Product extends React.Component<IProps, IState>{
     constructor(props) {
         super(props);
         this.clickProduct = this.clickProduct.bind(this);
@@ -62,4 +62,4 @@ export class Produkte extends React.Component<IProps, IState>{
         </div>
     }
 }
-export default Produkte;
+export default Product;

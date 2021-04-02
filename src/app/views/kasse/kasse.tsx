@@ -1,6 +1,7 @@
 import * as React from 'react';
-import './paypal.css';
+import './kasse.css';
 import { getApprovalUrl } from '../../handler/localstorageHandler';
+import { Loader } from 'semantic-ui-react';
 
 interface IProps {
 }
@@ -21,7 +22,6 @@ export class Kasse extends React.Component<IProps, IState>{
 
     async renderPaymentWall() {
         let approvalURL = await getApprovalUrl();
-        console.log('approvalURL', approvalURL);
         //@ts-ignore
         var ppp: any = PAYPAL.apps.PPP({
             "approvalUrl": approvalURL,
@@ -33,13 +33,22 @@ export class Kasse extends React.Component<IProps, IState>{
     async componentDidMount() {
         await setTimeout(() => {
             this.renderPaymentWall()
-        }, 100);
+            this.setState({
+                loading: false
+            })
+        }, 1000);
     }
 
     render() {
-        return <>
-            <div className="paypalplus-container" id="ppplus"></div>
-        </>
+        return <div className="paypalplus-outerframe">
+            <div className="paypalplus-container">
+                {this.state.loading ? <Loader active />
+                    :
+                    <h1>Wähle deine Zahlungsmethode:</h1>
+                }
+                <div className="paypalplus-iframe" id="ppplus"></div>
+            </div>
+        </div>
     }
 }
 export default Kasse;

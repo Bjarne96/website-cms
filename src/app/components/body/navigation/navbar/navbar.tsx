@@ -1,21 +1,22 @@
 import * as React from 'react';
-import { Menu, Loader, Icon } from 'semantic-ui-react';
+import { Menu, Loader, Icon, Label } from 'semantic-ui-react';
 import './navbar.css';
 import * as config from "./../../../../../../config";
 import { INavItem } from '../../../../../schemas';
 
-interface INavbarState {
-    loading: boolean;
-    showSidebar: boolean;
-}
-
 interface INavbarProps {
-    routes: Array<INavItem>;
     history;
+    routes: Array<INavItem>;
+    warenkorbCount: Number;
     navbarTransparent: boolean;
     changeHistory(title: string, url: string);
     toggleSidebar();
     evaluateStyle(url);
+}
+
+interface INavbarState {
+    loading: boolean;
+    showSidebar: boolean;
 }
 
 export default class Navbar extends React.Component<INavbarProps, INavbarState> {
@@ -64,8 +65,14 @@ export default class Navbar extends React.Component<INavbarProps, INavbarState> 
                 })}
             </div>
             <div className="navbar-btns">
+                {this.props.warenkorbCount != null && this.props.warenkorbCount != 0 ?
+                    <Label color='blue' pointing='right'>{this.props.warenkorbCount}</Label>
+                    :
+                    ""
+                }
                 <Icon className="btn cart-btn" name='cart' size="big" onClick={() => this.props.changeHistory("/warenkorb", "Warenkorb")} />
                 <Icon className="btn sidebar-btn" name='bars' size="big" onClick={this.props.toggleSidebar} />
+
             </div>
         </nav>;
     }

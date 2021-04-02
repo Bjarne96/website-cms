@@ -7,6 +7,7 @@ import { INavItem } from '../../../../schemas';
 
 interface IProps {
     routes: Array<INavItem>;
+    warenkorbCount: Number;
     history;
 }
 
@@ -84,6 +85,7 @@ export class Navigation extends React.Component<IProps, Istate>{
                 changeHistory={this.changeHistory}
                 toggleSidebar={this.toggleSidebar}
                 evaluateStyle={this.evaluateStyle}
+                warenkorbCount={this.props.warenkorbCount}
                 navbarTransparent={this.state.navbarTransparent}
                 routes={this.props.routes}
                 history={this.props.history}

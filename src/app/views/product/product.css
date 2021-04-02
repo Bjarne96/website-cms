@@ -78,7 +78,7 @@
 
 @media screen and (orientation: landscape) {
     .product-outerframe {
-        min-height: calc(100vh - var(--navbar-height));
+        min-height: var(--calc-min-height);
         display: flex;
         align-items: center;
         justify-content: center;

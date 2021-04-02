@@ -6,120 +6,12 @@ import { createPayment } from '../../handler/paymentRequests';
 import './warenkorb.css';
 
 interface IProps {
+    warenkorbChange();
 }
 
 interface IState {
     items: Array<IProductSelected>;
 }
-
-const warenkorbdaten: Array<any> = [{
-    properties: [
-        [
-            {
-                "name": "Größe",
-                "id": 0
-            },
-            {
-                "name": "XXL - 200 x 180",
-                "id": 1
-            },
-            {
-                "name": "XL - 180 x 180",
-                "id": 2
-            },
-            {
-                "name": "L - 140 x 180",
-                "id": 3
-            }
-        ],
-        [
-            {
-                "name": "Stoff",
-                "id": 0
-            },
-            {
-                "name": "Seide",
-                "id": 1
-            },
-            {
-                "name": "Hanf",
-                "id": 2
-            },
-            {
-                "name": "Satin",
-                "id": 3
-            }
-        ]
-    ],
-    _id: "604bae657b0a29333cf72001",
-    name: "Schurwolldecke",
-    variant: {
-        "pictures": [
-            "https://s3.eu-central-1.amazonaws.com/files.tiefschlafen.de/public/products/product+pictures/pic2.jpg",
-            "https://s3.eu-central-1.amazonaws.com/files.tiefschlafen.de/public/products/product+pictures/pic1.jpg",
-            "https://s3.eu-central-1.amazonaws.com/files.tiefschlafen.de/public/products/product+pictures/pic3.jpg"
-        ],
-        "selector_1": 1,
-        "selector_2": 2,
-        "description": "<p>Das ist eine Decke.12</p>",
-        "price": 280.99
-    },
-    count: 1
-},
-{
-    properties: [
-        [
-            {
-                "name": "Größe",
-                "id": 0
-            },
-            {
-                "name": "XXL - 200 x 180",
-                "id": 1
-            },
-            {
-                "name": "XL - 180 x 180",
-                "id": 2
-            },
-            {
-                "name": "L - 140 x 180",
-                "id": 3
-            }
-        ],
-        [
-            {
-                "name": "Stoff",
-                "id": 0
-            },
-            {
-                "name": "Seide",
-                "id": 1
-            },
-            {
-                "name": "Hanf",
-                "id": 2
-            },
-            {
-                "name": "Satin",
-                "id": 3
-            }
-        ]
-    ],
-    _id: "604bae6b7b0a29333cf72002",
-    name: "Schurwollkissen",
-    variant: {
-        "pictures": [
-            "https://s3.eu-central-1.amazonaws.com/files.tiefschlafen.de/public/products/product+pictures/pic1.jpg",
-            "https://s3.eu-central-1.amazonaws.com/files.tiefschlafen.de/public/products/product+pictures/pic2.jpg",
-            "https://s3.eu-central-1.amazonaws.com/files.tiefschlafen.de/public/products/product+pictures/pic3.jpg"
-        ],
-        "selector_1": 2,
-        "selector_2": 3,
-        "description": "<p>Das ist eine Decke.23</p>",
-        "price": 289.99
-    },
-    count: 1
-}]
 
 export class Warenkorb extends React.Component<IProps, IState>{
 
@@ -127,11 +19,9 @@ export class Warenkorb extends React.Component<IProps, IState>{
         super(props);
         this.changeCount = this.changeCount.bind(this);
         this.removeItem = this.removeItem.bind(this);
-        this.addItem = this.addItem.bind(this);
         this.numberToString = this.numberToString.bind(this);
         this.updateItems = this.updateItems.bind(this);
         this.totalCalc = this.totalCalc.bind(this);
-        // let initalwarenkorb = [...warenkorbdaten];
         let initalwarenkorb = getWarenkorb();
         for (let i = 0; i < initalwarenkorb.length; i++) {
             let total = initalwarenkorb[i].count * initalwarenkorb[i].variant.price;
@@ -153,9 +43,10 @@ export class Warenkorb extends React.Component<IProps, IState>{
         this.updateItems(newItems);
     }
 
-    updateItems(newItems: Array<IProductSelected>) {
-        updateWarenkorb(newItems);
-        this.setState({ items: newItems });
+    async updateItems(newItems: Array<IProductSelected>) {
+        await updateWarenkorb(newItems);
+        await this.setState({ items: newItems });
+        await this.props.warenkorbChange();
     }
 
     numberToString(number: number) {
@@ -167,23 +58,6 @@ export class Warenkorb extends React.Component<IProps, IState>{
     removeItem(index: number) {
         let newItems = this.state.items;
         newItems.splice(index, 1)
-        this.updateItems(newItems);
-    }
-
-    addItem(itemNumber: number) {
-        let newItem = warenkorbdaten[itemNumber];
-        for (let i = 0; i < this.state.items.length; i++) {
-            const item = this.state.items[i];
-            if (
-                item.variant.selector_1 == newItem.variant.selector_1
-                && item.variant.selector_2 == newItem.variant.selector_2
-            ) {
-                this.changeCount(i, 1);
-                return
-            }
-        }
-        let newItems = this.state.items;
-        newItems.push(newItem);
         this.updateItems(newItems);
     }
 
@@ -278,8 +152,4 @@ export class Warenkorb extends React.Component<IProps, IState>{
         </div>
     }
 }
-{/* <div>
-                <div className="fixedtopleft" onClick={() => this.addItem(0)}>Add Item Nr.1</div>
-                <div className="fixedtopleft2" onClick={() => this.addItem(1)}>Add Item Nr.2</div>
-            </div> */}
 export default Warenkorb;
