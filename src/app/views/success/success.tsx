@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Icon } from 'semantic-ui-react';
 import './success.css';
 import { executePayment } from "../../handler/paymentRequests"
+import { deleteWarenkorb, removeApprovalUrl } from "../../handler/localStorageHandler"
 
 interface IProps {
 }
@@ -12,6 +13,7 @@ interface IState {
 export default class Success extends React.Component<IProps, IState>{
 
     async componentDidMount() {
+        console.log('did');
         //paypal execute request
         let paramters = JSON.parse(
             '{"' + decodeURI(window.location.search)
@@ -21,10 +23,13 @@ export default class Success extends React.Component<IProps, IState>{
                 .replace(/=/g, '":"')
             + '"}');
         let response = await executePayment(paramters);
-        console.log('response', response);
+        console.log('response', paramters);
+        await deleteWarenkorb();
+        await removeApprovalUrl();
     }
 
     render() {
+        console.log('render');
         return <div className="success-outerframe">
             <div className="success-container">
                 <div className="success-headframe">

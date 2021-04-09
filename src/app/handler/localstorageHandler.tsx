@@ -56,7 +56,7 @@ export const getApprovalUrl = () => {
 };
 
 //removes approvalUrl
-export const removeApprovalUrl = (paymentId: string) => {
+export const removeApprovalUrl = () => {
     localStorage.removeItem("approvalUrl");
     return;
 };
