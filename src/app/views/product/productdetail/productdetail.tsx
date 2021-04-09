@@ -27,6 +27,7 @@ export class Productdetail extends React.Component<IProps, IState>{
         let selectedProduct: IProductSelected = {
             _id: this.props.product._id,
             name: this.props.product.name,
+            sku: this.props.product.sku,
             variant: this.props.product.variants[0],
             properties: this.props.product.properties,
             count: 1,
@@ -121,10 +122,8 @@ export class Productdetail extends React.Component<IProps, IState>{
             const element = variants[i];
             if (element[selector] == value && activeVar[otherSelector] == element[otherSelector]) {
                 newSelectedProduct.variant = element;
-                this.setState({
-                    selectedProduct: newSelectedProduct,
-                    selectedImage: newSelectedProduct.variant.pictures[0]
-                })
+                await this.setState({ selectedProduct: newSelectedProduct })
+                await this.onChangeByImage(newSelectedProduct.variant.pictures[0]);
             }
         }
         await this.pushUrl();
@@ -181,7 +180,12 @@ export class Productdetail extends React.Component<IProps, IState>{
                         })}
                     </div>
                     <div className="productdetail-other">
-                        <div className="productdetail-description"><div className="tableCellDynamic" dangerouslySetInnerHTML={{ __html: this.state.selectedProduct.variant.description }} /></div>
+                        <div className="productdetail-description">
+                            <div className="tableCellDynamic" dangerouslySetInnerHTML={{ __html: this.state.selectedProduct.variant.description }} />
+                            <p>This is bacially the same, but diffrent for every Product.</p><br />
+                            <p>I think its weirds but its also more information so we take it.</p><br />
+                            <p>This is the end.</p>
+                        </div>
                     </div>
                     <div className="productdetail-warenkorb">
                         <Button primary onClick={() => this.addToWarenkorb()}>In den Warenkorb</Button>

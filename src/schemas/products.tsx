@@ -2,6 +2,7 @@
 export interface IProduct {
     _id: string,
     name: string,
+    sku: string,
     variants: [IProductVariant],
     properties: Array<Array<IProductProps>>
 }
@@ -22,6 +23,7 @@ export interface IProductVariant {
 export interface IProductSelected {
     _id: string,
     name: string,
+    sku: string,
     variant: IProductVariant,
     properties: Array<Array<IProductProps>>
     count: number;
