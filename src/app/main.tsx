@@ -147,7 +147,7 @@ export class Main extends React.Component<any, IMainState> {
                             <Product products={loadedBackbone.products} />
                         } />
                         <Route path="/success" exact component={() =>
-                            <Success />
+                            <Success warenkorbChange={this.warenkorbChange} />
                         } />
                         <Route path="/cancel" exact component={() =>
                             <Cancel />

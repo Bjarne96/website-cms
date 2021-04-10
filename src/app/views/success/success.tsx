@@ -5,6 +5,7 @@ import { executePayment } from "../../handler/paymentRequests"
 import { deleteWarenkorb, removeApprovalUrl } from "../../handler/localStorageHandler"
 
 interface IProps {
+    warenkorbChange();
 }
 
 interface IState {
@@ -26,6 +27,7 @@ export default class Success extends React.Component<IProps, IState>{
         console.log('response', paramters);
         await deleteWarenkorb();
         await removeApprovalUrl();
+        await this.props.warenkorbChange();
     }
 
     render() {
