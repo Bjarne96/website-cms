@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Icon } from 'semantic-ui-react';
 import './success.css';
 import { executePayment } from "../../handler/paymentRequests"
-import { deleteWarenkorb, removeApprovalUrl } from "../../handler/localStorageHandler"
+import { deleteWarenkorb, getWarenkorb, removeApprovalUrl } from "../../handler/localStorageHandler"
 
 interface IProps {
     warenkorbChange();
@@ -16,22 +16,23 @@ export default class Success extends React.Component<IProps, IState>{
     async componentDidMount() {
         console.log('did');
         //paypal execute request
-        let paramters = JSON.parse(
-            '{"' + decodeURI(window.location.search)
-                .replace('?', '')
-                .replace(/"/g, '\\"')
-                .replace(/&/g, '","')
-                .replace(/=/g, '":"')
-            + '"}');
-        let response = await executePayment(paramters);
-        console.log('response', paramters);
-        await deleteWarenkorb();
-        await removeApprovalUrl();
-        await this.props.warenkorbChange();
+        if (await getWarenkorb().length) {
+            let paramters = JSON.parse(
+                '{"' + decodeURI(window.location.search)
+                    .replace('?', '')
+                    .replace(/"/g, '\\"')
+                    .replace(/&/g, '","')
+                    .replace(/=/g, '":"')
+                + '"}');
+            let response = await executePayment(paramters);
+            console.log('response', response);
+            await deleteWarenkorb();
+            await removeApprovalUrl();
+            await this.props.warenkorbChange();
+        }
     }
 
     render() {
-        console.log('render');
         return <div className="success-outerframe">
             <div className="success-container">
                 <div className="success-headframe">
